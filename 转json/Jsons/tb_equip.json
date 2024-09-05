@@ -1,0 +1,72 @@
+[
+  {
+    "ID": 1,
+    "name": "斧头1",
+    "type": 0,
+    "attackArea": 1,
+    "startAngle": 120,
+    "attackRange": 90,
+    "icon": "Axe_1",
+    "bullet": 1
+  },
+  {
+    "ID": 2,
+    "name": "斧头2",
+    "type": 0,
+    "attackArea": 1,
+    "startAngle": 90,
+    "attackRange": 180,
+    "icon": "Axe_2",
+    "bullet": 1
+  },
+  {
+    "ID": 3,
+    "name": "斧头3",
+    "type": 0,
+    "attackArea": 1,
+    "startAngle": 90,
+    "attackRange": 10,
+    "icon": "Axe_3",
+    "bullet": 1
+  },
+  {
+    "ID": 4,
+    "name": "斧头4",
+    "type": 0,
+    "attackArea": 1,
+    "startAngle": 90,
+    "attackRange": 360,
+    "icon": "Axe_4",
+    "bullet": 1
+  },
+  {
+    "ID": 5,
+    "name": "斧头5",
+    "type": 0,
+    "attackArea": 1,
+    "startAngle": 90,
+    "attackRange": 359,
+    "icon": "Axe_5",
+    "bullet": 1
+  },
+  {
+    "ID": 6,
+    "name": "斧头6",
+    "type": 0,
+    "attackArea": 1,
+    "startAngle": 90,
+    "attackRange": 360,
+    "icon": "Axe_6",
+    "bullet": 1
+  },
+  {
+    "ID": 7,
+    "name": "斧头7",
+    "type": 0,
+    "attackArea": 1,
+    "startAngle": 0,
+    "attackRange": 360,
+    "icon": "Axe_7",
+    "bullet": 1
+  }
+]

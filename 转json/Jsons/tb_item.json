@@ -1,0 +1,34 @@
+[
+  {
+    "ID": 1,
+    "name": "红药水",
+    "color": 2,
+    "overlap": 99,
+    "icon": "item/Blue_Bottle_1",
+    "desc": "陈年红药水"
+  },
+  {
+    "ID": 2,
+    "name": "大红药水",
+    "color": 2,
+    "overlap": 99,
+    "icon": "item/Blue_Bottle_2",
+    "desc": "陈年大杯红药水"
+  },
+  {
+    "ID": 3,
+    "name": "蓝药水",
+    "color": 2,
+    "overlap": 99,
+    "icon": "item/Blue_Bottle_3",
+    "desc": "陈年蓝药水"
+  },
+  {
+    "ID": 4,
+    "name": "大蓝药水",
+    "color": 2,
+    "overlap": 99,
+    "icon": "item/Blue_Bottle_3",
+    "desc": "陈年大杯蓝药水"
+  }
+]

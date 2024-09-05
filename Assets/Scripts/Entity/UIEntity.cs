@@ -1,0 +1,182 @@
+﻿using Manager;
+using UnityEngine;
+
+namespace QEntity
+{
+    public class UIEntity : MonoBehaviour
+    {
+        [HideInInspector]
+        public RectTransform rectTrans;
+        public bool IsShow;
+        private bool isDestroy;
+
+        public bool IsDestroy
+        {
+            get { return isDestroy; }
+        }
+
+        private void OnEnable()
+        {
+            rectTrans = this.gameObject.GetComponent<RectTransform>();
+        }
+
+        public virtual void Init()
+        {
+            isDestroy = false;
+            ResetTransform();
+        }
+
+        public virtual void RefreshUI()
+        {
+        }
+
+        public virtual void ResetTransform()
+        {
+            ResetScale();
+            //ResetAnchoredPosition();
+            //ResetSizeDelta();
+        }
+
+        public virtual void ResetScale()
+        {
+            rectTrans.localScale = Vector2.one;
+        }
+
+        //public virtual void ResetAnchoredPosition()
+        //{
+        //    rectTrans.anchoredPosition = Vector2.zero;
+        //}
+
+        //public virtual void ResetSizeDelta()
+        //{
+        //    rectTrans.sizeDelta = Vector2.zero;
+        //}
+
+        public virtual void Show()
+        {
+            this.gameObject.SetActive(true);
+            IsShow = true;
+            UIManager.UIPush(this);
+        }
+
+        public virtual void Hide()
+        {
+            this.gameObject.SetActive(false);
+            IsShow = false;
+            UIManager.UIPop();
+        }
+
+        public virtual void Destroy()
+        {
+            //onPointerClick = null;
+            //onPointerDown = null;
+            //onPointerEnter = null;
+            //onPointerExit = null;
+            //onPointerUp = null;
+            if (IsShow) Hide();
+            isDestroy = true;
+            PoolManager.GetUIPool().UnSpawn(gameObject, name);
+        }
+
+
+        //////////////////////////////   事件方法
+
+        //private bool pierceTouch = false;
+        //public Action<PointerEventData> onPointerClick;
+        //public Action<PointerEventData> onPointerDown;
+        //public Action<PointerEventData> onPointerEnter;
+        //public Action<PointerEventData> onPointerExit;
+        //public Action<PointerEventData> onPointerUp;
+
+        //// 设置穿透触摸
+        //public void SetPierce(bool state)
+        //{
+        //    pierceTouch = state;
+        //}
+
+        //public void OnPointerClick(PointerEventData eventData)
+        //{
+        //    if (pierceTouch)
+        //    {
+        //        GetRaycastResults(eventData);
+        //    }
+        //    onPointerClick?.Invoke(eventData);
+        //    if (pierceTouch)
+        //    {
+        //        this.OnExecute(eventData, ExecuteEvents.pointerClickHandler);
+        //    }
+        //}
+
+        //public void OnPointerDown(PointerEventData eventData)
+        //{
+        //    if (pierceTouch)
+        //    {
+        //        GetRaycastResults(eventData);
+        //    }
+        //    onPointerDown?.Invoke(eventData);
+        //    if (pierceTouch)
+        //    {
+        //        this.OnExecute(eventData, ExecuteEvents.pointerDownHandler);
+        //    }
+        //}
+
+        //public void OnPointerEnter(PointerEventData eventData)
+        //{
+        //    if (pierceTouch)
+        //    {
+        //        GetRaycastResults(eventData);
+        //    }
+        //    onPointerEnter?.Invoke(eventData);
+        //    if (pierceTouch)
+        //    {
+        //        this.OnExecute(eventData, ExecuteEvents.pointerEnterHandler);
+        //    }
+        //}
+
+        //public void OnPointerExit(PointerEventData eventData)
+        //{
+        //    if (pierceTouch)
+        //    {
+        //        GetRaycastResults(eventData);
+        //    }
+        //    onPointerExit?.Invoke(eventData);
+        //    if (pierceTouch)
+        //    {
+        //        this.OnExecute(eventData, ExecuteEvents.pointerExitHandler);
+        //    }
+        //}
+
+        //public void OnPointerUp(PointerEventData eventData)
+        //{
+        //    if (pierceTouch)
+        //    {
+        //        GetRaycastResults(eventData);
+        //    }
+        //    onPointerUp?.Invoke(eventData);
+        //    if (pierceTouch)
+        //    {
+        //        this.OnExecute(eventData, ExecuteEvents.pointerUpHandler);
+        //    }
+        //}
+
+
+        ////事件穿透传递
+        //private List<RaycastResult> m_raycastResults = null;
+
+        //private void GetRaycastResults(PointerEventData eventData)
+        //{
+        //    if (m_raycastResults == null) m_raycastResults = new List<RaycastResult>();
+        //    EventSystem.current.RaycastAll(eventData, m_raycastResults);
+        //}
+        //private void OnExecute<T>(PointerEventData eventData, ExecuteEvents.EventFunction<T> func) where T : IEventSystemHandler
+        //{
+        //    int len = m_raycastResults.Count;
+        //    for (var i = 0; i < len; i++)
+        //    {
+        //        if (m_raycastResults[i].gameObject == this.gameObject) continue;
+        //        ExecuteEvents.Execute(m_raycastResults[i].gameObject, eventData, func);
+        //    }
+        //    m_raycastResults.Clear();
+        //}
+    }
+}

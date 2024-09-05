@@ -1,0 +1,74 @@
+[
+  {
+    "ID": 1,
+    "name": "测试NPC1",
+    "type": 0,
+    "blood": 25,
+    "damage": 2,
+    "attackArea": 1,
+    "assetName": "NPC"
+  },
+  {
+    "ID": 2,
+    "name": "测试NPC2",
+    "type": 0,
+    "blood": 30,
+    "damage": 2,
+    "attackArea": 1,
+    "assetName": "NPC"
+  },
+  {
+    "ID": 3,
+    "name": "测试NPC3",
+    "type": 0,
+    "blood": 35,
+    "damage": 2,
+    "attackArea": 1,
+    "assetName": "NPC"
+  },
+  {
+    "ID": 4,
+    "name": "测试NPC4",
+    "type": 0,
+    "blood": 40,
+    "damage": 2,
+    "attackArea": 1,
+    "assetName": "NPC"
+  },
+  {
+    "ID": 5,
+    "name": "测试NPC5",
+    "type": 0,
+    "blood": 45,
+    "damage": 2,
+    "attackArea": 1,
+    "assetName": "NPC"
+  },
+  {
+    "ID": 6,
+    "name": "测试NPC6",
+    "type": 0,
+    "blood": 50,
+    "damage": 2,
+    "attackArea": 1,
+    "assetName": "NPC"
+  },
+  {
+    "ID": 7,
+    "name": "测试NPC7",
+    "type": 0,
+    "blood": 55,
+    "damage": 2,
+    "attackArea": 1,
+    "assetName": "NPC"
+  },
+  {
+    "ID": 8,
+    "name": "测试NPC8",
+    "type": 0,
+    "blood": 40,
+    "damage": 5,
+    "attackArea": 1,
+    "assetName": "NPC"
+  }
+]

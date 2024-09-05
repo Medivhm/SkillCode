@@ -1,0 +1,44 @@
+[
+  {
+    "ID": 1,
+    "name": "刀光1",
+    "speed": 40,
+    "carrierPath": "Cube"
+  },
+  {
+    "ID": 2,
+    "name": "刀光2",
+    "speed": 40,
+    "carrierPath": "Sphere"
+  },
+  {
+    "ID": 3,
+    "name": "刀光3",
+    "speed": 40,
+    "carrierPath": "Sphere"
+  },
+  {
+    "ID": 4,
+    "name": "刀光4",
+    "speed": 40,
+    "carrierPath": "Sphere"
+  },
+  {
+    "ID": 5,
+    "name": "刀光5",
+    "speed": 40,
+    "carrierPath": "Sphere"
+  },
+  {
+    "ID": 6,
+    "name": "刀光6",
+    "speed": 40,
+    "carrierPath": "Sphere"
+  },
+  {
+    "ID": 7,
+    "name": "刀光7",
+    "speed": 40,
+    "carrierPath": "Sphere"
+  }
+]

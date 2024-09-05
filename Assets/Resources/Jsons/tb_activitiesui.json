@@ -1,0 +1,102 @@
+[
+  {
+    "ID": 1,
+    "Title": "酒馆",
+    "Func": "1#4",
+    "buttonID": [],
+    "buttonName": [],
+    "function": []
+  },
+  {
+    "ID": 2,
+    "Title": "任务",
+    "Func": "3",
+    "buttonID": [],
+    "buttonName": [],
+    "function": []
+  },
+  {
+    "ID": 3,
+    "Title": "地图",
+    "Func": "",
+    "buttonID": [
+      1,
+      2,
+      3
+    ],
+    "buttonName": [
+      "跳转到地图1",
+      "跳转到地图2",
+      "跳转到地图3"
+    ],
+    "function": [
+      "1#1",
+      "1#2",
+      "1#3"
+    ]
+  },
+  {
+    "ID": 4,
+    "Title": "联络人",
+    "Func": "4",
+    "buttonID": [],
+    "buttonName": [],
+    "function": []
+  },
+  {
+    "ID": 5,
+    "Title": "背包",
+    "Func": "2",
+    "buttonID": [],
+    "buttonName": [],
+    "function": []
+  },
+  {
+    "ID": 6,
+    "Title": "生产",
+    "Func": "5",
+    "buttonID": [],
+    "buttonName": [],
+    "function": []
+  },
+  {
+    "ID": 7,
+    "Title": "钓鱼",
+    "Func": "6",
+    "buttonID": [],
+    "buttonName": [],
+    "function": []
+  },
+  {
+    "ID": 8,
+    "Title": "种植",
+    "Func": "7",
+    "buttonID": [],
+    "buttonName": [],
+    "function": []
+  },
+  {
+    "ID": 9,
+    "Title": "制作",
+    "Func": "8",
+    "buttonID": [],
+    "buttonName": [],
+    "function": []
+  },
+  {
+    "ID": 10,
+    "Title": "锻造",
+    "Func": "9",
+    "buttonID": [],
+    "buttonName": [],
+    "function": []
+  },
+  {
+    "ID": 11,
+    "Title": "技能",
+    "Func": "10",
+    "buttonID": [],
+    "buttonName": [],
+    "function": []
+  }
+]

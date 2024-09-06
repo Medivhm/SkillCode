@@ -91,10 +91,6 @@ public class GameState : MonoSingleton<GameState>
             }
             InGameSave();
 
-            Ctrl.SetQuickKey(KeyCode.Escape, () =>
-            {
-                Ctrl.HideTopUI();
-            });
 
             Ctrl.SetQuickKey(KeyCode.G, () =>
             {
@@ -105,6 +101,7 @@ public class GameState : MonoSingleton<GameState>
             {
                 Ctrl.OpenBag();
             });
+
 
         });
     }

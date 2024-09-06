@@ -9,7 +9,7 @@ namespace Manager
     class DataManager : Singleton<DataManager>
     {
         //public Dictionary<int, EquipInfo>        EquipInfos;
-        //public Dictionary<int, EnemyInfo>        EnemyInfos;
+        //public Dictionary<int, CreatureInfo>        CreatureInfos;
         //public Dictionary<int, MapInfo>          MapInfos;
         //public Dictionary<int, BulletInfo>       BulletInfos;
         public Dictionary<int, ItemInfo>         ItemInfos;
@@ -41,12 +41,12 @@ namespace Manager
             //yield return null;
 
             //// 敌人表导入
-            //json = LoadTool.LoadJson("tb_enemy");
-            //List<EnemyInfo> enemyInfo = JsonConvert.DeserializeObject<List<EnemyInfo>>(json);
-            //EnemyInfos = new Dictionary<int, EnemyInfo>();
-            //for (int i = 0; i < enemyInfo.Count; i++)
+            //json = LoadTool.LoadJson("tb_Creature");
+            //List<CreatureInfo> CreatureInfo = JsonConvert.DeserializeObject<List<CreatureInfo>>(json);
+            //CreatureInfos = new Dictionary<int, CreatureInfo>();
+            //for (int i = 0; i < CreatureInfo.Count; i++)
             //{
-            //    EnemyInfos.Add(enemyInfo[i].ID, enemyInfo[i]);
+            //    CreatureInfos.Add(CreatureInfo[i].ID, CreatureInfo[i]);
             //}
             //yield return null;
 

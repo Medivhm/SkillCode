@@ -7,8 +7,14 @@ using UnityEngine.UI;
 
 public class MagicProgressbar : UIEntity
 {
-    public Text text;
-    public QProgressbar progressbar;
+    [SerializeField]
+    private Text text;
+    [SerializeField]
+    private QProgressbar progressbar;
+    public bool ChargeOver
+    {
+        get { return progressbar.chargeOver; }
+    }
 
     private void Awake()
     {
@@ -18,12 +24,20 @@ public class MagicProgressbar : UIEntity
     private void Start()
     {
         Init();
+        this.gameObject.SetActive(false);
+    }
+
+    public void ResetData()
+    {
+        progressbar.ResetData();
     }
 
     public override void Init()
     {
         base.Init();
         progressbar.Init();
+        progressbar.SetStartCB(()=>progressbar.SetBarColor(Color.red));
+        progressbar.SetOverCB(() => progressbar.SetBarColor(Color.yellow));
     }
 
     public void SetTitle(string title)
@@ -31,9 +45,12 @@ public class MagicProgressbar : UIEntity
         text.text = title;
     }
 
-    public void StartProgressBar(float time, Action overCB)
+    public void StartProgressBar(float time, Action overCB = null)
     {
-        progressbar.SetOverCB(overCB);
+        if (overCB.IsNotNull())
+        {
+            progressbar.SetOverCB(overCB);
+        }
         progressbar.SetIncreaseByTime(time);
     }
 }

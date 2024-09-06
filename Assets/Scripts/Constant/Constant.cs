@@ -87,6 +87,7 @@ namespace Constant
     // Tag
     public static class TagConstant
     {
+        public static string Unit     = "Unit";
         public static string Playable = "Playable";
         public static string Player   = "Player";
         public static string Obstacal = "Obstacal";
@@ -97,7 +98,7 @@ namespace Constant
     // 层级
     public static class Layer
     {
-        public static int Enemy  = 6;
+        public static int Creature  = 6;
         public static int Player = 7;
         public static int Ground = 8;
     }
@@ -136,7 +137,7 @@ namespace Constant
         // 主角渲染层级
         public static int PlayerSortingOrder = 20;
         // 怪物渲染层级
-        public static int EnemySortingOrder = 20;
+        public static int CreatureSortingOrder = 20;
     }
 
     // 相机相关
@@ -149,7 +150,7 @@ namespace Constant
     }
 
     // 怪物初始化
-    public static class EnemyConstant
+    public static class CreatureConstant
     {
         // 怪物游荡范围
         public static float DefaultHoldRange = 8f;

@@ -7,12 +7,14 @@ public class QProgressbar : UIEntity
 {
     Image bgImage;
     Image barImage;
+    Action startCB;
     Action overCB;
     bool increaseByTime = false;
     float wholeTime;
     float passTime;
 
     public bool stop = true;
+    public bool chargeOver = false;
 
     private void Awake()
     {
@@ -34,12 +36,15 @@ public class QProgressbar : UIEntity
     public void ResetData()
     {
         stop = false;
+        chargeOver = false;
         SetBarProgress(0f);
     }
 
     public void SetIncreaseByTime(float wholeTime)
     {
         ResetData();
+        if (startCB.IsNotNull()) startCB.Invoke();
+
         this.wholeTime = wholeTime;
         this.passTime = 0f;
         increaseByTime = true;
@@ -95,21 +100,26 @@ public class QProgressbar : UIEntity
         barImage.fillAmount = value;
         if(value > 0.999999f)
         {
-            over();
+            Over();
         }
     }
 
-    public void over()
+    public void Over()
     {
         if (overCB.IsNotNull())
         {
             overCB.Invoke();
         }
         stop = true;
+        chargeOver = true;
     }
 
     public void SetOverCB(Action cb)
     {
         overCB = cb;
+    }
+    public void SetStartCB(Action cb)
+    {
+        startCB = cb;
     }
 }

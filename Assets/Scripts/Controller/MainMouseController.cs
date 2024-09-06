@@ -1,25 +1,29 @@
 ﻿using System;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 class MainMouseController : Singleton<MainMouseController>, ITickable
 {
     Action mouseLeftButtonClick;
-    Action<RaycastHit[]> mouseLeftRayHit;
+    Action mouseLeftButtonDown;
+    Action mouseLeftButtonUp;
     Dictionary<RectTransform, Action> mouseNextClickCB;
+    public bool mouseShow = false;
 
     public void Init()
     {
         mouseNextClickCB = new Dictionary<RectTransform, Action>();
         TickHelper.Instance.Add(this);
-        Ctrl.UseMouse();
+        SetCursorLockstate(CursorLockMode.Locked);
     }
 
     // 设置鼠标可见
     public void SetCursorVisible(bool state)
     {
         Cursor.visible = state;
-}
+        mouseShow = state;
+    }
 
     // 设置鼠标模式
     // None, Locked: 鼠标锁定在屏幕中央，动不了, Confined: 鼠标限制在窗口内，仅限Linux和Windows
@@ -31,6 +35,8 @@ class MainMouseController : Singleton<MainMouseController>, ITickable
     public void Update()
     {
         MouseClickTick();
+        MouseDownTick();
+        MouseUpTick();
         MouseNextClick();
     }
 
@@ -108,7 +114,6 @@ class MainMouseController : Singleton<MainMouseController>, ITickable
             && mousePosition.y < rect.offsetMax.y;
     }
 
-    Ray ray;
     private void MouseClickTick()
     {
         if (Input.GetMouseButton(0))
@@ -117,29 +122,61 @@ class MainMouseController : Singleton<MainMouseController>, ITickable
             {
                 mouseLeftButtonClick.Invoke();
             }
-            ray = Main.MainCamera.ScreenPointToRay(new Vector3(Screen.width / 2, Screen.height / 2, 0));
-            MouseRayHit(ray);
         }
     }
 
-    public void MouseRayHit(Ray ray)
+    private void MouseDownTick()
     {
-        if (mouseLeftRayHit != null)
+        if (Input.GetMouseButtonDown(0))
         {
-            RaycastHit[] infos = Physics.RaycastAll(ray.origin, ray.direction);
-            mouseLeftRayHit.Invoke(infos);
+            if (mouseLeftButtonDown.IsNotNull())
+            {
+                mouseLeftButtonDown.Invoke();
+            }
         }
+    }
+
+    private void MouseUpTick()
+    {
+        if(Input.GetMouseButtonUp(0))
+        {
+            if (mouseLeftButtonUp.IsNotNull())
+            {
+                mouseLeftButtonUp.Invoke();
+            }
+        }
+    }
+
+    public RaycastHit[] GetMouseRayHit()
+    {
+        return RayHitOnScreen(Input.mousePosition.x, Input.mousePosition.y);
+    }
+
+    public RaycastHit[] GetCenterScreenRayHit()
+    {
+        return RayHitOnScreen(Screen.width / 2, Screen.height / 2);
+    }
+
+    Ray ray;
+    RaycastHit[] RayHitOnScreen(float x, float y)
+    {
+        ray = Main.MainCamera.ScreenPointToRay(new Vector3(x, y, 0));
+        return Physics.RaycastAll(ray.origin, ray.direction);
+    }
+
+    public void AddMouseLeftUp(Action action)
+    {
+        mouseLeftButtonUp = action;
+    }
+
+    public void AddMouseLeftDown(Action action)
+    {
+        mouseLeftButtonDown = action;
     }
 
     public void AddMouseLeftClick(Action action)
     {
         mouseLeftButtonClick = action;
-    }
-
-
-    public void AddMouseLeftRayHit(Action<RaycastHit[]> action)
-    {
-        mouseLeftRayHit += action;
     }
 }
 

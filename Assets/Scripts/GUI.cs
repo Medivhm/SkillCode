@@ -26,7 +26,10 @@ public class GUI : MonoBehaviour
 
     public static void ActionInfoLog(string msg)
     {
-
+        if (Main.ActionInfoUI.IsNotNull())
+        {
+            Main.ActionInfoUI.CreateInfo(msg);
+        }
     }
 
     public static ItemTipsUI CreateItemTips(Transform parent, Vector3 pos, Item item)

@@ -65,8 +65,12 @@ public class PlayerController : PlayerEntity
     void Start()
     {
         Main.MainPlayerCtrl = this;
+        camp = Camp.Camp0;
         gameObject.name = string.Format("[{0}]", 0);
-        hud = Ctrl.AddHUD(this.transform, string.Format("[{0}] {1}", 1, "测试玩家"), 100f, 50f);
+        //hud = Ctrl.AddHUD(this.transform, string.Format("[{0}] {1}", 1, "测试玩家"), 100f, 50f);
+        InitPropers();
+        InitHUD();
+        DetectInit();
         EventInit();
         KeyboardPressInit();
         SkillInit();
@@ -88,6 +92,22 @@ public class PlayerController : PlayerEntity
             skillFsm.Update(Time.deltaTime);
         }
     }
+
+    void DetectInit()
+    #region
+    {
+        detect = new DetectHelper();
+        detect.Init(this, 25, "Unit");
+        detect.AddTargetEnterEvent((GameObject go) =>
+        {
+            GUI.ActionInfoLog(string.Format("[{0}] 进入检测范围", go.name));
+        }); 
+        detect.AddTargetLeaveEvent((GameObject go) =>
+        {
+            GUI.ActionInfoLog(string.Format("[{0}] 离开", go.name));
+        });
+    }
+    #endregion
 
     void KeyboardPressInit()             // 快捷键初始化
     #region
@@ -123,20 +143,37 @@ public class PlayerController : PlayerEntity
     #region
     {
         // RaycastHit[]
-        MainMouseController.Instance.AddMouseLeftRayHit((infos) =>
+        MainMouseController.Instance.AddMouseLeftDown(() =>
         {
-            Vector3 shootDir = Main.MainCamera.transform.forward;
-            foreach (var info in infos)
+            if (spelling) return;
+            if (UIManager.HasUI()) return;
+
+            spelling = true;
+            Main.MagicProgressbar.Show();
+            Main.MagicProgressbar.StartProgressBar(0.5f);
+        });
+
+
+        MainMouseController.Instance.AddMouseLeftUp(() =>
+        {
+            spelling = false;
+            if (Main.MagicProgressbar.ChargeOver)
             {
-                if (info.collider.gameObject.Equals(this.gameObject))
-                    continue;
+                Vector3 shootDir = Main.MainCamera.transform.forward;
+                var infos = MainMouseController.Instance.GetCenterScreenRayHit();
+                for (int i = infos.Length - 1; i >= 0; i--)
+                {
+                    if (infos[i].collider.gameObject.Equals(this.gameObject))
+                        continue;
 
-                //info.point;
-                shootDir = info.point - magicShootPoint.position;
-                break;
+                    //info.point;
+                    shootDir = infos[i].point - magicShootPoint.position;
+                    break;
+                }
+                UseMagic(magicShootPoint.position, shootDir);
             }
-
-            UseMagic(magicShootPoint.position, shootDir);
+            Main.MagicProgressbar.Hide();
+            Main.MagicProgressbar.ResetData();
         });
     }
     #endregion
@@ -147,51 +184,50 @@ public class PlayerController : PlayerEntity
     Magic.Magic magic3;
     void Test()
     {
-        magic1 = Magic.Magic.GetAMagic();
+        magic1 = Magic.Magic.GetAMagic(this);
         magic1.SetCarrier(1, 1);  // cube
         magic1.SetMagicSkill(1);  // 变大
         magic1.SetMagicSkill(1);  // 变大
+        magic1.SetMagicSkill(2);  // 变强
+        magic1.SetMagicSkill(7);  // 定点
+        magic1.SetMagicSkill(2);  // 变强
+        magic1.SetMagicSkill(2);  // 变强
+        magic1.SetMagicSkill(2);  // 变强
 
 
-        magic2 = Magic.Magic.GetAMagic();
+        magic2 = Magic.Magic.GetAMagic(this);
         magic2.SetCarrier(2, 1);  // sphere
         magic2.SetMagicSkill(3);  // 变快
         magic2.SetMagicSkill(3);  // 变快
         magic2.SetMagicSkill(3);  // 变快
         magic2.SetMagicSkill(3);  // 变快
+        magic2.SetMagicSkill(2);  // 变强
+        magic2.SetMagicSkill(2);  // 变强
+        magic2.SetMagicSkill(2);  // 变强
+        magic2.SetMagicSkill(2);  // 变强
 
-        magic3 = Magic.Magic.GetAMagic();
+        magic3 = Magic.Magic.GetAMagic(this);
         magic3.SetCarrier(1, 1);  // cube
         magic3.SetMagicSkill(4);  // 2分裂
         magic3.SetMagicSkill(5);  // 3分裂
+        magic3.SetMagicSkill(6);  // 追踪
     }
 
     bool spelling = false;
     void UseMagic(Vector3 startPos, Vector3 shootDir)
     {
-        if (spelling) return;
-
-        spelling = true;
-        SetControl(false);
-        Main.MagicProgressbar.Show();
-        Main.MagicProgressbar.StartProgressBar(0.5f, () =>
+        switch (Util.GetRandom(1, 3))
         {
-            Main.MagicProgressbar.Hide();
-            spelling = false;
-            SetControl(true);
-            switch (Util.GetRandom(1, 3))
-            {
-                case 1:
-                    magic1.Use(startPos, shootDir);
-                    break;
-                case 2:
-                    magic2.Use(startPos, shootDir);
-                    break;
-                case 3:
-                    magic3.Use(startPos, shootDir);
-                    break;
-            }
-        });
+            case 1:
+                magic1.Use(startPos, shootDir);
+                break;
+            case 2:
+                magic2.Use(startPos, shootDir);
+                break;
+            case 3:
+                magic3.Use(startPos, shootDir);
+                break;
+        }
     }
 
     IEnumerator ResetPosition()

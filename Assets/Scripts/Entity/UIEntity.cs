@@ -33,8 +33,6 @@ namespace QEntity
         public virtual void ResetTransform()
         {
             ResetScale();
-            //ResetAnchoredPosition();
-            //ResetSizeDelta();
         }
 
         public virtual void ResetScale()
@@ -42,28 +40,42 @@ namespace QEntity
             rectTrans.localScale = Vector2.one;
         }
 
-        //public virtual void ResetAnchoredPosition()
-        //{
-        //    rectTrans.anchoredPosition = Vector2.zero;
-        //}
+        public virtual void ResetAnchoredPosition()
+        {
+            rectTrans.anchoredPosition = Vector2.zero;
+        }
 
-        //public virtual void ResetSizeDelta()
-        //{
-        //    rectTrans.sizeDelta = Vector2.zero;
-        //}
+        public virtual void ResetSizeDelta()
+        {
+            rectTrans.sizeDelta = Vector2.zero;
+        }
 
         public virtual void Show()
         {
             this.gameObject.SetActive(true);
             IsShow = true;
-            UIManager.UIPush(this);
+            //UIManager.UIPush(this);
+            //Ctrl.UseMouse();
         }
 
         public virtual void Hide()
         {
             this.gameObject.SetActive(false);
             IsShow = false;
-            UIManager.UIPop();
+            //UIManager.UIPop();
+            //Ctrl.UnUseMouse();
+        }
+
+        public void PureShow()
+        {
+            this.gameObject.SetActive(true);
+            IsShow = true;
+        }
+
+        public void PureHide()
+        {
+            this.gameObject.SetActive(false);
+            IsShow = false;
         }
 
         public virtual void Destroy()

@@ -6,9 +6,9 @@ namespace QEntity
 {
     public enum Camp
     {
-        Player,
-        Enemy,
-        Mid,
+        Camp0,
+        Camp1,
+        Camp2,
     }
 
     public class UnitEntity : MonoBehaviour
@@ -26,14 +26,17 @@ namespace QEntity
         public Action BloodChange;
         public Action<float, char> GetHurtAction;
         public bool banControl = false;
+        public Camp camp;
         public Vector3 Dir => this.transform.forward;
+        //[HideInInspector]
+        public UnitEntity lastAttack;
 
         [SerializeField]
         protected Animator animator;
 
         protected HUDEntity hud;
         // 这个detect主要是对攻击对象的检测，如果有其他检测，在那个类里另加，不要用这个
-        //protected DetectHelper detect;
+        protected DetectHelper detect;
         private QuickTimer quickTimer;
 
 
@@ -121,13 +124,11 @@ namespace QEntity
         }
 
 
-
         public virtual void Awake()
         {
             quickTimer = new QuickTimer();
             quickTimer.Init();
         }
-
 
         public void SetControl(bool state)   // 设置是否由自主控制移动，区分技能移动
         #region
@@ -149,6 +150,11 @@ namespace QEntity
             {
                 GetHurtAction.Invoke(damage, '-');
             }
+        }
+
+        public UnitEntity GetClosestOtherCamp()
+        {
+            return detect.GetClosestOtherCamp();
         }
 
         public void PlayAnim(string animName, Action callback = null)

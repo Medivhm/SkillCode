@@ -10,7 +10,7 @@ namespace Magic
     {
         public override void DoChange(Magic magic)
         {
-            magic.traceEnemy = true;
+            magic.traceCreature = true;
         }
     }
 }

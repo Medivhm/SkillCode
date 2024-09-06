@@ -13,7 +13,7 @@ public class ActionInfoUI : UIEntity
     private Transform ScrollView;
     private List<ActionInfoCell> scripts;
 
-    public override void Init()
+    public void Start()
     {
         base.Init();
         Main.ActionInfoUI = this;
@@ -21,6 +21,11 @@ public class ActionInfoUI : UIEntity
         ScrollView = transform.Find("Mask");
         scripts = new List<ActionInfoCell>();
         waitDestroy = new List<ActionInfoCell>();
+    }
+
+    private void OnDestroy()
+    {
+        Main.ActionInfoUI = null;
     }
 
     public void CreateInfo(string info)

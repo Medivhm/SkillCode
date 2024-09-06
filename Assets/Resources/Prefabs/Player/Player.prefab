@@ -556,7 +556,7 @@ GameObject:
   - component: {fileID: 1682370243202264099}
   m_Layer: 3
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Unit
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -592,6 +592,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isDead: 0
   banControl: 0
+  camp: 0
+  lastAttack: {fileID: 0}
   animator: {fileID: 4748420047135236416}
   checkGround: {fileID: 1528843074015461951}
   characterController: {fileID: 1682370243202264099}

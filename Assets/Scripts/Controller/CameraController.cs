@@ -39,6 +39,7 @@ public class CameraController : MonoBehaviour
         Main.MainCamera = this.GetComponent<Camera>();
         style = new GUIStyle();
         style.normal.background = Texture2D.whiteTexture;
+        Ctrl.UnUseMouse();
     }
 
     private void OnDestroy()
@@ -57,7 +58,7 @@ public class CameraController : MonoBehaviour
         MoveTick();
     }
 
-    bool mouseRotate = false;
+    bool mouseRotate = true;
     float changeEuler;
     float mouseX;
     float mouseY;
@@ -124,14 +125,17 @@ public class CameraController : MonoBehaviour
     private Texture2D texture2D;
     private void OnGUI()
     {
-        UnityEngine.GUI.color = Color.white;
-        //  左准星
-        UnityEngine.GUI.Box(new Rect(Screen.width / 2 - lineOffset - lineHeight, Screen.height / 2 - lineWidth / 2, lineHeight, lineWidth), tex, style);
-        //  右准星
-        UnityEngine.GUI.Box(new Rect(Screen.width / 2 + lineOffset, Screen.height / 2 - lineWidth / 2, lineHeight, lineWidth), tex, style);
-        //  上准星
-        UnityEngine.GUI.Box(new Rect(Screen.width / 2 - lineWidth / 2, Screen.height / 2 + lineOffset, lineWidth, lineHeight), tex, style);
-        //  下准星
-        UnityEngine.GUI.Box(new Rect(Screen.width / 2 - lineWidth / 2, Screen.height / 2 - lineOffset - lineHeight, lineWidth, lineHeight), tex, style);
+        if(!MainMouseController.Instance.mouseShow)
+        {
+            UnityEngine.GUI.color = Color.white;
+            //  左准星
+            UnityEngine.GUI.Box(new Rect(Screen.width / 2 - lineOffset - lineHeight, Screen.height / 2 - lineWidth / 2, lineHeight, lineWidth), tex, style);
+            //  右准星
+            UnityEngine.GUI.Box(new Rect(Screen.width / 2 + lineOffset, Screen.height / 2 - lineWidth / 2, lineHeight, lineWidth), tex, style);
+            //  上准星
+            UnityEngine.GUI.Box(new Rect(Screen.width / 2 - lineWidth / 2, Screen.height / 2 + lineOffset, lineWidth, lineHeight), tex, style);
+            //  下准星
+            UnityEngine.GUI.Box(new Rect(Screen.width / 2 - lineWidth / 2, Screen.height / 2 - lineOffset - lineHeight, lineWidth, lineHeight), tex, style);
+        }
     }
 }

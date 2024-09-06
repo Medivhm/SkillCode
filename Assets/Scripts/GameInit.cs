@@ -27,12 +27,26 @@ public class GameInit : MonoBehaviour
 
     IEnumerator Test()
     {
+        Ctrl.SetQuickKey(KeyCode.H, () =>
+        {
+            if (HUDManager.SelfShow)
+            {
+                HUDManager.HideHUD();
+            }
+            else
+            {
+                HUDManager.ShowHUD();
+            }
+        });
+
+        Main.MainCanvas = GameObject.Find("MainCanvas").GetComponent<Canvas>();
         yield return new WaitForSeconds(0.5f);
         GameObject player = GameObject.Instantiate(LoadTool.LoadPrefab("Player/Player"));
         player.transform.position = new Vector3(0, 10, 0);
 
 
-        //GameObject creature = GameObject.Instantiate(LoadTool.LoadPrefab("Creature/Goblin"));
+        GameObject creature = GameObject.Instantiate(LoadTool.LoadPrefab("Creature/Goblin"));
+        creature.transform.position = new Vector3(10, 10, 10);
     }
 
     void InitMonoManager(GameObject GameInit)
@@ -56,7 +70,7 @@ public class GameInit : MonoBehaviour
         AudioManager.Instance.Init();
         CarrierManager.Instance.Init();
         FxManager.Instance.Init();
-        //EnemyManager.Instance.Init();
+        //CreatureManager.Instance.Init();
         FunctionManager.Instance.Init();
         GameSaveManager.Instance.Init();
         ItemManager.Instance.Init();

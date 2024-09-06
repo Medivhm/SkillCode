@@ -2,7 +2,7 @@
 
 namespace Info
 {
-    public class EnemyInfo
+    public class CreatureInfo
     {
         public int    ID;
         public string name;

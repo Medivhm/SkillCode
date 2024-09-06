@@ -22,6 +22,8 @@ namespace Manager
                 { 3, new BeFast()  },
                 { 4, new BeTwo()   },
                 { 5, new BeThree() },
+                { 6, new BeTrace() },
+                { 7, new BeLock()  },
             };
         }
 

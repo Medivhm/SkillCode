@@ -1,10 +1,33 @@
 ﻿using Manager;
 using System.Collections.Generic;
+using Tools;
 using UnityEngine;
 using UnityEngine.UI;
 
 public static class UtilExtensions
 {
+    public static bool IsMe(this GameObject go, GameObject otherGo)
+    {
+        return go.GetInstanceID().Equals(otherGo.GetInstanceID());
+    }
+
+    public static bool IsNotMe(this GameObject go, GameObject otherGo)
+    {
+        return !IsMe(go, otherGo);
+    }
+
+    static SphereCollider collider;
+    public static SphereCollider AddSphereCollider(this Transform trans, float radius, string name = "SphereCollider")
+    {
+        Transform colliderTrans = GameObject.Instantiate(LoadTool.LoadPrefab("SphereCollider")).transform;
+        colliderTrans.name = name;
+        colliderTrans.SetParent(trans);
+        colliderTrans.localPosition = Vector3.zero;
+        collider = colliderTrans.GetComponent<SphereCollider>();
+        collider.radius = radius;
+        return collider;
+    }
+
     public static void SetMagicSkill(this Magic.Magic magic, int magicSkillID)
     {
         magic.SetMagicSkill(magic, magicSkillID);

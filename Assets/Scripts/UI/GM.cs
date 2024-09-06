@@ -117,8 +117,7 @@ public class GM : UIEntity
 
     public void HideOrShowHUD()
     {
-        bool show = HUDManager.SelfShow();
-        if(show)
+        if(HUDManager.SelfShow)
         {
             HUDManager.HideHUD();
         }

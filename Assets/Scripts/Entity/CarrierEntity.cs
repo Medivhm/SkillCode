@@ -1,4 +1,5 @@
-﻿using Info;
+﻿using Constant;
+using Info;
 using Manager;
 using System;
 using System.Collections.Generic;
@@ -85,7 +86,7 @@ namespace QEntity
 
             // 一个敌人上会有三个碰撞体，加上地面，也就是说一个子弹命中，这个方法会进4次
             // 如果同时命中多个，就会有3n + 1 次，这里以后看看需不需要优化
-            if (collision.gameObject.layer == Constant.Layer.Enemy)
+            if (Owner.gameObject.IsNotMe(collision.gameObject) && collision.gameObject.CompareTag(TagConstant.Unit))
             {
                 collision.gameObject.GetComponent<UnitEntity>().GetHurt(power);
                 Destroy();

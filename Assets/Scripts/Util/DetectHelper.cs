@@ -1,80 +1,122 @@
-//using Entity;
-//using System;
-//using System.Collections.Generic;
-//using UnityEngine;
+using QEntity;
+using System;
+using System.Collections.Generic;
+using UnityEngine;
 
-//public class DetectHelper
-//{
-//    List<UnitEntity> units;
-//    public Action<GameObject> OnAddTarget;
-//    public Action<GameObject> OnDelTarget;
-//    public Action<GameObject> OnClearTarget;
+public class DetectHelper
+{
+    UnitEntity self;
+    List<UnitEntity> units;
+    public Action<GameObject> OnAddTarget;
+    public Action<GameObject> OnDelTarget;
+    public Action<GameObject> OnClearTarget;
 
-//    public void Init(UnitEntity entity, float detectRadius, string detectTag)
-//    {
-//        units = new List<UnitEntity>();
-//        InitTrigger(entity, detectRadius, detectTag);
-//    }
+    public void Init(UnitEntity entity, float detectRadius, string detectTag)
+    {
+        self = entity;
+        units = new List<UnitEntity>();
+        InitTrigger(entity, detectRadius, detectTag);
+    }
 
-//    public UnitEntity GetTarget()
-//    {
-//        if(units.Count > 0)
-//        {
-//            return units[0];
-//        }
-//        return null;
-//    }
+    public UnitEntity GetClosest()
+    {
+        if(units.Count > 0)
+        {
+            float[] dists = new float[units.Count];
+            for(int i = 0; i < dists.Length; i++)
+            {
+                dists[i] = Vector3.Distance(self.Position, units[i].Position);
+            }
+            return units[Util.QuickSort(dists)[0]];
+        }
+        return null;
+    }
 
-//    public void Destroy()
-//    {
-//        units.Clear();
-//    }
+    public UnitEntity GetClosestOtherCamp()
+    {
+        if (units.Count > 0)
+        {
+            float[] dists = new float[units.Count];
+            for (int i = 0; i < dists.Length; i++)
+            {
+                dists[i] = Vector3.Distance(self.Position, units[i].Position);
+            }
+            for (int i = 0; i < dists.Length; i++)
+            {
+                if (!self.camp.Equals(units[Util.QuickSort(dists)[i]].camp))
+                {
+                    return units[Util.QuickSort(dists)[i]];
+                }
+            }
+        }
+        return null;
+    }
 
-//    private void InitTrigger(UnitEntity entity, float detectRadius, string detectTag)
-//    {
-//        Collider detectCollider = entity.transform.AddSphereCollider(detectRadius, "Detect");
-//        TriggerListener listener = TriggerListener.Get(detectCollider.gameObject);
-//        listener.onTriggerEnter.AddListener((GameObject other) =>
-//        {
-//            if (other.tag == detectTag)
-//            {
-//                Add(other.GetComponent<UnitEntity>());
-//                if (OnAddTarget.IsNotNull())
-//                {
-//                    OnAddTarget.Invoke(other);
-//                }
-//            }
-//        });
-//        listener.onTriggerExit.AddListener((GameObject other) =>
-//        {
-//            if (other.tag == detectTag)
-//            {
-//                Remove(other.GetComponent<UnitEntity>());
-//                if (OnDelTarget.IsNotNull())
-//                {
-//                    OnDelTarget.Invoke(other);
-//                }
-//                if (units.Count == 0)
-//                {
-//                    if (OnClearTarget.IsNotNull())
-//                    {
-//                        OnClearTarget.Invoke(other);
-//                    }
-//                }
-//            }
-//        });
-//    }
+    public void Destroy()
+    {
+        units.Clear();
+    }
 
-//    private void Add(UnitEntity unit)
-//    {
-//        if (!units.Contains(unit))
-//        {
-//            units.Add(unit);
-//        }
-//    }
+    private void InitTrigger(UnitEntity entity, float detectRadius, string detectTag)
+    {
+        Collider detectCollider = entity.transform.AddSphereCollider(detectRadius, "Detect");
+        TriggerListener listener = TriggerListener.Get(detectCollider.gameObject);
+        listener.onTriggerEnter.AddListener((GameObject other) =>
+        {
+            if (self.gameObject.IsNotMe(other) && other.tag == detectTag)
+            {
+                Add(other.GetComponent<UnitEntity>());
+                if (OnAddTarget.IsNotNull())
+                {
+                    OnAddTarget.Invoke(other);
+                }
+            }
+        });
+        listener.onTriggerExit.AddListener((GameObject other) =>
+        {
+            if (self.gameObject.IsNotMe(other) && other.tag == detectTag)
+            {
+                Remove(other.GetComponent<UnitEntity>());
+                if (OnDelTarget.IsNotNull())
+                {
+                    OnDelTarget.Invoke(other);
+                }
+                if (units.Count == 0)
+                {
+                    if (OnClearTarget.IsNotNull())
+                    {
+                        OnClearTarget.Invoke(other);
+                    }
+                }
+            }
+        });
+    }
 
-//    private void Remove(UnitEntity unit)
-//    {
-//        units.Remove(unit);
-//    }
-//}
+    public void AddTargetEnterEvent(Action<GameObject> action)
+    {
+        OnAddTarget += action;
+    }
+
+    public void AddTargetLeaveEvent(Action<GameObject> action)
+    {
+        OnDelTarget += action;
+    }
+
+    public void AddLastTargetLeaveEvent(Action<GameObject> action)
+    {
+        OnClearTarget += action;
+    }
+
+    private void Add(UnitEntity unit)
+    {
+        if (!units.Contains(unit))
+        {
+            units.Add(unit);
+        }
+    }
+
+    private void Remove(UnitEntity unit)
+    {
+        units.Remove(unit);
+    }
+}

@@ -1,4 +1,5 @@
-﻿using QEntity;
+﻿using Constant;
+using QEntity;
 using System.Collections.Generic;
 using Tools;
 using UnityEngine;
@@ -11,11 +12,32 @@ namespace Manager
     {
         static Stack<UIEntity> UIStack;
         static Dictionary<string, UIEntity> UIs;
+        public static bool HasUI()
+        {
+            return UIStack.Count > 0;
+        }
+
 
         public void Init()
         {
             UIStack = new Stack<UIEntity>();
             UIs = new Dictionary<string, UIEntity>();
+            InitEscPress();
+        }
+
+        void InitEscPress()
+        {
+            Ctrl.SetQuickKey(KeyCode.Escape, () =>
+            {
+                if(UIStack.Count == 0)
+                {
+                    Show(UIConstant.SettingUI);
+                }
+                else
+                {
+                    HideTop();
+                }
+            });
         }
 
         public static void UIPush(UIEntity ui)
@@ -79,7 +101,9 @@ namespace Manager
                 UIs.Add(uiName, ui);
             }
             ui.RefreshUI();
-            ui.Show();
+            ui.PureShow();
+            UIPush(ui);
+            IfStackJustOneUseMouse();
             return ui;
         }
 
@@ -91,15 +115,33 @@ namespace Manager
             }
 
             UIEntity ui = UIPop();
-            ui.Hide();
+            IfStackEmptyUnUseMouse();
+            ui.PureHide();
         }
 
         public static void Hide(string uiName)
         {
             if (!HasUI(uiName)) return;
 
-            UIs[uiName].Hide();
+            UIs[uiName].PureHide();
+            IfStackEmptyUnUseMouse();
             UIPop();
+        }
+
+        static void IfStackEmptyUnUseMouse()
+        {
+            if(UIStack.Count == 0)
+            {
+                Ctrl.UnUseMouse();
+            }
+        }
+
+        static void IfStackJustOneUseMouse()
+        {
+            if (UIStack.Count == 1)
+            {
+                Ctrl.UseMouse();
+            }
         }
 
         public static bool HasUI(string uiName)

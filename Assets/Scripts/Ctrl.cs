@@ -8,16 +8,16 @@ public class Ctrl : Singleton<Ctrl>
 {
     public static void UseMouse()
     {
-        SetMouseVisible(false);
-        SetMouseLockstate(CursorLockMode.Locked);
-        SetMouseRotate(true);
+        SetMouseRotate(false);
+        SetMouseLockstate(CursorLockMode.None);
+        SetMouseVisible(true);
     }
 
     public static void UnUseMouse()
     {
-        SetMouseVisible(true);
-        SetMouseLockstate(CursorLockMode.Confined);
-        SetMouseRotate(false);
+        SetMouseRotate(true);
+        SetMouseLockstate(CursorLockMode.Locked);
+        SetMouseVisible(false);
     }
 
     public static void SetMouseRotate(bool state)

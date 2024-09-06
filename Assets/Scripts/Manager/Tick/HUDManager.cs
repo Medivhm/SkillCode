@@ -10,6 +10,7 @@ public class HUDManager : Singleton<HUDManager>, ITickable
     static List<HUDEntity> HUDs;
     static Transform HUDParent;
     static bool IsShow;
+    public static bool SelfShow => IsShow;
 
     static bool IsClearing = false;
 
@@ -19,11 +20,6 @@ public class HUDManager : Singleton<HUDManager>, ITickable
         HUDs = new List<HUDEntity>();
         IsShow = true;
         InitHUDCanvas();
-    }
-
-    public static bool SelfShow()
-    {
-        return IsShow;
     }
 
     public static void HideHUD()

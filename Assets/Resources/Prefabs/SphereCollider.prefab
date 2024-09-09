@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 3466920039935020702}
   m_Layer: 0
   m_Name: SphereCollider
-  m_TagString: Untagged
+  m_TagString: Detect
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

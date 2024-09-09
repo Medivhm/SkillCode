@@ -1352,6 +1352,10 @@ MonoBehaviour:
   camp: 0
   lastAttack: {fileID: 0}
   animator: {fileID: 8692681519510132941}
+  characterController: {fileID: 367472813353985975}
+  gravity: 78
+  checkGround: {fileID: 1428355813001163390}
+  jumpSpeed: 26
 --- !u!1 &8698085166151959954
 GameObject:
   m_ObjectHideFlags: 0

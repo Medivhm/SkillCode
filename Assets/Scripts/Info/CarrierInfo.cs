@@ -12,5 +12,9 @@ namespace Info
         public string name;
         public float speed;
         public string carrierPath;
+        public bool destroyWhenHurt;
+        public float hurtColdTime;
+        public float lifeTime;
+        public bool needRotate;
     }
 }

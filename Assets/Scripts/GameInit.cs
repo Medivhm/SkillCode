@@ -27,16 +27,14 @@ public class GameInit : MonoBehaviour
 
     IEnumerator Test()
     {
-        Ctrl.SetQuickKey(KeyCode.H, () =>
+        Ctrl.SetQuickKey(KeyCode.G, () =>
         {
-            if (HUDManager.SelfShow)
-            {
-                HUDManager.HideHUD();
-            }
-            else
-            {
-                HUDManager.ShowHUD();
-            }
+            Ctrl.GMActive();
+        });
+
+        Ctrl.SetQuickKey(KeyCode.B, () =>
+        {
+            Ctrl.OpenBag();
         });
 
         Main.MainCanvas = GameObject.Find("MainCanvas").GetComponent<Canvas>();
@@ -46,7 +44,7 @@ public class GameInit : MonoBehaviour
 
 
         GameObject creature = GameObject.Instantiate(LoadTool.LoadPrefab("Creature/Goblin"));
-        creature.transform.position = new Vector3(10, 10, 10);
+        creature.transform.position = new Vector3(10, 10, 4.6f);
     }
 
     void InitMonoManager(GameObject GameInit)

@@ -5,6 +5,8 @@ using System;
 using System.Collections.Generic;
 using Fsm;
 using System.Collections;
+using Magic;
+using Constant;
 
 public enum MoveType
 {
@@ -16,12 +18,10 @@ public enum MoveType
 public class PlayerController : PlayerEntity
 {
     public CheckGround checkGround;
-    public CharacterController characterController;
     public Transform magicShootPoint;
 
     public float speed = 10f;
     public float jumpSpeed = 26f;
-    public float gravity = 78f;
     public float moveDistanceTick = 10f;      // 移动多长距离做一次距离相关Tick
     public SkillFsm skillFsm;
 
@@ -41,16 +41,31 @@ public class PlayerController : PlayerEntity
             isMoving = value;
             if(isMoving == true)
             {
-                Play("Run", 0.01f);
+                PlayAnim("Run", 0.01f);
             }
             else
             {
-                Play("Idle", 0.01f);
+                PlayAnim("Idle", 0.01f);
             }
         }
     }
 
-    public bool IsGrounded
+    bool isJump = false;
+    public override bool IsJump
+    {
+        get
+        {
+            return isJump;
+        }
+        set
+        {
+            isJump = value;
+        }
+    }
+
+    public override float JumpSpeed => jumpSpeed;
+
+    public override bool IsGrounded
     {
         get
         {
@@ -114,22 +129,22 @@ public class PlayerController : PlayerEntity
     {
         Ctrl.SetQuickKey(KeyCode.Alpha1, () =>
         {
-            Play("Dance1", 0.1f);
+            PlayAnim("Dance1", 0.1f);
         });
         Ctrl.SetQuickKey(KeyCode.Alpha2, () =>
         {
-            Play("Dance2", 0.1f);
+            PlayAnim("Dance2", 0.1f);
         });
         Ctrl.SetQuickKey(KeyCode.Alpha3, () =>
         {
-            Play("Dance3", 0.1f);
+            PlayAnim("Dance3", 0.1f);
         });
         Ctrl.SetQuickKey(KeyCode.Space, () =>
         {
             if (IsGrounded)
             {
-                isJump = true;
-                down.y = jumpSpeed;
+                IsJump = true;
+                SetJumpSpeed();           // 设置跳跃速度
             }
         });
         Ctrl.SetQuickKey(KeyCode.R, () =>
@@ -161,16 +176,26 @@ public class PlayerController : PlayerEntity
             {
                 Vector3 shootDir = Main.MainCamera.transform.forward;
                 var infos = MainMouseController.Instance.GetCenterScreenRayHit();
+                Vector3? hitPoint = null;
+                float minDis = float.MaxValue;
                 for (int i = infos.Length - 1; i >= 0; i--)
                 {
-                    if (infos[i].collider.gameObject.Equals(this.gameObject))
+                    if (this.gameObject.IsMe(infos[i].collider.gameObject))
                         continue;
 
-                    //info.point;
-                    shootDir = infos[i].point - magicShootPoint.position;
-                    break;
+                    if (infos[i].collider.gameObject.CompareTag(TagConstant.Detect))
+                        continue;
+
+
+                    float nowDis = Vector3.Distance(infos[i].point, magicShootPoint.position);
+                    if (nowDis < minDis)
+                    {
+                        minDis = nowDis;
+                        hitPoint = infos[i].point;
+                        shootDir = infos[i].point - magicShootPoint.position;
+                    }
                 }
-                UseMagic(magicShootPoint.position, shootDir);
+                UseMagic(magicShootPoint.position, shootDir, hitPoint);
             }
             Main.MagicProgressbar.Hide();
             Main.MagicProgressbar.ResetData();
@@ -182,14 +207,15 @@ public class PlayerController : PlayerEntity
     Magic.Magic magic1;
     Magic.Magic magic2;
     Magic.Magic magic3;
+    Magic.Magic magic4;
     void Test()
     {
         magic1 = Magic.Magic.GetAMagic(this);
-        magic1.SetCarrier(1, 1);  // cube
-        magic1.SetMagicSkill(1);  // 变大
+        magic1.SetCarrier(3, 1);  // 圆柱
         magic1.SetMagicSkill(1);  // 变大
         magic1.SetMagicSkill(2);  // 变强
         magic1.SetMagicSkill(7);  // 定点
+        magic1.SetMagicSkill(8);  // 自动寻敌
         magic1.SetMagicSkill(2);  // 变强
         magic1.SetMagicSkill(2);  // 变强
         magic1.SetMagicSkill(2);  // 变强
@@ -206,26 +232,49 @@ public class PlayerController : PlayerEntity
         magic2.SetMagicSkill(2);  // 变强
         magic2.SetMagicSkill(2);  // 变强
 
+
         magic3 = Magic.Magic.GetAMagic(this);
         magic3.SetCarrier(1, 1);  // cube
         magic3.SetMagicSkill(4);  // 2分裂
         magic3.SetMagicSkill(5);  // 3分裂
-        magic3.SetMagicSkill(6);  // 追踪
+        
+
+        magic4 = Magic.Magic.GetAMagic(this);
+        magic4.SetCarrier(3, 1);  // 圆柱
+        magic4.SetMagicSkill(3);  // 变快
+        magic4.SetMagicSkill(3);  // 变快
+        magic4.SetMagicSkill(3);  // 变快
+        magic4.SetMagicSkill(2);  // 变强
+        magic4.SetMagicSkill(8);  // 自动寻敌
+        magic4.SetMagicSkill(9);  // 延时
+        magic4.SetMagicSkill(10); // 发射
     }
 
     bool spelling = false;
-    void UseMagic(Vector3 startPos, Vector3 shootDir)
+    int magicID = 1;
+    void UseMagic(Vector3 startPos, Vector3 shootDir, Vector3? hitPoint)
     {
-        switch (Util.GetRandom(1, 3))
+        magicID = (magicID + 1) % 2;
+        switch (magicID + 1)
         {
+            //case 1:
+            //    magic1.Use(startPos, shootDir, hitPoint);
+            //    break;
+            //case 2:
+            //    magic2.Use(startPos, shootDir, hitPoint);
+            //    break;
+            //case 3:
+            //    magic3.Use(startPos, shootDir, hitPoint);
+            //    break;
+            //case 4:
+            //    magic4.Use(startPos, shootDir, hitPoint);
+            //    break;
+
             case 1:
-                magic1.Use(startPos, shootDir);
+                magic1.Use(startPos, shootDir, hitPoint);
                 break;
             case 2:
-                magic2.Use(startPos, shootDir);
-                break;
-            case 3:
-                magic3.Use(startPos, shootDir);
+                magic4.Use(startPos, shootDir, hitPoint);
                 break;
         }
     }
@@ -247,14 +296,10 @@ public class PlayerController : PlayerEntity
             if(state == true)
             {
                 // 刷新垂直方向上的速度
-                down.y = -20;
-                isJump = false;
+                ResetDownSpeed();
+                IsJump = false;
             }
         });
-    }
-    public void ResetDown()
-    {
-        down.y = -20;
     }
     #endregion
 
@@ -282,8 +327,6 @@ public class PlayerController : PlayerEntity
     float vertical;
     bool move;
     Vector3 dir;
-    Vector3 down;
-    bool isJump = false;
     float moveCount = 0f;
     void MoveTick()
     #region
@@ -295,6 +338,7 @@ public class PlayerController : PlayerEntity
     }
     #endregion
 
+    // VerticalMove 在父类UnitEntity里
     void HorizontalMove()
     #region
     {
@@ -335,21 +379,6 @@ public class PlayerController : PlayerEntity
     }
     #endregion
 
-    void VerticalMove()
-    #region
-    {
-        // 模拟重力
-        if (isJump || !IsGrounded)
-        {
-            down.y -= gravity * Time.deltaTime;
-            characterController.Move(down * Time.deltaTime);
-        }
-        else
-        {
-            characterController.Move(down * Time.deltaTime);
-        }
-    }
-    #endregion
 
     float targetYEuler = 0f;
     float nowYEuler = 0f;
@@ -363,18 +392,6 @@ public class PlayerController : PlayerEntity
         }
         nowYEuler = Mathf.LerpAngle(this.transform.eulerAngles.y, targetYEuler, rotateCoeff * Time.deltaTime);
         this.transform.eulerAngles = new Vector3(0, nowYEuler, 0);
-    }
-    #endregion
-
-    void Play(string animName, float fadeTime)
-    #region
-    {
-        animator.CrossFade(animName, fadeTime);
-    }
-
-    void Play(string animName)
-    {
-        animator.Play(animName);
     }
     #endregion
 

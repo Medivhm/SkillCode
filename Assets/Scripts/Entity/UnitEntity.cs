@@ -11,8 +11,18 @@ namespace QEntity
         Camp2,
     }
 
+    public enum Profession
+    {
+        Wizard,           // 法师
+        Fighter,          // 近战
+        Shooter,          // 射手
+    }
+
     public class UnitEntity : MonoBehaviour
     {
+        public Camp camp;
+        public Profession profession;
+
         Vector3 center;
         float holdRange;
         [NonSerialized]
@@ -26,19 +36,37 @@ namespace QEntity
         public Action BloodChange;
         public Action<float, char> GetHurtAction;
         public bool banControl = false;
-        public Camp camp;
         public Vector3 Dir => this.transform.forward;
         //[HideInInspector]
         public UnitEntity lastAttack;
 
         [SerializeField]
         protected Animator animator;
+        public CharacterController characterController;
 
         protected HUDEntity hud;
         // 这个detect主要是对攻击对象的检测，如果有其他检测，在那个类里另加，不要用这个
         protected DetectHelper detect;
         private QuickTimer quickTimer;
 
+
+        public float gravity = 78f;
+
+        public virtual bool IsJump
+        {
+            get;
+            set;
+        }
+
+        public virtual bool IsGrounded
+        {
+            get;
+        }
+
+        public virtual float JumpSpeed
+        {
+            get;
+        }
 
         public float HoldRange
         {
@@ -130,6 +158,35 @@ namespace QEntity
             quickTimer.Init();
         }
 
+
+        Vector3 down;
+
+        protected void SetJumpSpeed()
+        {
+            down.y = JumpSpeed;
+        }
+
+        protected void ResetDownSpeed()
+        {
+            down.y = -20;
+        }
+
+        protected void VerticalMove()
+        #region
+        {
+            // 模拟重力
+            if (IsJump || !IsGrounded)
+            {
+                down.y -= gravity * Time.deltaTime;
+                characterController.Move(down * Time.deltaTime);
+            }
+            else
+            {
+                characterController.Move(down * Time.deltaTime);
+            }
+        }
+        #endregion
+
         public void SetControl(bool state)   // 设置是否由自主控制移动，区分技能移动
         #region
         {
@@ -157,8 +214,19 @@ namespace QEntity
             return detect.GetClosestOtherCamp();
         }
 
+        public void PlayAnim(string animName, float fadeTime, Action callback = null)
+        {
+            animator.CrossFade(animName, fadeTime);
+            if (callback != null)
+            {
+                float time = Util.GetAnimationClip(animator, animName).length;
+                TimerManager.Add(time, callback);
+            }
+        }
+
         public void PlayAnim(string animName, Action callback = null)
         {
+            animator.CrossFade(animName, 0f);
             if (callback != null)
             {
                 float time = Util.GetAnimationClip(animator, animName).length;

@@ -1,13 +1,18 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
 
 namespace Constant
 {
+    // Vector3
+    public static class Vector3Constant
+    {
+        public static Vector3 Point9999 = new Vector3(9999, 9999, 9999);
+    }
+
     // Terrain
     public static class TerrainConstant
     {
@@ -93,6 +98,7 @@ namespace Constant
         public static string Obstacal = "Obstacal";
         public static string Ground   = "Ground";
         public static string UI       = "UI";
+        public static string Detect   = "Detect";
     }
 
     // ²ã¼¶

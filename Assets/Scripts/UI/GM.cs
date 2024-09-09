@@ -12,6 +12,16 @@ public class GM : UIEntity
     public Text PING;
     InputField input;
 
+    private void Awake()
+    {
+        Main.GM = this;
+    }
+
+    private void OnDestroy()
+    {
+        Main.GM = null;
+    }
+
     public override void Init()
     {
         base.Init();
@@ -52,6 +62,17 @@ public class GM : UIEntity
                 }
             }
         });
+
+        StartCoroutine(CalcuFPS());
+    }
+
+    IEnumerator CalcuFPS()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(0.6f);
+            FPS.text = string.Format("fps:{0}", Mathf.CeilToInt(1 / Time.deltaTime));
+        }
     }
 
     bool HasShadow = true;

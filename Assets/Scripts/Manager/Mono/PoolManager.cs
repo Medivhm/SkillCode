@@ -26,7 +26,7 @@ namespace Manager
             poolTrans = new GameObject("Pool").transform;
             GameObject.DontDestroyOnLoad(poolTrans);
 
-            StartCoroutine(PreCreatePool());
+            //StartCoroutine(PreCreatePool());
         }
 
         IEnumerator PreCreatePool()

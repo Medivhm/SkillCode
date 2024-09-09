@@ -1,11 +1,29 @@
 ﻿using Manager;
+using QEntity;
+using System;
 using System.Collections.Generic;
 using Tools;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
 public static class UtilExtensions
 {
+    //    List<UnitEntity> GetEntitiesInSphereArea(this GameObejct go)
+    //    {
+
+    //    }
+
+    public static T GetOrAddComponent<T>(this GameObject go) where T : Component
+    {
+        T t = go.GetComponent<T>();
+        if (t.IsNull())
+        {
+            t = go.AddComponent<T>();
+        }
+        return t;
+    }
+
     public static bool IsMe(this GameObject go, GameObject otherGo)
     {
         return go.GetInstanceID().Equals(otherGo.GetInstanceID());
@@ -87,12 +105,12 @@ public static class UtilExtensions
 
     public static Vector3 GetRamdomPointRoundMin(this Vector3 center, float radius, float minRadius)
     {
-        return new Vector3(center.x + minRadius + 2 * radius * Random.value - radius, center.y, center.z + minRadius + 2 * radius * Random.value - radius);
+        return new Vector3(center.x + minRadius + 2 * radius * UnityEngine.Random.value - radius, center.y, center.z + minRadius + 2 * radius * UnityEngine.Random.value - radius);
     }
 
     public static Vector3 GetRamdomPointRound(this Vector3 center, float radius)
     {
-        return new Vector3(center.x + 2 * radius * Random.value - radius, center.y, center.z + 2 * radius * Random.value - radius);
+        return new Vector3(center.x + 2 * radius * UnityEngine.Random.value - radius, center.y, center.z + 2 * radius * UnityEngine.Random.value - radius);
     }
 
     static Vector3 vec9999 = new Vector3(9999, 9999, 9999);

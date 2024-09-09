@@ -18,7 +18,6 @@ namespace Manager
         public BagInfo                           BagInfos;
         public Dictionary<int, FxInfo>           FxInfos;
         public Dictionary<int, MagicSkillInfo>   MagicSkillInfos;
-        public Dictionary<int, HandSkillInfo>    HandSkillInfos;
         public Dictionary<int, CarrierInfo>      CarrierInfos;
 
 
@@ -122,16 +121,6 @@ namespace Manager
             for (int i = 0; i < magicSkillInfos.Count; i++)
             {
                 MagicSkillInfos.Add(magicSkillInfos[i].ID, magicSkillInfos[i]);
-            }
-            yield return null;
-
-            // HandSkill表导入
-            json = LoadTool.LoadJson("tb_handskill");
-            List<HandSkillInfo> handSkillInfos = JsonConvert.DeserializeObject<List<HandSkillInfo>>(json);
-            HandSkillInfos = new Dictionary<int, HandSkillInfo>();
-            for (int i = 0; i < handSkillInfos.Count; i++)
-            {
-                HandSkillInfos.Add(handSkillInfos[i].ID, handSkillInfos[i]);
             }
             yield return null;
 

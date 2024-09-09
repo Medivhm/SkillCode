@@ -1,44 +1,72 @@
 [
   {
     "ID": 1,
-    "name": "刀光1",
+    "name": "方块",
     "speed": 40,
-    "carrierPath": "Cube"
+    "carrierPath": "Cube",
+    "destroyWhenHurt": true,
+    "hurtColdTime": 0,
+    "lifeTime": 5,
+    "needRotate": true
   },
   {
     "ID": 2,
-    "name": "刀光2",
+    "name": "球",
     "speed": 40,
-    "carrierPath": "Sphere"
+    "carrierPath": "Sphere",
+    "destroyWhenHurt": true,
+    "hurtColdTime": 0,
+    "lifeTime": 5,
+    "needRotate": true
   },
   {
     "ID": 3,
-    "name": "刀光3",
-    "speed": 40,
-    "carrierPath": "Sphere"
+    "name": "龙卷风",
+    "speed": 8,
+    "carrierPath": "Capsule",
+    "destroyWhenHurt": false,
+    "hurtColdTime": 1,
+    "lifeTime": 3.2,
+    "needRotate": false
   },
   {
     "ID": 4,
     "name": "刀光4",
     "speed": 40,
-    "carrierPath": "Sphere"
+    "carrierPath": "Sphere",
+    "destroyWhenHurt": true,
+    "hurtColdTime": 0,
+    "lifeTime": 5,
+    "needRotate": true
   },
   {
     "ID": 5,
     "name": "刀光5",
     "speed": 40,
-    "carrierPath": "Sphere"
+    "carrierPath": "Sphere",
+    "destroyWhenHurt": true,
+    "hurtColdTime": 0,
+    "lifeTime": 5,
+    "needRotate": true
   },
   {
     "ID": 6,
     "name": "刀光6",
     "speed": 40,
-    "carrierPath": "Sphere"
+    "carrierPath": "Sphere",
+    "destroyWhenHurt": true,
+    "hurtColdTime": 0,
+    "lifeTime": 5,
+    "needRotate": true
   },
   {
     "ID": 7,
     "name": "刀光7",
     "speed": 40,
-    "carrierPath": "Sphere"
+    "carrierPath": "Sphere",
+    "destroyWhenHurt": true,
+    "hurtColdTime": 0,
+    "lifeTime": 5,
+    "needRotate": true
   }
 ]

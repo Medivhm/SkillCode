@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 6492288648323173502}
   - component: {fileID: 3392349031287057482}
-  - component: {fileID: 3860705235881566700}
   m_Layer: 0
   m_Name: Smear1
   m_TagString: Untagged
@@ -55,20 +54,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.3, y: 1, z: 1}
   m_Center: {x: 0, y: 0.7, z: 0}
---- !u!114 &3860705235881566700
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 202107674677018675}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a3a2396f7b16ff845868e91d902feac2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isDestroy: 0
-  isInit: 0
 --- !u!1 &6093488434385249506
 GameObject:
   m_ObjectHideFlags: 0
@@ -151,7 +136,7 @@ SpriteRenderer:
   m_Size: {x: 0.48, y: 0.48}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 1
 --- !u!95 &3070987252147503733

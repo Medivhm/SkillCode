@@ -30,9 +30,9 @@ namespace Magic
             SetMagicSkill(magic, MagicSkillManager.GetMagicSkillByID(magicSkillID));
         }
 
-        public void Use(Vector3 startPos, Vector3 shootDir)
+        public void Use(Vector3 startPos, Vector3 shootDir, Vector3? hitPoint)
         {
-            Shoot(startPos, shootDir);
+            Shoot(startPos, shootDir, hitPoint);
         }
     }
 
@@ -42,10 +42,13 @@ namespace Magic
         public float power;
         public float scale;
         public float speedMult;
+        public float liveTimeMult;
         public int carrierID;
         public int fxID;
         public bool traceCreature;
         public bool lockAtFirst;
+        public bool autoSearch;
+        public bool shootAtFirst;
 
         private Magic(UnitEntity owner)
         {
@@ -59,18 +62,20 @@ namespace Magic
             power = 1f;
             scale = 1f;
             speedMult = 1f;
+            liveTimeMult = 1f;
             carrierID = -1;
             fxID = -1;
-            traceCreature = false;
-            lockAtFirst = false;
+            traceCreature = false;            // 发射前自动索敌，最近攻击-》距离最近-》null
+            lockAtFirst = false;              // 定点
+            autoSearch = false;               // 飞行中自动索敌
         }
 
         // return: 是否成功发射
-        bool Shoot(Vector3 startPos, Vector3 shootDir)
+        bool Shoot(Vector3 startPos, Vector3 shootDir, Vector3? hitPoint)
         {
             UnitEntity attackTarget = null;
             // 索敌
-            if (traceCreature || lockAtFirst)
+            if (traceCreature)
             {
                 if (Owner.lastAttack.IsNotNull())
                 {
@@ -93,7 +98,15 @@ namespace Magic
                 {
                     startPos = attackTarget.Position;
                 }
-                if (!traceCreature)
+                else if(hitPoint.IsNotNull())
+                {
+                    startPos = (Vector3)hitPoint;
+                }
+                else
+                {
+                    startPos = startPos + shootDir.normalized * 400;      // 施法最远距离
+                }
+                if (!(traceCreature || autoSearch))
                 {
                     speedMult = 0f;
                 }
@@ -106,32 +119,37 @@ namespace Magic
             for (int i = 0; i < num; i++)
             {
                 GameObject go = LoadTool.LoadCarrier(CarrierManager.GetCarrierInfoByID(carrierID).carrierPath);
-                CarrierEntity carrier = go.AddComponent<CarrierEntity>();
+
+                CarrierEntity carrier = go.GetOrAddComponent<CarrierEntity>();
                 if (i == 0)
                 {
-                    carrier.Init(80f,
+                    carrier.Init(CarrierManager.GetCarrierInfoByID(carrierID),
                         startPos,
-                        5f, 
-                        shootDir, 
-                        traceCreature?(attackTarget.IsNull() ? null : attackTarget.transform): null, 
+                        shootDir,
+                        attackTarget.IsNull() ? null : attackTarget.transform,
                         go, 
                         Owner,
                         power,
                         speedMult,
-                        scale);
+                        liveTimeMult,
+                        scale,
+                        autoSearch,
+                        shootAtFirst);
                 }
                 else
                 {
-                    carrier.Init(80f,
+                    carrier.Init(CarrierManager.GetCarrierInfoByID(carrierID),
                         new Vector3(startPos.x + Util.GetRandom(1, 5), startPos.y + Util.GetRandom(1, 5), startPos.z),
-                        5f, 
                         shootDir, 
                         attackTarget.IsNull() ? null : attackTarget.transform, 
                         go, 
                         Owner,
                         power,
                         speedMult,
-                        scale);
+                        liveTimeMult,
+                        scale,
+                        autoSearch,
+                        shootAtFirst);
                 }
             }
             return true;

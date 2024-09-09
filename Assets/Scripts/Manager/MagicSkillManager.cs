@@ -24,6 +24,9 @@ namespace Manager
                 { 5, new BeThree() },
                 { 6, new BeTrace() },
                 { 7, new BeLock()  },
+                { 8, new BeAutoSearch()  },
+                { 9, new BeLiveMoreTime()  },
+                { 10, new BeShootFirst()  },
             };
         }
 

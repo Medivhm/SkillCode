@@ -15,10 +15,11 @@ namespace QEntity
     {
         public float speed;
         // 生命周期，填null为永远存在，不通过定时器销毁
-        private float? lifeTime;
+        private float? lifeTime = null;
         // 发射方向
         private Vector3 dir;
         // 自动瞄准目标，有则发射方向始终指向该目标，否则指定方向
+        [SerializeField]
         private Transform Target;
         private GameObject CarrierGo;
         private UnitEntity Owner;
@@ -29,31 +30,77 @@ namespace QEntity
 
         public float power;
         public float speedMult;
+        public float liveTimeMult;
         public float scale;
 
+        public bool needRotate = false;
+        public bool destroyWhenHurt = true;
+        public float hurtColdTime = 1f;
+        public bool autoSearch = false;
+        public bool shootAtFirst;
 
-        public void Init(CarrierInfo info, Vector3 pos, float? lifeTime, Vector3? dir, Transform Target, GameObject CarrierGo, UnitEntity Owner, float power = 1f, float speedMult = 1f, float scale = 1f)
+        private void Awake()
         {
-            Init(info.speed, pos, lifeTime, dir, Target, CarrierGo, Owner, power, speedMult, scale);
+            hurtTimeCount = new Dictionary<GameObject, float>();
         }
 
-        public void Init(float speed, Vector3 pos, float? lifeTime, Vector3? dir, Transform Target, GameObject CarrierGo, UnitEntity Owner, float power, float speedMult, float scale)
+        public void Init(CarrierInfo info,
+            Vector3 pos,
+            Vector3? dir,
+            Transform Target,
+            GameObject CarrierGo,
+            UnitEntity Owner,
+            float power,
+            float speedMult,
+            float liveTimeMult,
+            float scale, 
+            bool autoSearch,
+            bool shootAtFirst)
         {
-            transform.SetParent(Main.SceneRoot);
+            Init(info.speed, info.destroyWhenHurt, info.hurtColdTime, info.needRotate, pos, info.lifeTime, dir, Target, CarrierGo, Owner, power, speedMult, liveTimeMult, scale, autoSearch, shootAtFirst);
+        }
+
+        public void Init(float speed, 
+            bool destroyWhenHurt, 
+            float hurtColdTime, 
+            bool needRotate,
+            Vector3 pos, 
+            float? lifeTime, 
+            Vector3? dir, 
+            Transform Target, 
+            GameObject CarrierGo, 
+            UnitEntity Owner, 
+            float power, 
+            float speedMult,
+            float liveTimeMult,
+            float scale,
+            bool autoSearch,
+            bool shootAtFirst)
+        {
+            this.destroyWhenHurt = destroyWhenHurt;
+            this.hurtColdTime = hurtColdTime;
+            this.needRotate = needRotate;
             this.power = power;
             this.speedMult = speedMult;
-            transform.localScale = new Vector3(scale, scale, scale);
-            quickTimer = new QuickTimer(); 
-            quickTimer.Init();
-            this.speed = speed;
-            this.lifeTime = lifeTime;
+            this.liveTimeMult = liveTimeMult;
+            this.scale = scale;
+            this.autoSearch = autoSearch;
             this.dir = dir ?? Vector3.forward;
             this.Target = Target;
             this.CarrierGo = CarrierGo;
             this.Owner = Owner;
             this.transform.position = pos;
             this.transform.localEulerAngles = new Vector3(0, Util.GetDegY((Vector3)dir), 0);
+            this.speed = speed;
+            this.lifeTime = lifeTime;
+            this.speed *= speedMult;
+            this.lifeTime *= liveTimeMult;
+            this.shootAtFirst = shootAtFirst;
 
+            transform.SetParent(Main.SceneRoot);
+            transform.localScale = new Vector3(this.scale, this.scale, this.scale);
+            quickTimer = new QuickTimer();
+            quickTimer.Init();
             if (lifeTime != null)
             {
                 quickTimer.AddTimer((float)lifeTime, () =>
@@ -63,24 +110,113 @@ namespace QEntity
             }
             isInit = true;
             isDestroy = false;
+
+            GiveItMagic();
+        }
+
+
+        CommomDetectHelper commonDetectHelper;
+        void GiveItMagic()
+        {
+            if (this.autoSearch)
+            {
+                if(commonDetectHelper.IsNull())
+                {
+                    commonDetectHelper = new CommomDetectHelper();
+                    commonDetectHelper.Init(gameObject, 20, TagConstant.Unit, Owner.camp);
+                }
+            }
+            else
+            {
+                if (commonDetectHelper.IsNotNull())
+                {
+                    commonDetectHelper.Destroy();
+                    commonDetectHelper = null;
+                }
+            }
         }
 
         public void Update()
         {
             if (!isInit) return;
+            if (isDestroy) return;
 
-            if (!isDestroy)
+            LifeTimeTick();
+            HurtTimeTick();
+            RefreshTarget();
+            if (Target.IsNotNull())
             {
-                if (Target != null)
+                // 处理弹体旋转
+                CalcRotate();
+                // 处理移动方向
+                if (!IsTooCloseToTarget())
                 {
-                    CarrierGo.transform.LookAt(Target.position);
-                    dir = CarrierGo.transform.forward;
+                    CalcDir();
                 }
-                CarrierGo.transform.Translate(dir.normalized * Time.deltaTime * speed, Space.World);
+                else
+                {
+                    return;
+                }
+                // 移动
+                Move();
+            }
+            // 没有目标时，只有给了[发射]tag，才能动
+            if (shootAtFirst)
+            {
+                Move();
             }
         }
 
-        private void OnTriggerEnter(Collider collision)
+        private void RefreshTarget()
+        {
+            if (Target.IsNull() && commonDetectHelper.IsNotNull() && commonDetectHelper.Target.IsNotNull())
+            {
+                Target = commonDetectHelper.Target.transform;
+            }
+        }
+
+        private void CalcRotate()
+        {
+            if (needRotate) CarrierGo.transform.LookAt(Target.position);
+        }
+
+        private bool IsTooCloseToTarget()
+        {
+            return Vector3.Distance(transform.position, Target.position) < 0.5f;
+        }
+
+        private void CalcDir()
+        {
+            dir = (Target.position - transform.position).normalized;
+        }
+
+        private void Move()
+        {
+            CarrierGo.transform.Translate(dir.normalized * Time.deltaTime * speed, Space.World);
+        }
+
+        private void HurtTimeTick()
+        {
+            foreach (var go in hurtTimeCount.Keys.ToList()) // .ToList() 防止修改时迭代出错
+            {
+                if (hurtTimeCount[go] > 0)
+                {
+                    hurtTimeCount[go] -= Time.deltaTime;
+                }
+            }
+        }
+
+        private void LifeTimeTick()
+        {
+            lifeTime -= Time.deltaTime;
+            if(lifeTime < 0)
+            {
+                Destroy();
+            }
+        }
+
+        Dictionary<GameObject, float> hurtTimeCount;
+        private void OnTriggerStay(Collider collision)
         {
             if (isDestroy) return;
 
@@ -88,15 +224,34 @@ namespace QEntity
             // 如果同时命中多个，就会有3n + 1 次，这里以后看看需不需要优化
             if (Owner.gameObject.IsNotMe(collision.gameObject) && collision.gameObject.CompareTag(TagConstant.Unit))
             {
-                collision.gameObject.GetComponent<UnitEntity>().GetHurt(power);
-                Destroy();
+                if (hurtTimeCount.ContainsKey(collision.gameObject))
+                {
+                    if (hurtTimeCount[collision.gameObject] < 0)
+                    {
+                        collision.gameObject.GetComponent<UnitEntity>().GetHurt(power);
+                        hurtTimeCount[collision.gameObject] = hurtColdTime;
+                    }
+                }
+                else
+                {
+                    collision.gameObject.GetComponent<UnitEntity>().GetHurt(power);
+                    hurtTimeCount.Add(collision.gameObject, hurtColdTime);
+                }
+
+                if (destroyWhenHurt)
+                {
+                    Destroy();
+                }
             }
         }
 
         public void Destroy()
         {
             isDestroy = true;
+            hurtTimeCount.Clear();
             quickTimer.DestroyTimers();
+            commonDetectHelper.Destroy();
+            commonDetectHelper = null;
             PoolManager.GetCarrierPool().UnSpawn(this.gameObject, name);
         }
     }

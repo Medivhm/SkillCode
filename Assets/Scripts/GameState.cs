@@ -92,15 +92,7 @@ public class GameState : MonoSingleton<GameState>
             InGameSave();
 
 
-            Ctrl.SetQuickKey(KeyCode.G, () =>
-            {
-                Ctrl.GMActive();
-            });
 
-            Ctrl.SetQuickKey(KeyCode.B, () =>
-            {
-                Ctrl.OpenBag();
-            });
 
 
         });

@@ -7,11 +7,15 @@ public class ButtonListCell : UIEntity
     Button btn;
     Text text;
 
+    private void Awake()
+    {
+        btn = this.gameObject.GetComponent<Button>();
+        text = this.gameObject.GetComponentInChildren<Text>();
+    }
+
     public void Init(string title, Action<ButtonListCell> clickCB)
     {
         base.Init();
-        btn = this.gameObject.GetComponent<Button>();
-        text = this.gameObject.GetComponentInChildren<Text>();
         text.text = title;
         btn.onClick.AddListener(() => { clickCB.Invoke(this); });
     }

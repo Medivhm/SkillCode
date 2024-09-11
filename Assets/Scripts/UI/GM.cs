@@ -22,11 +22,6 @@ public class GM : UIEntity
         Main.GM = null;
     }
 
-    public override void Init()
-    {
-        base.Init();
-    }
-
     private void Start()
     {
         input = GetComponentInChildren<InputField>();

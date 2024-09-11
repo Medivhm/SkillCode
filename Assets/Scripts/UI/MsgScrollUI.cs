@@ -8,9 +8,8 @@ public class MsgScrollUI : UIEntity
     private Transform ScrollContent;
     private ActionInfoCell item;
 
-    public override void Init()
+    public void Start()
     {
-        base.Init();
         ScrollContent = transform.Find("ScrollContent");
     }
 

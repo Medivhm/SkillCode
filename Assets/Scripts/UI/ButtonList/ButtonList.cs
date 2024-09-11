@@ -17,6 +17,7 @@ public class ButtonList : UIEntity
         InitPosition(pos);
         this.transform.ClearAllChildren();
     }
+
     private void InitPosition(Vector3 pos)
     {
         this.transform.position = pos;

@@ -12,9 +12,8 @@ public class BagUI : UIEntity
     public Transform TabTrans;
     public Transform GridTrans;
 
-    public override void Init()
+    public void Start()
     {
-        base.Init();
         itemUIs = new Dictionary<int, ItemUI>();
         itemWithGrids = new Dictionary<Item, ItemUI>();
         tabUIs = new Dictionary<int, TabUI>();

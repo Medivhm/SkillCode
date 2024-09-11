@@ -21,7 +21,6 @@ public class ActionInfoCell : UIEntity
 
     public void Init(ItemInfo itemInfo, int num)
     {
-        base.Init();
         Icon.sprite = LoadTool.LoadSprite(itemInfo.icon);
         TextNum.text = num.ToString();
         Init(itemInfo.name);

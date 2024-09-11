@@ -16,20 +16,16 @@ public class QProgressbar : UIEntity
     public bool stop = true;
     public bool chargeOver = false;
 
-    private void Awake()
-    {
-        bgImage = GetComponent<Image>();
-        barImage = transform.GetChild(0).GetComponent<Image>();
-    }
 
     public override void ResetScale()
     {
         // do nothing
     }
 
-    public override void Init()
+    public void Awake()
     {
-        base.Init();
+        bgImage = GetComponent<Image>();
+        barImage = transform.GetChild(0).GetComponent<Image>();
         ResetData();
     }
 

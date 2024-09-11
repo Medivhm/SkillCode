@@ -50,9 +50,8 @@ public class ItemUI : UIEntity, IPointerEnterHandler, IPointerExitHandler, IPoin
         get { return ItemInfo.desc; }
     }
 
-    public override void Init()
+    public void Start()
     {
-        base.Init();
         item = null;
     }
 

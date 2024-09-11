@@ -1,9 +1,6 @@
 using Constant;
 using DG.Tweening;
 using QEntity;
-using Info;
-using Manager;
-using System.Collections;
 using System.Collections.Generic;
 using Tools;
 using UnityEngine;
@@ -13,9 +10,8 @@ public class ActionInfoUI : UIEntity
     private Transform ScrollView;
     private List<ActionInfoCell> scripts;
 
-    public void Start()
+    public void Awake()
     {
-        base.Init();
         Main.ActionInfoUI = this;
 
         ScrollView = transform.Find("Mask");

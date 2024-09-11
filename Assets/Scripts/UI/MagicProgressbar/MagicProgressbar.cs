@@ -21,10 +21,9 @@ public class MagicProgressbar : UIEntity
         Main.MagicProgressbar = this;
     }
 
-    private void Start()
+    private void OnDestroy()
     {
-        Init();
-        this.gameObject.SetActive(false);
+        Main.MagicProgressbar = null;
     }
 
     public void ResetData()
@@ -32,12 +31,12 @@ public class MagicProgressbar : UIEntity
         progressbar.ResetData();
     }
 
-    public override void Init()
+    public void Start()
     {
-        base.Init();
         progressbar.Init();
         progressbar.SetStartCB(()=>progressbar.SetBarColor(Color.red));
         progressbar.SetOverCB(() => progressbar.SetBarColor(Color.yellow));
+        this.gameObject.SetActive(false);
     }
 
     public void SetTitle(string title)

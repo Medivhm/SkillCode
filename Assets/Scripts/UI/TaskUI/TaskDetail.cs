@@ -14,9 +14,8 @@ public class TaskDetail : UIEntity
 
     float width;
 
-    public override void Init()
+    public void Start()
     {
-        base.Init();
         width = this.rectTrans.rect.width;
         StartCoroutine(YieldInit());
         rectTrans.sizeDelta = new Vector2(rectTrans.sizeDelta.x, 0);

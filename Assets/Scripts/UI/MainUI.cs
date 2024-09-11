@@ -9,9 +9,8 @@ public class MainUI : UIEntity
     private Transform MiddleDownNode;
     private Transform CenterNode;
 
-    public override void Init()
+    public void Awake()
     {
-        base.Init();
         RightDownNode  = transform.Find("RightDownNode");
         MiddleDownNode = transform.Find("MiddleDownNode");
         CenterNode     = transform.Find("CenterNode");

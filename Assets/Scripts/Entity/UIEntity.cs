@@ -13,19 +13,24 @@ namespace QEntity
         public bool IsDestroy
         {
             get { return isDestroy; }
+            set { isDestroy = value; }
         }
 
-        private void OnEnable()
+        private void Awake()
         {
             rectTrans = this.gameObject.GetComponent<RectTransform>();
-        }
-
-        public virtual void Init()
-        {
-            isDestroy = false;
+            IsDestroy = false;
             ResetTransform();
         }
 
+        // UI初始化，数据清零
+        // 不要自己Init自己，规范只能Init自己的子UI
+        public virtual void Init()
+        {
+            IsDestroy = false;
+        }
+
+        // UI刷新
         public virtual void RefreshUI()
         {
         }

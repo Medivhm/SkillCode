@@ -1,11 +1,12 @@
 ﻿using Manager;
+using System;
 using UnityEngine;
 
 namespace QEntity
 {
     public class UIEntity : MonoBehaviour
     {
-        [HideInInspector]
+        [NonSerialized]
         public RectTransform rectTrans;
         public bool IsShow;
         private bool isDestroy;
@@ -20,6 +21,12 @@ namespace QEntity
         {
             rectTrans = this.gameObject.GetComponent<RectTransform>();
             IsDestroy = false;
+        }
+
+        private void Start()
+        {
+            // 留着，不知道为什么Awake里赋值了，这里还是null
+            if(rectTrans.IsNull()) rectTrans = this.gameObject.GetComponent<RectTransform>();
             ResetTransform();
         }
 
@@ -52,7 +59,7 @@ namespace QEntity
 
         public virtual void ResetSizeDelta()
         {
-            rectTrans.sizeDelta = Vector2.zero;
+            this.rectTrans.sizeDelta = Vector2.zero;
         }
 
         public virtual void Show()

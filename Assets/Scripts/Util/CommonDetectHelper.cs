@@ -74,7 +74,7 @@ public class CommomDetectHelper
         OnDelTarget = null;
         if (detectCollider.gameObject)
         {
-            GameObject.DestroyImmediate(detectCollider.gameObject);
+            GameObject.Destroy(detectCollider.gameObject);
         }
     }
 

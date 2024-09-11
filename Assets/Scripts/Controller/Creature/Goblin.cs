@@ -78,8 +78,18 @@ namespace Creature
             MoveSpeed = 9;
         }
 
+        public void SetNoMove(bool state)
+        {
+            noMove = state;
+        }
+
+        bool noMove = false;
+
+
         private void Update()
         {
+            if (noMove) return;
+
             VerticalMove();
 
             SimpleAIMove();

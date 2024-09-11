@@ -1,3 +1,4 @@
+using Creature;
 using Manager;
 using System.Collections;
 using Tools;
@@ -45,6 +46,18 @@ public class GameInit : MonoBehaviour
 
         GameObject creature = GameObject.Instantiate(LoadTool.LoadPrefab("Creature/Goblin"));
         creature.transform.position = new Vector3(10, 10, 4.6f);
+
+        GameObject creature2 = GameObject.Instantiate(LoadTool.LoadPrefab("Creature/Goblin"));
+        creature2.transform.position = new Vector3(10, 13, 10f);
+        creature2.GetComponent<Goblin>().SetNoMove(true);
+
+        GameObject creature3 = GameObject.Instantiate(LoadTool.LoadPrefab("Creature/Goblin"));
+        creature3.transform.position = new Vector3(-4.8f, 13f, 89.2f);
+        creature3.GetComponent<Goblin>().SetNoMove(true);
+
+        GameObject creature4 = GameObject.Instantiate(LoadTool.LoadPrefab("Creature/Goblin"));
+        creature4.transform.position = new Vector3(4.74f, 0f, 52f);
+        creature4.GetComponent<Goblin>().SetNoMove(true);
     }
 
     void InitMonoManager(GameObject GameInit)

@@ -30,5 +30,21 @@
     "overlap": 99,
     "icon": "item/Blue_Bottle_3",
     "desc": "陈年大杯蓝药水"
+  },
+  {
+    "ID": 5,
+    "name": "二羊之力符咒",
+    "color": 2,
+    "overlap": 99,
+    "icon": "item/Blue_Bottle_1",
+    "desc": "获得两只羊的力量"
+  },
+  {
+    "ID": 6,
+    "name": "五牛之力符咒",
+    "color": 5,
+    "overlap": 99,
+    "icon": "item/Blue_Bottle_2",
+    "desc": "召唤五只牛"
   }
 ]

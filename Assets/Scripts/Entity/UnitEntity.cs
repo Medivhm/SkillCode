@@ -21,7 +21,11 @@ namespace QEntity
     public class UnitEntity : MonoBehaviour
     {
         public Camp camp;
-        public Profession profession;
+        public virtual Profession Profession
+        {
+            get;
+            set;
+        }
 
         Vector3 center;
         float holdRange;
@@ -29,6 +33,8 @@ namespace QEntity
         public bool noHurt = false;
         public bool isDead = false;
 
+        // 实际魔法弹自瞄位置
+        public Transform hitPosition;
         public BasicAttr basicAttr;
         public AttackAttr closeAttackAttr;
         public AttackAttr farAttackAttr;
@@ -150,7 +156,6 @@ namespace QEntity
             set { basicAttr.moveSpeed = value; }
             get { return basicAttr.moveSpeed; }
         }
-
 
         public virtual void Awake()
         {

@@ -4,6 +4,12 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
+enum CameraView
+{
+    ThirdPerson,            // third-person view
+    OverShoulder,           // over-the-shoulder view
+}
+
 public class CameraController : MonoBehaviour
 {
     float distance = 10f;
@@ -16,6 +22,7 @@ public class CameraController : MonoBehaviour
     float pitch = 35f;
     float pitchMax = 80f;
     float pitchSpeed = 0.2f;
+    CameraView cameraView;
 
     public Vector3 Forward
     {
@@ -40,6 +47,7 @@ public class CameraController : MonoBehaviour
         style = new GUIStyle();
         style.normal.background = Texture2D.whiteTexture;
         Ctrl.UnUseMouse();
+        cameraView = CameraView.ThirdPerson;
     }
 
     private void OnDestroy()

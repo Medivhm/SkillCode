@@ -1912,36 +1912,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 2485155803707903530, guid: 4c5fe47c926c08a4c8cf9bf6e177561e,
-        type: 3}
-      propertyPath: m_Text
-      value: FPS
-      objectReference: {fileID: 0}
-    - target: {fileID: 3257355740257195813, guid: 4c5fe47c926c08a4c8cf9bf6e177561e,
-        type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 1716
-      objectReference: {fileID: 0}
-    - target: {fileID: 3257355740257195813, guid: 4c5fe47c926c08a4c8cf9bf6e177561e,
-        type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: -119.57001
-      objectReference: {fileID: 0}
-    - target: {fileID: 4142258534499012357, guid: 4c5fe47c926c08a4c8cf9bf6e177561e,
-        type: 3}
-      propertyPath: m_Text
-      value: PING
-      objectReference: {fileID: 0}
-    - target: {fileID: 6111064250900377852, guid: 4c5fe47c926c08a4c8cf9bf6e177561e,
-        type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 1716
-      objectReference: {fileID: 0}
-    - target: {fileID: 6111064250900377852, guid: 4c5fe47c926c08a4c8cf9bf6e177561e,
-        type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: -55
-      objectReference: {fileID: 0}
     - target: {fileID: 8003147208874409444, guid: 4c5fe47c926c08a4c8cf9bf6e177561e,
         type: 3}
       propertyPath: m_Name

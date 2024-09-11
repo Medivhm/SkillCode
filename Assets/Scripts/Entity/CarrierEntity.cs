@@ -20,7 +20,7 @@ namespace QEntity
         private Vector3 dir;
         // 自动瞄准目标，有则发射方向始终指向该目标，否则指定方向
         [SerializeField]
-        private Transform Target;
+        private UnitEntity Target;
         private GameObject CarrierGo;
         private UnitEntity Owner;
         private QuickTimer quickTimer;
@@ -47,7 +47,7 @@ namespace QEntity
         public void Init(CarrierInfo info,
             Vector3 pos,
             Vector3? dir,
-            Transform Target,
+            UnitEntity Target,
             GameObject CarrierGo,
             UnitEntity Owner,
             float power,
@@ -66,8 +66,8 @@ namespace QEntity
             bool needRotate,
             Vector3 pos, 
             float? lifeTime, 
-            Vector3? dir, 
-            Transform Target, 
+            Vector3? dir,
+            UnitEntity Target, 
             GameObject CarrierGo, 
             UnitEntity Owner, 
             float power, 
@@ -85,7 +85,7 @@ namespace QEntity
             this.liveTimeMult = liveTimeMult;
             this.scale = scale;
             this.autoSearch = autoSearch;
-            this.dir = dir ?? Vector3.forward;
+            this.dir = (dir ?? Vector3.forward).normalized;
             this.Target = Target;
             this.CarrierGo = CarrierGo;
             this.Owner = Owner;
@@ -97,6 +97,7 @@ namespace QEntity
             this.lifeTime *= liveTimeMult;
             this.shootAtFirst = shootAtFirst;
 
+            targetDir = this.dir;
             transform.SetParent(Main.SceneRoot);
             transform.localScale = new Vector3(this.scale, this.scale, this.scale);
             quickTimer = new QuickTimer();
@@ -123,7 +124,7 @@ namespace QEntity
                 if(commonDetectHelper.IsNull())
                 {
                     commonDetectHelper = new CommomDetectHelper();
-                    commonDetectHelper.Init(gameObject, 20, TagConstant.Unit, Owner.camp);
+                    commonDetectHelper.Init(gameObject, 40, TagConstant.Unit, Owner.camp);
                 }
             }
             else
@@ -171,23 +172,47 @@ namespace QEntity
         {
             if (Target.IsNull() && commonDetectHelper.IsNotNull() && commonDetectHelper.Target.IsNotNull())
             {
-                Target = commonDetectHelper.Target.transform;
+                Target = commonDetectHelper.Target;
             }
         }
 
+
+        Vector3 targetDir;
+        float rotateCoeff = 2f;
+        float coeff = 0f;
         private void CalcRotate()
-        {
-            if (needRotate) CarrierGo.transform.LookAt(Target.position);
+        {            
+            if (Vector3.Angle(targetDir, dir) > 2f)
+            {
+                dir = (targetDir * rotateCoeff * Time.deltaTime + dir).normalized;
+                if(coeff < 1f)
+                {
+                    coeff += Time.deltaTime * 2;
+                }
+                if(rotateCoeff < speed)
+                {
+                    rotateCoeff += Time.deltaTime * speed * coeff * coeff * 0.3f;
+                }
+            }
+            else
+            {
+                // 小于2度直接赋值
+                dir = targetDir;
+                coeff = 0f;
+                rotateCoeff = 2f;
+            }
+
+            if (needRotate) CarrierGo.transform.LookAt(dir);
         }
 
         private bool IsTooCloseToTarget()
         {
-            return Vector3.Distance(transform.position, Target.position) < 0.5f;
+            return Vector3.Distance(transform.position, Target.hitPosition.position) < 0.1f;
         }
 
         private void CalcDir()
         {
-            dir = (Target.position - transform.position).normalized;
+            targetDir = (Target.hitPosition.position - transform.position).normalized;
         }
 
         private void Move()

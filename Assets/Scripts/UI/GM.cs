@@ -148,6 +148,39 @@ public class GM : UIEntity
         }
     }
 
+    public void SwitchProfession()
+    {
+        if (Main.MainPlayerCtrl)
+        {
+            string oldPro = "";
+            string newPro = "";
+            if(Profession.Wizard == Main.MainPlayerCtrl.Profession)
+            {
+                oldPro = "法师";
+                newPro = "战士";
+                Main.MainPlayerCtrl.Profession = Profession.Fighter;
+                if (Main.MagicProgressbar.gameObject.activeSelf)
+                {
+                    Main.MagicProgressbar.ResetData();
+                    Main.MagicProgressbar.Hide();
+                }
+            }
+            else if(Profession.Fighter == Main.MainPlayerCtrl.Profession)
+            {
+                oldPro = "战士";
+                newPro = "射手";
+                Main.MainPlayerCtrl.Profession = Profession.Shooter;
+            } 
+            else if (Profession.Shooter == Main.MainPlayerCtrl.Profession)
+            {
+                oldPro = "射手";
+                newPro = "法师";
+                Main.MainPlayerCtrl.Profession = Profession.Wizard;
+            }
+            GUI.ActionInfoLog(string.Format("角色职业已从 [{0}] 转变为 [{1}]", oldPro, newPro));
+        }
+    }
+
     //public void AddItem()
     //{
     //    NoFocusOnInput();

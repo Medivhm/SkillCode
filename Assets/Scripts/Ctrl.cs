@@ -83,6 +83,14 @@ public class Ctrl : Singleton<Ctrl>
         if (Main.GM.IsNotNull())
         {
             Main.GM.transform.GetChild(0).gameObject.SetActive(!Main.GM.transform.GetChild(0).gameObject.activeSelf);
+            if (Main.GM.transform.GetChild(0).gameObject.activeSelf)
+            {
+                Ctrl.UseMouse();
+            }
+            else
+            {
+                Ctrl.UnUseMouse();
+            }
         }
     }
 

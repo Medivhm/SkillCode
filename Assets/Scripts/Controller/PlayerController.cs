@@ -7,6 +7,8 @@ using Fsm;
 using System.Collections;
 using Magic;
 using Constant;
+using Unity.VisualScripting;
+using static UnityEngine.UI.CanvasScaler;
 
 public enum MoveType
 {
@@ -26,6 +28,19 @@ public class PlayerController : PlayerEntity
     public SkillFsm skillFsm;
 
     public Action<float, Vector3> MoveTickAction;    // arg1:move distance, arg2:position
+
+    private Profession profession;
+    public override Profession Profession 
+    {
+        get
+        {
+            return profession;
+        }
+        set
+        {
+            profession = value;
+        }
+    }
 
     private bool isMoving;
     public bool IsMoving
@@ -93,6 +108,8 @@ public class PlayerController : PlayerEntity
 
         MoveTickAction += ChunkManager.Instance.CheckPlayerPos;
         Test();
+
+        Profession = Profession.Fighter;
     }
 
     void Update()
@@ -154,51 +171,90 @@ public class PlayerController : PlayerEntity
     }
     #endregion
 
+    private void OnDrawGizmos()
+    {
+        if(Profession.Fighter == this.Profession)
+        {
+            Gizmos.color = Color.red;
+
+            // 在世界坐标系中绘制一个代表 OverlapBox 的线框盒子
+            Matrix4x4 rotationMatrix = Matrix4x4.TRS(transform.position + this.transform.forward * 1.5f + this.transform.up * 2, this.transform.rotation, Vector3.one);
+            Gizmos.matrix = rotationMatrix;
+
+            Gizmos.DrawWireCube(Vector3.zero, new Vector3(1.5f, 1.5f, 1.5f) * 2); // 使用 WireCube 绘制线框盒子
+        }
+    }
+
     void MouseClickInit()                // 鼠标点击初始化
     #region
     {
         // RaycastHit[]
         MainMouseController.Instance.AddMouseLeftDown(() =>
         {
-            if (spelling) return;
-            if (UIManager.HasUI()) return;
+            // 法师
+            if (Profession.Wizard == this.Profession)
+            {
+                if (spelling) return;
+                if (UIManager.HasUI()) return;
 
-            spelling = true;
-            Main.MagicProgressbar.Show();
-            Main.MagicProgressbar.StartProgressBar(0.5f);
+                spelling = true;
+                Main.MagicProgressbar.Show();
+                Main.MagicProgressbar.StartProgressBar(0.5f);
+            }
+            // 战士
+            else if(Profession.Fighter == this.Profession)
+            {
+                List<UnitEntity> units = this.gameObject.FindUnitInBox(this.transform.position + this.transform.forward * 1.5f + this.transform.up * 2, new Vector3(1.5f, 1.5f, 1.5f), this.transform.rotation);
+                foreach (var unit in units)
+                {
+                    if (this.gameObject.IsNotMe(unit.gameObject))
+                    {
+                        unit.GetHurt(20f);
+                    }
+                }
+                GUI.ActionInfoLog(string.Format("攻击到了 {0} 个人", (units.Count - 1).ToString()));
+            }
+            // 射手
+            else if(Profession.Shooter == this.Profession)
+            {
+                ShootArrow();
+            }
         });
 
 
         MainMouseController.Instance.AddMouseLeftUp(() =>
         {
-            spelling = false;
-            if (Main.MagicProgressbar.ChargeOver)
+            if (Profession.Wizard == this.Profession)
             {
-                Vector3 shootDir = Main.MainCamera.transform.forward;
-                var infos = MainMouseController.Instance.GetCenterScreenRayHit();
-                Vector3? hitPoint = null;
-                float minDis = float.MaxValue;
-                for (int i = infos.Length - 1; i >= 0; i--)
+                spelling = false;
+                if (Main.MagicProgressbar.ChargeOver)
                 {
-                    if (this.gameObject.IsMe(infos[i].collider.gameObject))
-                        continue;
-
-                    if (infos[i].collider.gameObject.CompareTag(TagConstant.Detect))
-                        continue;
-
-
-                    float nowDis = Vector3.Distance(infos[i].point, magicShootPoint.position);
-                    if (nowDis < minDis)
+                    Vector3 shootDir = Main.MainCamera.transform.forward;
+                    var infos = MainMouseController.Instance.GetCenterScreenRayHit();
+                    Vector3? hitPoint = null;
+                    float minDis = float.MaxValue;
+                    for (int i = infos.Length - 1; i >= 0; i--)
                     {
-                        minDis = nowDis;
-                        hitPoint = infos[i].point;
-                        shootDir = infos[i].point - magicShootPoint.position;
+                        if (this.gameObject.IsMe(infos[i].collider.gameObject))
+                            continue;
+
+                        if (infos[i].collider.gameObject.CompareTag(TagConstant.Detect))
+                            continue;
+
+
+                        float nowDis = Vector3.Distance(infos[i].point, magicShootPoint.position);
+                        if (nowDis < minDis)
+                        {
+                            minDis = nowDis;
+                            hitPoint = infos[i].point;
+                            shootDir = infos[i].point - magicShootPoint.position;
+                        }
                     }
+                    UseMagic(magicShootPoint.position, shootDir, hitPoint);
                 }
-                UseMagic(magicShootPoint.position, shootDir, hitPoint);
+                Main.MagicProgressbar.Hide();
+                Main.MagicProgressbar.ResetData();
             }
-            Main.MagicProgressbar.Hide();
-            Main.MagicProgressbar.ResetData();
         });
     }
     #endregion
@@ -209,6 +265,7 @@ public class PlayerController : PlayerEntity
     Magic.Magic magic3;
     Magic.Magic magic4;
     void Test()
+    #region
     {
         magic1 = Magic.Magic.GetAMagic(this);
         magic1.SetCarrier(3, 1);  // 圆柱
@@ -240,43 +297,61 @@ public class PlayerController : PlayerEntity
         
 
         magic4 = Magic.Magic.GetAMagic(this);
-        magic4.SetCarrier(3, 1);  // 圆柱
+        magic4.SetCarrier(1, 1);  // sphere
         magic4.SetMagicSkill(3);  // 变快
         magic4.SetMagicSkill(3);  // 变快
         magic4.SetMagicSkill(3);  // 变快
         magic4.SetMagicSkill(2);  // 变强
+        magic4.SetMagicSkill(2);  // 变强
+        magic4.SetMagicSkill(2);  // 变强
         magic4.SetMagicSkill(8);  // 自动寻敌
+        magic4.SetMagicSkill(9);  // 延时
+        magic4.SetMagicSkill(9);  // 延时
         magic4.SetMagicSkill(9);  // 延时
         magic4.SetMagicSkill(10); // 发射
     }
+    #endregion
 
     bool spelling = false;
     int magicID = 1;
     void UseMagic(Vector3 startPos, Vector3 shootDir, Vector3? hitPoint)
+    #region
     {
-        magicID = (magicID + 1) % 2;
-        switch (magicID + 1)
-        {
-            //case 1:
-            //    magic1.Use(startPos, shootDir, hitPoint);
-            //    break;
-            //case 2:
-            //    magic2.Use(startPos, shootDir, hitPoint);
-            //    break;
-            //case 3:
-            //    magic3.Use(startPos, shootDir, hitPoint);
-            //    break;
-            //case 4:
-            //    magic4.Use(startPos, shootDir, hitPoint);
-            //    break;
+        //    magicID = (magicID + 1) % 2;
+        //    switch (magicID + 1)
+        //    {
+        //case 1:
+        //    magic1.Use(startPos, shootDir, hitPoint);
+        //    break;
+        //case 2:
+        //    magic2.Use(startPos, shootDir, hitPoint);
+        //    break;
+        //case 3:
+        //    magic3.Use(startPos, shootDir, hitPoint);
+        //    break;
+        //case 4:
+        //    magic4.Use(startPos, shootDir, hitPoint);
+        //    break;
 
-            case 1:
-                magic1.Use(startPos, shootDir, hitPoint);
-                break;
-            case 2:
-                magic4.Use(startPos, shootDir, hitPoint);
-                break;
-        }
+        //case 1:
+        //    magic1.Use(startPos, shootDir, hitPoint);
+        //    break;
+        //case 2:
+        //    magic4.Use(startPos, shootDir, hitPoint);
+        //    break;
+        //}
+        magic4.Use(startPos, shootDir, hitPoint);
+    }
+    #endregion
+
+    void ChangeCameraView()
+    {
+        //Main.MainCameraCtrl.
+    }
+
+    void ShootArrow()
+    {
+
     }
 
     IEnumerator ResetPosition()

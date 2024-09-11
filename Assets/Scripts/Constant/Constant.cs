@@ -104,9 +104,7 @@ namespace Constant
     // ²ã¼¶
     public static class Layer
     {
-        public static int Creature  = 6;
-        public static int Player = 7;
-        public static int Ground = 8;
+        public static int Unit = 3;
     }
 
     // ÎäÆ÷ÀàĞÍ

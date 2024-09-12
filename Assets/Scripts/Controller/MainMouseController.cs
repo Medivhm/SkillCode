@@ -8,6 +8,7 @@ class MainMouseController : Singleton<MainMouseController>, ITickable
     Action mouseLeftButtonClick;
     Action mouseLeftButtonDown;
     Action mouseLeftButtonUp;
+    Action<float> mouseScrollChange;
     Dictionary<RectTransform, Action> mouseNextClickCB;
     public bool mouseShow = false;
 
@@ -37,6 +38,7 @@ class MainMouseController : Singleton<MainMouseController>, ITickable
         MouseClickTick();
         MouseDownTick();
         MouseUpTick();
+        MouseScrollTick();
         MouseNextClick();
     }
 
@@ -147,6 +149,18 @@ class MainMouseController : Singleton<MainMouseController>, ITickable
         }
     }
 
+    float mouseScroll = 0f;
+    private void MouseScrollTick()
+    {
+        mouseScroll = Input.GetAxis("Mouse ScrollWheel");
+        if (Mathf.Abs(mouseScroll) < 0.01f) return;
+
+        if (mouseScrollChange.IsNotNull())
+        {
+            mouseScrollChange.Invoke(mouseScroll);
+        }
+    }
+
     public RaycastHit[] GetMouseRayHit()
     {
         return RayHitOnScreen(Input.mousePosition.x, Input.mousePosition.y);
@@ -166,17 +180,27 @@ class MainMouseController : Singleton<MainMouseController>, ITickable
 
     public void AddMouseLeftUp(Action action)
     {
-        mouseLeftButtonUp = action;
+        mouseLeftButtonUp += action;
     }
 
     public void AddMouseLeftDown(Action action)
     {
-        mouseLeftButtonDown = action;
+        mouseLeftButtonDown += action;
     }
 
     public void AddMouseLeftClick(Action action)
     {
-        mouseLeftButtonClick = action;
+        mouseLeftButtonClick += action;
+    }
+
+    public void AddMouseScrollChange(Action<float> action)
+    {
+        mouseScrollChange += action;
+    }
+
+    public void RemoveMouseScrollChange(Action<float> action)
+    {
+        mouseScrollChange -= action;
     }
 }
 

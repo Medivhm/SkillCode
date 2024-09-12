@@ -7,7 +7,7 @@ using UnityEngine.EventSystems;
 
 public class GameInit : MonoBehaviour
 {
-    void Start()
+    void Awake()
     {
         StartCoroutine(Init());
     }

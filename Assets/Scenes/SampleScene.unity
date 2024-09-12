@@ -7444,6 +7444,22 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 585113172}
     m_Modifications:
+    - target: {fileID: 248862121088766707, guid: 645eeed7ff5c6d143ab5f2aa9d8ea1c4,
+        type: 3}
+      propertyPath: Grids
+      value: 
+      objectReference: {fileID: 128323822857212961}
+    - target: {fileID: 248862121088766707, guid: 645eeed7ff5c6d143ab5f2aa9d8ea1c4,
+        type: 3}
+      propertyPath: selectedSprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 31a29c6df4d7a0b48884b8c38680543e,
+        type: 3}
+    - target: {fileID: 5666206630357591374, guid: 645eeed7ff5c6d143ab5f2aa9d8ea1c4,
+        type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6065116989220614069, guid: 645eeed7ff5c6d143ab5f2aa9d8ea1c4,
         type: 3}
       propertyPath: m_Pivot.x
@@ -7544,6 +7560,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6672033229845040747, guid: 645eeed7ff5c6d143ab5f2aa9d8ea1c4,
+        type: 3}
+      propertyPath: m_Spacing
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 7622755383756205576, guid: 645eeed7ff5c6d143ab5f2aa9d8ea1c4,
         type: 3}
       propertyPath: m_Name
@@ -7554,6 +7575,12 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 645eeed7ff5c6d143ab5f2aa9d8ea1c4, type: 3}
+--- !u!224 &128323822857212961 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 5666206630357591374, guid: 645eeed7ff5c6d143ab5f2aa9d8ea1c4,
+    type: 3}
+  m_PrefabInstance: {fileID: 128323822857212960}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &8938887775724465794
 PrefabInstance:
   m_ObjectHideFlags: 0

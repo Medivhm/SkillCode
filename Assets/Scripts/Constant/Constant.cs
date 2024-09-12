@@ -220,6 +220,8 @@ namespace Constant
         public static string ActivitiesCellButton = "ActivitiesCellButton";
         public static string ButtonList           = "ButtonList";
         public static string ButtonListCell       = "ButtonListCell";
+        public static string HotBar               = "HotBar";
+        public static string HotBarItem           = "HotBarItem";
         public static string SettingUI            = "SettingUI";                 // 设置
         public static string BagUI                = "BagUI";                     // 背包
         public static string TaskUI               = "TaskUI";                    // 任务

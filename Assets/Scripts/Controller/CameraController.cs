@@ -4,7 +4,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-enum CameraView
+public enum CameraView
 {
     ThirdPerson,            // third-person view
     OverShoulder,           // over-the-shoulder view
@@ -13,7 +13,8 @@ enum CameraView
 public class CameraController : MonoBehaviour
 {
     float distance = 10f;
-    Vector3 shootOffset = new Vector3(0, 5, 0);
+    Vector3 tpOffset = new Vector3(0, 5, 0);
+    Vector3 osOffset = new Vector3(0, 5, 0);
 
     float yaw = 0f;
     float yawSpeed = 0.2f;
@@ -58,11 +59,7 @@ public class CameraController : MonoBehaviour
 
     void Update()
     {
-        if (Input.mousePresent)
-        {
-            // 如果有鼠标
-            MouseRotateTick();
-        }
+        MouseRotateTick();
         MoveTick();
     }
 
@@ -91,16 +88,24 @@ public class CameraController : MonoBehaviour
 
     void MoveTick()
     {
-        if (Main.MainPlayerCtrl)
+        if (Main.MainPlayerCtrl.IsNull()) return;
+
+        if (CameraView.ThirdPerson == cameraView)
         {
             this.transform.position = Main.MainPlayerCtrl.transform.position
-                + new Vector3(distance * Mathf.Cos(Mathf.Deg2Rad * pitch) * Mathf.Sin(Mathf.Deg2Rad * yaw), 
-                              distance * Mathf.Sin(Mathf.Deg2Rad * pitch), 
+                + new Vector3(distance * Mathf.Cos(Mathf.Deg2Rad * pitch) * Mathf.Sin(Mathf.Deg2Rad * yaw),
+                              distance * Mathf.Sin(Mathf.Deg2Rad * pitch),
                               -distance * Mathf.Cos(Mathf.Deg2Rad * pitch) * Mathf.Cos(Mathf.Deg2Rad * yaw));
 
             // todo: 优化
             this.transform.LookAt(Main.MainPlayerCtrl.transform);
-            this.transform.position += shootOffset;
+            this.transform.position += tpOffset;
+        }
+        else if(CameraView.OverShoulder == cameraView)
+        {
+            this.transform.position = Main.MainPlayerCtrl.transform.position;
+
+            this.transform.position += osOffset;
         }
     }
 
@@ -145,5 +150,10 @@ public class CameraController : MonoBehaviour
             //  下准星
             UnityEngine.GUI.Box(new Rect(Screen.width / 2 - lineWidth / 2, Screen.height / 2 - lineOffset - lineHeight, lineWidth, lineHeight), tex, style);
         }
+    }
+
+    public void SetCameraView(CameraView view)
+    {
+        cameraView = view;
     }
 }

@@ -40,11 +40,17 @@ public class PlayerController : PlayerEntity
         {
             if(Profession.Wizard == profession)
             {
+                spelling = false;
                 if (Main.MagicProgressbar.gameObject.activeSelf)
                 {
                     Main.MagicProgressbar.ResetData();
                     Main.MagicProgressbar.Hide();
                 }
+            }
+            else if (Profession.Shooter == profession)
+            {
+                shooting = false;
+                Main.MainCameraCtrl.SetCameraView(CameraView.ThirdPerson);
             }
             profession = value;
         }
@@ -199,11 +205,11 @@ public class PlayerController : PlayerEntity
         // RaycastHit[]
         MainMouseController.Instance.AddMouseLeftDown(() =>
         {
+            if (UIManager.HasUI()) return;
             // 法师
             if (Profession.Wizard == this.Profession)
             {
                 if (spelling) return;
-                if (UIManager.HasUI()) return;
 
                 spelling = true;
                 Main.MagicProgressbar.Show();
@@ -225,13 +231,17 @@ public class PlayerController : PlayerEntity
             // 射手
             else if(Profession.Shooter == this.Profession)
             {
-                ShootArrow();
+                if (shooting) return;
+
+                shooting = true;
+                Main.MainCameraCtrl.SetCameraView(CameraView.OverShoulder);
             }
         });
 
 
         MainMouseController.Instance.AddMouseLeftUp(() =>
         {
+            // 法师
             if (Profession.Wizard == this.Profession)
             {
                 spelling = false;
@@ -262,6 +272,17 @@ public class PlayerController : PlayerEntity
                 }
                 Main.MagicProgressbar.Hide();
                 Main.MagicProgressbar.ResetData();
+            }
+            // 战士
+            else if (Profession.Fighter == this.Profession)
+            {
+            }
+            // 射手
+            else if (Profession.Shooter == this.Profession)
+            {
+                ShootArrow();
+                Main.MainCameraCtrl.SetCameraView(CameraView.ThirdPerson);
+                shooting = false;
             }
         });
     }
@@ -357,6 +378,7 @@ public class PlayerController : PlayerEntity
         //Main.MainCameraCtrl.
     }
 
+    bool shooting = false;
     void ShootArrow()
     {
 

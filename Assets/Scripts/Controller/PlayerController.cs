@@ -38,6 +38,14 @@ public class PlayerController : PlayerEntity
         }
         set
         {
+            if(Profession.Wizard == profession)
+            {
+                if (Main.MagicProgressbar.gameObject.activeSelf)
+                {
+                    Main.MagicProgressbar.ResetData();
+                    Main.MagicProgressbar.Hide();
+                }
+            }
             profession = value;
         }
     }

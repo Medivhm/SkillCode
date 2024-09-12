@@ -1,50 +1,110 @@
 [
   {
     "ID": 1,
+    "type": 1,
     "name": "红药水",
     "color": 2,
     "overlap": 99,
+    "prefab": "Blue_Bottle_1",
     "icon": "item/Blue_Bottle_1",
-    "desc": "陈年红药水"
+    "desc": "陈年红药水",
+    "canDestroy": true,
+    "useFunc": "1#1#1&2#1"
   },
   {
     "ID": 2,
+    "type": 1,
     "name": "大红药水",
     "color": 2,
     "overlap": 99,
+    "prefab": "Blue_Bottle_2",
     "icon": "item/Blue_Bottle_2",
-    "desc": "陈年大杯红药水"
+    "desc": "陈年大杯红药水",
+    "canDestroy": true,
+    "useFunc": ""
   },
   {
     "ID": 3,
+    "type": 1,
     "name": "蓝药水",
     "color": 2,
     "overlap": 99,
+    "prefab": "Blue_Bottle_3",
     "icon": "item/Blue_Bottle_3",
-    "desc": "陈年蓝药水"
+    "desc": "陈年蓝药水",
+    "canDestroy": true,
+    "useFunc": ""
   },
   {
     "ID": 4,
+    "type": 1,
     "name": "大蓝药水",
     "color": 2,
     "overlap": 99,
+    "prefab": "Blue_Bottle_3",
     "icon": "item/Blue_Bottle_3",
-    "desc": "陈年大杯蓝药水"
+    "desc": "陈年大杯蓝药水",
+    "canDestroy": true,
+    "useFunc": ""
   },
   {
     "ID": 5,
+    "type": 1,
     "name": "二羊之力符咒",
     "color": 2,
     "overlap": 99,
+    "prefab": "Blue_Bottle_1",
     "icon": "item/Blue_Bottle_1",
-    "desc": "获得两只羊的力量"
+    "desc": "获得两只羊的力量",
+    "canDestroy": true,
+    "useFunc": ""
   },
   {
     "ID": 6,
+    "type": 1,
     "name": "五牛之力符咒",
     "color": 5,
     "overlap": 99,
+    "prefab": "Blue_Bottle_2",
     "icon": "item/Blue_Bottle_2",
-    "desc": "召唤五只牛"
+    "desc": "获得五只牛的力量",
+    "canDestroy": true,
+    "useFunc": ""
+  },
+  {
+    "ID": 7,
+    "type": 3,
+    "name": "新手弓箭",
+    "color": 2,
+    "overlap": 1,
+    "prefab": "",
+    "icon": "weapon/shooter/Bow_1",
+    "desc": "一把普通的弓箭",
+    "canDestroy": true,
+    "useFunc": ""
+  },
+  {
+    "ID": 8,
+    "type": 4,
+    "name": "新手法杖",
+    "color": 2,
+    "overlap": 1,
+    "prefab": "",
+    "icon": "weapon/wizard/Magic_Wand_Earth_3",
+    "desc": "一把普通的法杖",
+    "canDestroy": true,
+    "useFunc": ""
+  },
+  {
+    "ID": 9,
+    "type": 5,
+    "name": "新手斧头",
+    "color": 2,
+    "overlap": 1,
+    "prefab": "",
+    "icon": "weapon/fighter/Axe_1",
+    "desc": "一把普通的斧头",
+    "canDestroy": true,
+    "useFunc": ""
   }
 ]

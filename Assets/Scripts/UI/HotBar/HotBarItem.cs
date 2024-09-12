@@ -24,6 +24,10 @@ public class HotBarItem : MonoBehaviour
             if (selected)
             {
                 bgIcon.sprite = Main.HotBar.selectedSprite;
+                if (item.IsNotNull() && item.IsEquip())
+                {
+                    item.Use();
+                }
             }
             else
             {

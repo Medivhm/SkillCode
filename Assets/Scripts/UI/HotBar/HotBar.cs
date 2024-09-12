@@ -32,6 +32,11 @@ public class HotBar : UIEntity
         yield return new WaitForSeconds(0.3f);
         InitItems();
         MainMouseController.Instance.AddMouseScrollChange(MouseScrollChange);
+        yield return new WaitForSeconds(0.3f);
+        items[0].SetItem(Ctrl.CreateItem(7));
+        items[1].SetItem(Ctrl.CreateItem(8));
+        items[2].SetItem(Ctrl.CreateItem(9));
+        SelectIndex(0);
     }
 
     private void OnDestroy()
@@ -50,7 +55,6 @@ public class HotBar : UIEntity
             items[i].bgIcon.sprite = normalSprite;
             items[i].transform.SetParent(Grids);
         }
-        SelectIndex(0);
     }
 
     void SelectIndex(int selIdx)

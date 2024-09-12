@@ -1,3 +1,4 @@
+@del /Q Jsons\
 set WORKSPACE=.
 set LUBAN_DLL= excel2json\Luban\Luban.dll
 set CONF_ROOT= excel2json

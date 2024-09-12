@@ -1,6 +1,7 @@
 ﻿using Constant;
 using Info;
 using Manager;
+using QEntity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -43,6 +44,11 @@ public class Item
         get { return Info.ID; }
     }
 
+    public int Type
+    {
+        get { return Info.type; }
+    }
+
     public string Name
     {
         get { return Info.name; }
@@ -76,5 +82,38 @@ public class Item
         i.Info = this.Info;
         i.From = this.From;
         return i;
+    }
+
+    public bool IsEquip()
+    {
+        if (Type == 3 || Type == 4 || Type == 5)
+        {
+            return true;
+        }
+        return false;
+    }
+
+    public void Use()
+    {
+        if (IsEquip())
+        {
+            string proName = "";
+            if(Type == 3)
+            {
+                proName = "射手";
+                Main.MainPlayerCtrl.Profession = Profession.Shooter;
+            }
+            else if (Type == 4)
+            {
+                proName = "法师";
+                Main.MainPlayerCtrl.Profession = Profession.Wizard;
+            }
+            else if (Type == 5)
+            {
+                proName = "战士";
+                Main.MainPlayerCtrl.Profession = Profession.Fighter;
+            }
+            GUI.ActionInfoLog(string.Format("穿上装备 [{0}] 现在的职业是 [{1}]", Name, proName));
+        }
     }
 }

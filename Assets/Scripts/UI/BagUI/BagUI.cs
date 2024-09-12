@@ -12,11 +12,15 @@ public class BagUI : UIEntity
     public Transform TabTrans;
     public Transform GridTrans;
 
-    public void Start()
+    private void Awake()
     {
         itemUIs = new Dictionary<int, ItemUI>();
         itemWithGrids = new Dictionary<Item, ItemUI>();
         tabUIs = new Dictionary<int, TabUI>();
+    }
+
+    public void Start()
+    {
         InitUI();
         InitEvent();
         if(Main.LocateUI)

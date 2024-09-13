@@ -5,13 +5,8 @@ using System;
 using System.Collections.Generic;
 using Fsm;
 using System.Collections;
-using Magic;
 using Constant;
-using Unity.VisualScripting;
-using static UnityEngine.UI.CanvasScaler;
-using static UnityEngine.UI.GridLayoutGroup;
 using Tools;
-using UnityEngine.UIElements;
 
 public enum MoveType
 {
@@ -109,6 +104,11 @@ public class PlayerController : PlayerEntity
         }
     }
 
+    private void OnDestroy()
+    {
+        Main.MainPlayerCtrl = null;
+    }
+
     void Start()
     {
         Main.MainPlayerCtrl = this;
@@ -142,7 +142,8 @@ public class PlayerController : PlayerEntity
         }
     }
 
-    void DetectInit()
+    
+    void DetectInit()                    // 初始化距离内人物检测
     #region
     {
         detect = new DetectHelper();
@@ -188,9 +189,10 @@ public class PlayerController : PlayerEntity
     }
     #endregion
 
-    private void OnDrawGizmos()
+    private void OnDrawGizmos()          // 画近战攻击区域框
+    #region
     {
-        if(Profession.Fighter == this.Profession)
+        if (Profession.Fighter == this.Profession)
         {
             Gizmos.color = Color.red;
 
@@ -201,6 +203,7 @@ public class PlayerController : PlayerEntity
             Gizmos.DrawWireCube(Vector3.zero, new Vector3(1.5f, 1.5f, 1.5f) * 2); // 使用 WireCube 绘制线框盒子
         }
     }
+    #endregion
 
     void MouseClickInit()                // 鼠标点击初始化
     #region
@@ -276,8 +279,8 @@ public class PlayerController : PlayerEntity
     }
     #endregion
 
-    // 获取击中最近的点
-    public Vector3? GetClosestRayHitPoint()
+    
+    public Vector3? GetClosestRayHitPoint()        // 获取击中最近的点
     #region
     {
         var infos = MainMouseController.Instance.GetCenterScreenRayHit();
@@ -390,6 +393,7 @@ public class PlayerController : PlayerEntity
 
     bool shooting = false;
     void ShootArrow()
+    #region
     {
         Vector3 shootDir = Main.MainCamera.transform.forward;
         Vector3? hitPoint = GetClosestRayHitPoint();
@@ -414,8 +418,10 @@ public class PlayerController : PlayerEntity
                 false,
                 true);
     }
+    #endregion
 
-    IEnumerator ResetPosition()
+    IEnumerator ResetPosition()          // 初始化坐标
+    #region
     {
         SetControl(false);
         yield return null;
@@ -423,6 +429,7 @@ public class PlayerController : PlayerEntity
         yield return null;
         SetControl(true);
     }
+    #endregion
 
     void EventInit()                     // 接触地面刷新重力方向上的速度，的地面检测事件注册
     #region
@@ -474,8 +481,8 @@ public class PlayerController : PlayerEntity
     }
     #endregion
 
-    // VerticalMove 在父类UnitEntity里
-    void HorizontalMove()
+    
+    void HorizontalMove()                // VerticalMove 在父类UnitEntity里
     #region
     {
         move = false;
@@ -548,8 +555,4 @@ public class PlayerController : PlayerEntity
     }
     #endregion
 
-    private void OnDestroy()
-    {
-        Main.MainPlayerCtrl = null;
-    }
 }

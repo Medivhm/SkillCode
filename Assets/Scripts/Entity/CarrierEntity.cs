@@ -275,8 +275,11 @@ namespace QEntity
             isDestroy = true;
             hurtTimeCount.Clear();
             quickTimer.DestroyTimers();
-            commonDetectHelper.Destroy();
-            commonDetectHelper = null;
+            if (commonDetectHelper.IsNotNull())
+            {
+                commonDetectHelper.Destroy();
+                commonDetectHelper = null;
+            }
             PoolManager.GetCarrierPool().UnSpawn(this.gameObject, name);
         }
     }

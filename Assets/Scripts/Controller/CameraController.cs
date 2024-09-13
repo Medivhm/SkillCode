@@ -12,9 +12,11 @@ public enum CameraView
 
 public class CameraController : MonoBehaviour
 {
+    public Camera mainCamera;
+
     float distance = 10f;
     Vector3 tpOffset = new Vector3(0, 5, 0);
-    Vector3 osOffset = new Vector3(0, 5, 0);
+    Vector3 osOffset = new Vector3(0, 3, 0);
 
     float yaw = 0f;
     float yawSpeed = 0.2f;
@@ -24,6 +26,8 @@ public class CameraController : MonoBehaviour
     float pitchMax = 80f;
     float pitchSpeed = 0.2f;
     CameraView cameraView;
+
+    public CameraView CameraView => cameraView;
 
     public Vector3 Forward
     {
@@ -44,7 +48,7 @@ public class CameraController : MonoBehaviour
     void Start()
     {
         Main.MainCameraCtrl = this;
-        Main.MainCamera = this.GetComponent<Camera>();
+        Main.MainCamera = mainCamera;
         style = new GUIStyle();
         style.normal.background = Texture2D.whiteTexture;
         Ctrl.UnUseMouse();
@@ -64,7 +68,8 @@ public class CameraController : MonoBehaviour
     }
 
     bool mouseRotate = true;
-    float changeEuler;
+    float changeEulerYaw;
+    float changeEulerPitch;
     float mouseX;
     float mouseY;
     void MouseRotateTick()
@@ -74,11 +79,19 @@ public class CameraController : MonoBehaviour
             mouseX = Input.GetAxis("Mouse X") * Main.mouseSensitivity;
             mouseY = Input.GetAxis("Mouse Y") * Main.mouseSensitivity;
 
-            changeEuler = yawSpeed * mouseX;
-            yaw -= changeEuler; // * CanvasScaler
+            if(CameraView.ThirdPerson == CameraView)
+            {
+                changeEulerYaw = yawSpeed * mouseX;
+                changeEulerPitch = pitchSpeed * mouseY;
+            }
+            else
+            {
+                changeEulerYaw = yawSpeed * mouseX * 0.1f;
+                changeEulerPitch = pitchSpeed * mouseY * 0.1f;
+            }
 
-            changeEuler = pitchSpeed * mouseY;
-            pitch -= changeEuler;
+            yaw -= changeEulerYaw; // * CanvasScaler
+            pitch -= changeEulerPitch;
             pitch = Mathf.Clamp(pitch, pitchMin, pitchMax);
 
             // 角度这里有问题
@@ -90,22 +103,20 @@ public class CameraController : MonoBehaviour
     {
         if (Main.MainPlayerCtrl.IsNull()) return;
 
-        if (CameraView.ThirdPerson == cameraView)
-        {
-            this.transform.position = Main.MainPlayerCtrl.transform.position
-                + new Vector3(distance * Mathf.Cos(Mathf.Deg2Rad * pitch) * Mathf.Sin(Mathf.Deg2Rad * yaw),
-                              distance * Mathf.Sin(Mathf.Deg2Rad * pitch),
-                              -distance * Mathf.Cos(Mathf.Deg2Rad * pitch) * Mathf.Cos(Mathf.Deg2Rad * yaw));
+        this.transform.position = Main.MainPlayerCtrl.transform.position
+            + new Vector3(distance * Mathf.Cos(Mathf.Deg2Rad * pitch) * Mathf.Sin(Mathf.Deg2Rad * yaw),
+                          distance * Mathf.Sin(Mathf.Deg2Rad * pitch),
+                          -distance * Mathf.Cos(Mathf.Deg2Rad * pitch) * Mathf.Cos(Mathf.Deg2Rad * yaw));
 
-            // todo: 优化
-            this.transform.LookAt(Main.MainPlayerCtrl.transform);
-            this.transform.position += tpOffset;
-        }
-        else if(CameraView.OverShoulder == cameraView)
-        {
-            this.transform.position = Main.MainPlayerCtrl.transform.position;
+        // todo: 优化
+        this.transform.LookAt(Main.MainPlayerCtrl.transform);
+        this.transform.position += tpOffset;
 
-            this.transform.position += osOffset;
+        if(CameraView.OverShoulder == cameraView)
+        {
+            this.mainCamera.transform.position = Main.MainPlayerCtrl.magicShootPoint.position;
+            this.mainCamera.transform.position += osOffset;
+            this.mainCamera.transform.rotation = this.transform.rotation;
         }
     }
 
@@ -155,5 +166,11 @@ public class CameraController : MonoBehaviour
     public void SetCameraView(CameraView view)
     {
         cameraView = view;
+        if(CameraView.ThirdPerson == view)
+        {
+            mainCamera.transform.localPosition = Vector3.zero;
+            mainCamera.transform.rotation = this.transform.rotation;
+        }
     }
+
 }

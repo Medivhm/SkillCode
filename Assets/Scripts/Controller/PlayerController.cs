@@ -9,6 +9,9 @@ using Magic;
 using Constant;
 using Unity.VisualScripting;
 using static UnityEngine.UI.CanvasScaler;
+using static UnityEngine.UI.GridLayoutGroup;
+using Tools;
+using UnityEngine.UIElements;
 
 public enum MoveType
 {
@@ -248,25 +251,10 @@ public class PlayerController : PlayerEntity
                 if (Main.MagicProgressbar.ChargeOver)
                 {
                     Vector3 shootDir = Main.MainCamera.transform.forward;
-                    var infos = MainMouseController.Instance.GetCenterScreenRayHit();
-                    Vector3? hitPoint = null;
-                    float minDis = float.MaxValue;
-                    for (int i = infos.Length - 1; i >= 0; i--)
+                    Vector3? hitPoint = GetClosestRayHitPoint();
+                    if (hitPoint.IsNotNull())
                     {
-                        if (this.gameObject.IsMe(infos[i].collider.gameObject))
-                            continue;
-
-                        if (infos[i].collider.gameObject.CompareTag(TagConstant.Detect))
-                            continue;
-
-
-                        float nowDis = Vector3.Distance(infos[i].point, magicShootPoint.position);
-                        if (nowDis < minDis)
-                        {
-                            minDis = nowDis;
-                            hitPoint = infos[i].point;
-                            shootDir = infos[i].point - magicShootPoint.position;
-                        }
+                        shootDir = (Vector3)hitPoint - magicShootPoint.position;
                     }
                     UseMagic(magicShootPoint.position, shootDir, hitPoint);
                 }
@@ -288,6 +276,32 @@ public class PlayerController : PlayerEntity
     }
     #endregion
 
+    // 获取击中最近的点
+    public Vector3? GetClosestRayHitPoint()
+    #region
+    {
+        var infos = MainMouseController.Instance.GetCenterScreenRayHit();
+        Vector3? hitPoint = null;
+        float minDis = float.MaxValue;
+        for (int i = infos.Length - 1; i >= 0; i--)
+        {
+            if (this.gameObject.IsMe(infos[i].collider.gameObject))
+                continue;
+
+            if (infos[i].collider.gameObject.CompareTag(TagConstant.Detect))
+                continue;
+
+
+            float nowDis = Vector3.Distance(infos[i].point, magicShootPoint.position);
+            if (nowDis < minDis)
+            {
+                minDis = nowDis;
+                hitPoint = infos[i].point;
+            }
+        }
+        return hitPoint;
+    }
+    #endregion
 
     Magic.Magic magic1;
     Magic.Magic magic2;
@@ -373,15 +387,32 @@ public class PlayerController : PlayerEntity
     }
     #endregion
 
-    void ChangeCameraView()
-    {
-        //Main.MainCameraCtrl.
-    }
 
     bool shooting = false;
     void ShootArrow()
     {
+        Vector3 shootDir = Main.MainCamera.transform.forward;
+        Vector3? hitPoint = GetClosestRayHitPoint();
+        if (hitPoint.IsNotNull())
+        {
+            shootDir = (Vector3)hitPoint - Main.MainCamera.transform.position;
+        }
 
+        GameObject go = LoadTool.LoadCarrier(CarrierManager.GetCarrierInfoByID(1).carrierPath);
+        CarrierEntity carrier = go.GetOrAddComponent<CarrierEntity>();
+        
+        carrier.Init(CarrierManager.GetCarrierInfoByID(1),
+                Main.MainCamera.transform.position,
+                shootDir,
+                null,
+                go,
+                this,
+                10,
+                10,
+                2,
+                1,
+                false,
+                true);
     }
 
     IEnumerator ResetPosition()
@@ -491,12 +522,20 @@ public class PlayerController : PlayerEntity
     void RotateTick()
     #region
     {
-        if (Mathf.Abs(targetYEuler - this.transform.eulerAngles.y) < 0.1f)
+        if(CameraView.ThirdPerson == Main.MainCameraCtrl.CameraView)
         {
-            return;
+            if (Mathf.Abs(targetYEuler - this.transform.eulerAngles.y) < 0.1f)
+            {
+                return;
+            }
+            nowYEuler = Mathf.LerpAngle(this.transform.eulerAngles.y, targetYEuler, rotateCoeff * Time.deltaTime);
+            this.transform.eulerAngles = new Vector3(0, nowYEuler, 0);
         }
-        nowYEuler = Mathf.LerpAngle(this.transform.eulerAngles.y, targetYEuler, rotateCoeff * Time.deltaTime);
-        this.transform.eulerAngles = new Vector3(0, nowYEuler, 0);
+        else if(CameraView.OverShoulder == Main.MainCameraCtrl.CameraView)
+        {
+            targetYEuler = Main.MainCameraCtrl.transform.eulerAngles.y;
+            this.transform.eulerAngles = new Vector3(0, targetYEuler, 0);
+        }
     }
     #endregion
 

@@ -39,16 +39,15 @@ public class GameInit : MonoBehaviour
         });
 
         Main.MainCanvas = GameObject.Find("MainCanvas").GetComponent<Canvas>();
-        yield return new WaitForSeconds(0.5f);
-        GameObject player = GameObject.Instantiate(LoadTool.LoadPrefab("Player/Player"));
-        player.transform.position = new Vector3(0, 10, 0);
+        yield return new WaitForSeconds(0.3f);
 
 
         GameObject creature = GameObject.Instantiate(LoadTool.LoadPrefab("Creature/Goblin"));
-        creature.transform.position = new Vector3(10, 10, 4.6f);
+        yield return null;
+        creature.transform.position = new Vector3(10f, 10f, 4.6f);
 
         GameObject creature2 = GameObject.Instantiate(LoadTool.LoadPrefab("Creature/Goblin"));
-        creature2.transform.position = new Vector3(10, 13, 10f);
+        creature2.transform.position = new Vector3(10f, 13, 10f);
         creature2.GetComponent<Goblin>().SetNoMove(true);
 
         GameObject creature3 = GameObject.Instantiate(LoadTool.LoadPrefab("Creature/Goblin"));
@@ -58,6 +57,12 @@ public class GameInit : MonoBehaviour
         GameObject creature4 = GameObject.Instantiate(LoadTool.LoadPrefab("Creature/Goblin"));
         creature4.transform.position = new Vector3(4.74f, 0f, 52f);
         creature4.GetComponent<Goblin>().SetNoMove(true);
+
+
+        GameObject player = GameObject.Instantiate(LoadTool.LoadPrefab("Player/Player"));
+        yield return null;
+        player.transform.position = new Vector3(4.7f, 11f, -7f);
+
     }
 
     void InitMonoManager(GameObject GameInit)

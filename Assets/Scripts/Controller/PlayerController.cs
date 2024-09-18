@@ -271,7 +271,10 @@ public class PlayerController : PlayerEntity
             // …‰ ÷
             else if (Profession.Shooter == this.Profession)
             {
-                ShootArrow();
+                if (!UIManager.HasUI())
+                {
+                    ShootArrow();
+                }
                 Main.MainCameraCtrl.SetCameraView(CameraView.ThirdPerson);
                 shooting = false;
             }
@@ -390,7 +393,6 @@ public class PlayerController : PlayerEntity
     }
     #endregion
 
-
     bool shooting = false;
     void ShootArrow()
     #region
@@ -404,7 +406,8 @@ public class PlayerController : PlayerEntity
 
         GameObject go = LoadTool.LoadCarrier(CarrierManager.GetCarrierInfoByID(1).carrierPath);
         CarrierEntity carrier = go.GetOrAddComponent<CarrierEntity>();
-        
+
+        AudioManager.PlayOneShot("arrow_shoot");
         carrier.Init(CarrierManager.GetCarrierInfoByID(1),
                 Main.MainCamera.transform.position,
                 shootDir,
@@ -502,7 +505,7 @@ public class PlayerController : PlayerEntity
         {
             dir = (vertical * Main.MainCameraCtrl.Forward + horizontal * Main.MainCameraCtrl.Right).normalized;
             characterController.Move(dir * speed * Time.deltaTime);
-            targetYEuler = Util.GetDegY(dir);
+            targetYEuler = QUtil.GetDegY(dir);
             MoveDistanceCheck((dir * speed * Time.deltaTime).magnitude);
         }
     }

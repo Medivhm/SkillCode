@@ -16,9 +16,21 @@ public class QInputField : UIEntity, ISelectHandler, IDeselectHandler
         set { inputField.text = value; }
     }
 
-    private void OnEnable()
+    protected override void Awake()
     {
+        base.Awake();
         inputField = GetComponent<InputField>();
+    }
+
+    private void Start()
+    {
+        ResetTransform();
+    }
+
+    public override void ResetTransform()
+    {
+        base.ResetTransform();
+        ResetScale();
     }
 
     public void OnSelect(BaseEventData eventData)

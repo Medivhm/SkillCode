@@ -16,8 +16,9 @@ public class MagicProgressbar : UIEntity
         get { return progressbar.chargeOver; }
     }
 
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         Main.MagicProgressbar = this;
     }
 
@@ -33,6 +34,7 @@ public class MagicProgressbar : UIEntity
 
     public void Start()
     {
+        ResetTransform();
         progressbar.Init();
         progressbar.SetStartCB(()=>progressbar.SetBarColor(Color.red));
         progressbar.SetOverCB(() => progressbar.SetBarColor(Color.yellow));
@@ -51,5 +53,11 @@ public class MagicProgressbar : UIEntity
             progressbar.SetOverCB(overCB);
         }
         progressbar.SetIncreaseByTime(time);
+    }
+
+    public override void ResetTransform()
+    {
+        base.ResetTransform();
+        ResetScale();
     }
 }

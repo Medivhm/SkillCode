@@ -10,13 +10,19 @@ public class ActionInfoUI : UIEntity
     private Transform ScrollView;
     private List<ActionInfoCell> scripts;
 
-    public void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         Main.ActionInfoUI = this;
 
         ScrollView = transform.Find("Mask");
         scripts = new List<ActionInfoCell>();
         waitDestroy = new List<ActionInfoCell>();
+    }
+
+    private void Start()
+    {
+        ResetTransform();
     }
 
     private void OnDestroy()
@@ -56,5 +62,11 @@ public class ActionInfoUI : UIEntity
         {
             scripts.Remove(destroySc);
         }
+    }
+
+    public override void ResetTransform()
+    {
+        base.ResetTransform();
+        ResetScale();
     }
 }

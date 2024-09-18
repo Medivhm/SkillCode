@@ -224,7 +224,7 @@ namespace QEntity
             animator.CrossFade(animName, fadeTime);
             if (callback != null)
             {
-                float time = Util.GetAnimationClip(animator, animName).length;
+                float time = QUtil.GetAnimationClip(animator, animName).length;
                 TimerManager.Add(time, callback);
             }
         }
@@ -234,7 +234,7 @@ namespace QEntity
             animator.CrossFade(animName, 0f);
             if (callback != null)
             {
-                float time = Util.GetAnimationClip(animator, animName).length;
+                float time = QUtil.GetAnimationClip(animator, animName).length;
                 TimerManager.Add(time, callback);
             }
         }

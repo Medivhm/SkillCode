@@ -8,11 +8,22 @@ public class QText : UIEntity
 {
     Text text;
 
-    private void Awake()
+    protected override void Awake()
     {
         text = GetComponent<Text>();
     }
-    
+
+    private void Start()
+    {
+        ResetTransform();
+    }
+
+    public override void ResetTransform()
+    {
+        base.ResetTransform();
+        ResetScale();
+    }
+
     public void SetLocalPos(Vector3 localPos)
     {
         transform.localPosition = localPos;

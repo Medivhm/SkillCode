@@ -90,7 +90,7 @@ namespace QEntity
             this.CarrierGo = CarrierGo;
             this.Owner = Owner;
             this.transform.position = pos;
-            this.transform.localEulerAngles = new Vector3(0, Util.GetDegY((Vector3)dir), 0);
+            this.transform.localEulerAngles = new Vector3(0, QUtil.GetDegY((Vector3)dir), 0);
             this.speed = speed;
             this.lifeTime = lifeTime;
             this.speed *= speedMult;

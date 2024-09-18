@@ -11,6 +11,15 @@ public class ButtonList : UIEntity
 {
     public Transform buttonList;
 
+    protected override void Awake()
+    {
+        base.Awake();
+    }
+    private void Start()
+    {
+        ResetTransform();
+    }
+
     public void Init(Vector3 pos)
     {
         base.Init();
@@ -35,5 +44,11 @@ public class ButtonList : UIEntity
     private GameObject CreateBtnCell()
     {
         return LoadTool.LoadUI(UIConstant.ButtonListCell);
+    }
+
+    public override void ResetTransform()
+    {
+        base.ResetTransform();
+        ResetScale();
     }
 }

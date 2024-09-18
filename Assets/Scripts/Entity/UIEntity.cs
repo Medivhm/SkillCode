@@ -17,17 +17,10 @@ namespace QEntity
             set { isDestroy = value; }
         }
 
-        private void Awake()
+        protected virtual void Awake()
         {
             rectTrans = this.gameObject.GetComponent<RectTransform>();
             IsDestroy = false;
-        }
-
-        private void Start()
-        {
-            // 留着，不知道为什么Awake里赋值了，这里还是null
-            if(rectTrans.IsNull()) rectTrans = this.gameObject.GetComponent<RectTransform>();
-            ResetTransform();
         }
 
         // UI初始化，数据清零
@@ -44,7 +37,6 @@ namespace QEntity
 
         public virtual void ResetTransform()
         {
-            ResetScale();
         }
 
         public virtual void ResetScale()

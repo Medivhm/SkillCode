@@ -124,9 +124,9 @@ public static class UtilExtensions
         trans.position = vec9999;
     }
 
-    // 有时候效果不对，慎用！！！下同
+    // 在对script脚本使用时效果不对，慎用！！！下同
     public static bool IsNotNull(this object obj)
-    {  
+    {
         return obj != null;
     }
 
@@ -137,18 +137,18 @@ public static class UtilExtensions
 
     public static void ListCleanNull<T>(this List<T> list)
     {
-        list.RemoveAll(item  => item == null);
+        list.RemoveAll(item => item == null);
     }
 
     public static bool CheckChildActive(this Transform trans)
     {
-        if(trans.childCount == 0) return true;
+        if (trans.childCount == 0) return true;
         return trans.GetChild(0).gameObject.activeSelf;
     }
 
     public static void HideAllChildren(this Transform trans)
     {
-        for(int i = 0; i < trans.childCount; i++)
+        for (int i = 0; i < trans.childCount; i++)
         {
             trans.GetChild(i).gameObject.SetActive(false);
         }
@@ -188,6 +188,14 @@ public static class UtilExtensions
         else
         {
             Debug.LogWarning($"SetUISize: GameObject {go.name} does not have a RectTransform component.");
+        }
+    }
+
+    public static void RemoveAllChildren(this Transform parent)
+    {
+        for(int i = 0; i < parent.childCount; i++)
+        {
+            GameObject.Destroy(parent.GetChild(i));
         }
     }
 }

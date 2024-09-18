@@ -1,12 +1,9 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
+using QEntity;
 using Tools;
 using UnityEngine;
 using UnityEngine.UI;
-using static UnityEngine.Rendering.DebugUI;
 
-public class HotBarItem : MonoBehaviour
+public class HotBarItem : UIEntity
 {
     public Image bgIcon;
     public Image itemIcon;
@@ -34,6 +31,17 @@ public class HotBarItem : MonoBehaviour
                 bgIcon.sprite = Main.HotBar.normalSprite;
             }
         }
+    }
+
+    private void Start()
+    {
+        ResetTransform();
+    }
+
+    public override void ResetTransform()
+    {
+        base.ResetTransform();
+        ResetScale();
     }
 
     public void RemoveItem()

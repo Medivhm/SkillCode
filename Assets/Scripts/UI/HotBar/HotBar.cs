@@ -15,13 +15,15 @@ public class HotBar : UIEntity
     private HotBarItem[] items;
     private int lastSelIdx = -1;
 
-    public void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         Main.HotBar = this;
     }
 
     public void Start()
     {
+        ResetTransform();
         //InitItems();
         //MainMouseController.Instance.AddMouseScrollChange(MouseScrollChange);
         StartCoroutine(DeleteWhenMoveToCurrentProject());
@@ -97,5 +99,11 @@ public class HotBar : UIEntity
     HotBarItem GetItem()
     {
         return LoadTool.LoadUI(UIConstant.HotBarItem).GetComponent<HotBarItem>();
+    }
+
+    public override void ResetTransform()
+    {
+        base.ResetTransform();
+        ResetScale();
     }
 }

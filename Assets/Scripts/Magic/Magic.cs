@@ -139,7 +139,7 @@ namespace Magic
                 else
                 {
                     carrier.Init(CarrierManager.GetCarrierInfoByID(carrierID),
-                        new Vector3(startPos.x + Util.GetRandom(1, 5), startPos.y + Util.GetRandom(1, 5), startPos.z),
+                        new Vector3(startPos.x + QUtil.GetRandom(1, 5), startPos.y + QUtil.GetRandom(1, 5), startPos.z),
                         shootDir, 
                         attackTarget.IsNull() ? null : attackTarget, 
                         go, 

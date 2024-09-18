@@ -19,6 +19,16 @@ public class ActionInfoCell : UIEntity
 
     private float endY;
 
+    protected override void Awake()
+    {
+        base.Awake();
+    }
+
+    private void Start()
+    {
+        ResetTransform();
+    }
+
     public void Init(ItemInfo itemInfo, int num)
     {
         Icon.sprite = LoadTool.LoadSprite(itemInfo.icon);
@@ -73,6 +83,12 @@ public class ActionInfoCell : UIEntity
         {
             this.transform.DOLocalMoveY(endY, 0.2f);
         }
+    }
+
+    public override void ResetTransform()
+    {
+        base.ResetTransform();
+        ResetScale();
     }
 
     public override void Destroy()

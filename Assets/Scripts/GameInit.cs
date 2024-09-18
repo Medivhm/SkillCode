@@ -16,7 +16,7 @@ public class GameInit : MonoBehaviour
     {
         InitMonoManager(GameObject.Find("GameInit"));
         yield return null;
-        InitCommonManager();
+        StartCoroutine(InitCommonManager());
         Main.DontDestroyTemp = GameObject.Find("DontDestroyTemp").transform;
         Main.EventSystem = GameObject.Find("EventSystem").GetComponent<EventSystem>();
         yield return null;
@@ -78,11 +78,12 @@ public class GameInit : MonoBehaviour
 
     }
 
-    void InitCommonManager()
+    IEnumerator InitCommonManager()
     {
         StartCoroutine(DataManager.Instance.Init());
 
         PoolManager.Instance.Init();
+        yield return null;
         AudioManager.Instance.Init();
         CarrierManager.Instance.Init();
         FxManager.Instance.Init();

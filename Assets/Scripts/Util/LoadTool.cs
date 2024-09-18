@@ -59,9 +59,14 @@ namespace Tools
             return PoolManager.GetUIPool().Spawn(name);
         }
 
+        public static GameObject LoadWidget(string name)
+        {
+            return GameObject.Instantiate(LoadPrefab("Widgets/" + name));
+        }
+
         public static GameObject LoadWidgetPrefab(string name)
         {
-        return LoadPrefab("Widgets/" + name);
+            return LoadPrefab("Widgets/" + name);
         }
 
         public static GameObject LoadNPC(string name)

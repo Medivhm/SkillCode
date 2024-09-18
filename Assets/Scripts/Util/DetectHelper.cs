@@ -27,7 +27,7 @@ public class DetectHelper
             {
                 dists[i] = Vector3.Distance(self.Position, units[i].Position);
             }
-            return units[Util.QuickSort(dists)[0]];
+            return units[QUtil.QuickSort(dists)[0]];
         }
         return null;
     }
@@ -43,9 +43,9 @@ public class DetectHelper
             }
             for (int i = 0; i < dists.Length; i++)
             {
-                if (!self.camp.Equals(units[Util.QuickSort(dists)[i]].camp))
+                if (!self.camp.Equals(units[QUtil.QuickSort(dists)[i]].camp))
                 {
-                    return units[Util.QuickSort(dists)[i]];
+                    return units[QUtil.QuickSort(dists)[i]];
                 }
             }
         }

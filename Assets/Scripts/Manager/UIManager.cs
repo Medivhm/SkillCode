@@ -43,11 +43,14 @@ namespace Manager
         public static void UIPush(UIEntity ui)
         {
             UIStack.Push(ui);
+            IfStackJustOneUseMouse();
         }
 
         public static UIEntity UIPop()
         {
-            return UIStack.Pop();
+            UIEntity entity = UIStack.Pop();
+            IfStackEmptyUnUseMouse();
+            return entity;
         }
 
         public static void Add(string uiName, UIEntity ui)
@@ -103,7 +106,6 @@ namespace Manager
             ui.RefreshUI();
             ui.PureShow();
             UIPush(ui);
-            IfStackJustOneUseMouse();
             return ui;
         }
 
@@ -115,7 +117,6 @@ namespace Manager
             }
 
             UIEntity ui = UIPop();
-            IfStackEmptyUnUseMouse();
             ui.PureHide();
         }
 
@@ -124,7 +125,6 @@ namespace Manager
             if (!HasUI(uiName)) return;
 
             UIs[uiName].PureHide();
-            IfStackEmptyUnUseMouse();
             UIPop();
         }
 

@@ -12,8 +12,9 @@ public class BagUI : UIEntity
     public Transform TabTrans;
     public Transform GridTrans;
 
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         itemUIs = new Dictionary<int, ItemUI>();
         itemWithGrids = new Dictionary<Item, ItemUI>();
         tabUIs = new Dictionary<int, TabUI>();
@@ -21,6 +22,7 @@ public class BagUI : UIEntity
 
     public void Start()
     {
+        ResetTransform();
         InitUI();
         InitEvent();
         if(Main.LocateUI)
@@ -127,7 +129,7 @@ public class BagUI : UIEntity
 
         int setGridIndex = 0;
         int[] itemKeysArray = Bag.Instance.items.Keys.ToArray<int>();
-        int[] itemIDArraySort = Util.QuickSort(itemKeysArray);
+        int[] itemIDArraySort = QUtil.QuickSort(itemKeysArray);
         List<Item> itemList;
         foreach (var keyIndex in itemIDArraySort)
         {
@@ -169,5 +171,11 @@ public class BagUI : UIEntity
     {
         itemWithGrids.Remove(ui.item);
         ui.JustGrid();
+    }
+
+    public override void ResetTransform()
+    {
+        base.ResetTransform();
+        ResetScale();
     }
 }

@@ -1,5 +1,4 @@
-﻿using Manager;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
@@ -24,6 +23,7 @@ public class Main : Singleton<Main>
     public static PlayerController MainPlayerCtrl;
     public static CameraController MainCameraCtrl;
     public static GM GM;
+    public static ActionInfoUI ActionInfoUI;
     public static ChatUI ChatUI;
     public static LocateUI LocateUI;
     public static MagicProgressbar MagicProgressbar;
@@ -33,10 +33,33 @@ public class Main : Singleton<Main>
     public static Camera MainCamera;
     public static Camera UICamera;
     public static EventSystem EventSystem;
-    public static ActionInfoUI ActionInfoUI;
+    public static AudioSource BackgroundAudio;
 
     public static Transform SceneRoot;
     public static Transform DontDestroyTemp;
+
+    static bool playBackgroundMusic = true;
+    public static bool PlayBackgroundMusic
+    {
+        get => playBackgroundMusic;
+        set
+        {
+            if (value == playBackgroundMusic) return;
+
+            playBackgroundMusic = value;
+            if (Main.BackgroundAudio.IsNotNull())
+            {
+                if (value)
+                {
+                    Main.BackgroundAudio.Play();
+                }
+                else
+                {
+                    Main.BackgroundAudio.Stop();
+                }
+            }
+        }
+    }
 
 
     public static float CanvasScaleFactor

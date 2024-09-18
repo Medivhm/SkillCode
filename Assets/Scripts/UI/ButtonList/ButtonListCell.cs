@@ -7,8 +7,9 @@ public class ButtonListCell : UIEntity
     Button btn;
     Text text;
 
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         btn = this.gameObject.GetComponent<Button>();
         text = this.gameObject.GetComponentInChildren<Text>();
     }

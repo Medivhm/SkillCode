@@ -12,8 +12,9 @@ public class GM : UIEntity
     public Text PING;
     InputField input;
 
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         Main.GM = this;
     }
 

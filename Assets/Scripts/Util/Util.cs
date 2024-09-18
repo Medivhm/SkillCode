@@ -5,17 +5,17 @@ using System.Text;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public static class Util
+public static class QUtil
 {
     public static List<UnitEntity> FindUnitInBox(this GameObject go, Vector3 boxCenterPos, Vector3 halfExtents, Quaternion rotate)
     {
         Collider[] colliders = Physics.OverlapBox(boxCenterPos, halfExtents, rotate, 1 << Constant.Layer.Unit, QueryTriggerInteraction.Ignore);
         List<UnitEntity> units = new List<UnitEntity>();
-        foreach(var collider in colliders)
+        foreach (var collider in colliders)
         {
             //if (collider.GetComponent<UnitEntity>().IsNotNull())   // 可能有玩家身上的unit层级的碰撞体
             //{
-                units.Add(collider.GetComponent<UnitEntity>());
+            units.Add(collider.GetComponent<UnitEntity>());
             //}
         }
         return units;
@@ -50,7 +50,7 @@ public static class Util
 
     public static bool CheckHitTag(string tag)
     {
-        foreach(var res in RayFromMousePosition())
+        foreach (var res in RayFromMousePosition())
         {
             if (tag.Equals(res.gameObject.tag))
             {

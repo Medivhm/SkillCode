@@ -1,5 +1,4 @@
 ﻿using Constant;
-using Info;
 using QEntity;
 using UnityEngine;
 
@@ -120,7 +119,7 @@ namespace Creature
             IsMoving = true;
             if (moveDir)
             {
-                this.transform.eulerAngles = new Vector3(0, Util.GetDegY(dir1), 0);
+                this.transform.eulerAngles = new Vector3(0, QUtil.GetDegY(dir1), 0);
                 characterController.Move(dir1.normalized * Time.deltaTime * MoveSpeed);
                 moveRoad += Time.deltaTime * MoveSpeed;
                 if(Mathf.Abs(moveRoad) > moveMaxRoad)
@@ -132,7 +131,7 @@ namespace Creature
             }
             else
             {
-                this.transform.eulerAngles = new Vector3(0, Util.GetDegY(dir2), 0);
+                this.transform.eulerAngles = new Vector3(0, QUtil.GetDegY(dir2), 0);
                 characterController.Move(dir2.normalized * Time.deltaTime * MoveSpeed);
                 moveRoad += Time.deltaTime * MoveSpeed;
                 if (Mathf.Abs(moveRoad) > moveMaxRoad)

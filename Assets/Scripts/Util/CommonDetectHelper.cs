@@ -2,7 +2,6 @@ using QEntity;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Jobs;
 
 public class CommomDetectHelper
 {
@@ -31,7 +30,7 @@ public class CommomDetectHelper
             {
                 dists[i] = Vector3.Distance(self.transform.position, units[i].transform.position);
             }
-            return units[Util.QuickSort(dists)[0]];
+            return units[QUtil.QuickSort(dists)[0]];
         }
         return null;
     }
@@ -47,9 +46,9 @@ public class CommomDetectHelper
             }
             for (int i = 0; i < dists.Length; i++)
             {
-                if (!selfCamp.Equals(units[Util.QuickSort(dists)[i]].camp))
+                if (!selfCamp.Equals(units[QUtil.QuickSort(dists)[i]].camp))
                 {
-                    return units[Util.QuickSort(dists)[i]];
+                    return units[QUtil.QuickSort(dists)[i]];
                 }
             }
         }

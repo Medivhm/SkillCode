@@ -1,5 +1,6 @@
 using Constant;
 using Manager;
+using Steamworks;
 using System;
 using UnityEngine;
 
@@ -126,5 +127,10 @@ public class GameState : MonoSingleton<GameState>
         if (NetStateEnum.Steam == NetState)
         {
         }
+    }
+
+    private void OnApplicationQuit()
+    {
+        SteamAPI.Shutdown();
     }
 }

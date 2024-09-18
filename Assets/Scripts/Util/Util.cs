@@ -36,7 +36,6 @@ public static class QUtil
         return UnityEngine.Random.value;
     }
 
-
     static PointerEventData pointerEventData;
     public static List<RaycastResult> RayFromMousePosition()
     {

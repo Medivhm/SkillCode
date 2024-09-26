@@ -7,7 +7,7 @@ public class HotBarItem : UIEntity
 {
     public Image bgIcon;
     public Image itemIcon;
-    private Item item;
+    private Useable thing;
     private bool selected;
 
     public bool Selected
@@ -21,9 +21,9 @@ public class HotBarItem : UIEntity
             if (selected)
             {
                 bgIcon.sprite = Main.HotBar.selectedSprite;
-                if (item.IsNotNull() && item.IsEquip())
+                if (thing.IsNotNull())
                 {
-                    item.Use();
+                    thing.Use();
                 }
             }
             else
@@ -44,24 +44,24 @@ public class HotBarItem : UIEntity
         ResetScale();
     }
 
-    public void RemoveItem()
+    public void RemoveUseable()
     {
-        item = null;
+        thing = null;
         itemIcon.sprite = null;
         itemIcon.gameObject.SetActive(false);
     }
 
-    public void SetItem(Item item)
+    public void SetUseable(Useable thing)
     {
-        if (this.item.IsNotNull()) return;
+        if (this.thing.IsNotNull()) return;
 
-        this.item = item;
-        itemIcon.sprite = LoadTool.LoadSprite(item.Icon);
+        this.thing = thing;
+        itemIcon.sprite = LoadTool.LoadSprite(thing.Icon);
         itemIcon.gameObject.SetActive(true);
     }
 
-    public Item GetItem()
+    public Useable GetUseable()
     {
-        return item;
+        return thing;
     }
 }

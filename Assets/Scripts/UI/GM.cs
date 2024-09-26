@@ -177,6 +177,14 @@ public class GM : UIEntity
         }
     }
 
+    public void ChangeDayTime()
+    {
+        NoFocusOnInput();
+        if (InputEmpty()) return;
+
+        Main.SkyController.MinuPerRound = float.Parse(input.text);
+    }
+
     //public void AddItem()
     //{
     //    NoFocusOnInput();

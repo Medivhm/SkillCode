@@ -23,10 +23,50 @@ public class HotBar : UIEntity
 
     public void Start()
     {
+        InitQuickKey();
         ResetTransform();
         //InitItems();
         //MainMouseController.Instance.AddMouseScrollChange(MouseScrollChange);
         StartCoroutine(DeleteWhenMoveToCurrentProject());
+    }
+
+    public void InitQuickKey()
+    {
+        if(gridsNum > 0)
+        {
+            Ctrl.SetQuickKey(KeyCode.Alpha1, () =>
+            {
+                SelectIndex(0);
+            });
+        }
+        if (gridsNum > 1)
+        {
+            Ctrl.SetQuickKey(KeyCode.Alpha2, () =>
+            {
+                SelectIndex(1);
+            });
+        }
+        if (gridsNum > 2)
+        {
+            Ctrl.SetQuickKey(KeyCode.Alpha3, () =>
+            {
+                SelectIndex(2);
+            });
+        }
+        if (gridsNum > 3)
+        {
+            Ctrl.SetQuickKey(KeyCode.Alpha4, () =>
+            {
+                SelectIndex(3);
+            });
+        }
+        if (gridsNum > 4)
+        {
+            Ctrl.SetQuickKey(KeyCode.Alpha5, () =>
+            {
+                SelectIndex(4);
+            });
+        }
     }
 
     IEnumerator DeleteWhenMoveToCurrentProject()
@@ -35,9 +75,9 @@ public class HotBar : UIEntity
         InitItems();
         MainMouseController.Instance.AddMouseScrollChange(MouseScrollChange);
         yield return new WaitForSeconds(0.3f);
-        items[0].SetItem(Ctrl.CreateItem(7));
-        items[1].SetItem(Ctrl.CreateItem(8));
-        items[2].SetItem(Ctrl.CreateItem(9));
+        items[0].SetUseable(Ctrl.CreateWeapon(1));
+        items[1].SetUseable(Ctrl.CreateWeapon(2));
+        items[2].SetUseable(Ctrl.CreateWeapon(3));
         SelectIndex(0);
     }
 

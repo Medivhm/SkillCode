@@ -1,0 +1,32 @@
+[
+  {
+    "ID": 1,
+    "name": "头盔",
+    "color": 2,
+    "overlap": 1,
+    "prefab": "",
+    "icon": "weapon/shooter/Bow_1",
+    "desc": "一个普通的头盔",
+    "canDestroy": true
+  },
+  {
+    "ID": 2,
+    "name": "衣服",
+    "color": 2,
+    "overlap": 1,
+    "prefab": "",
+    "icon": "weapon/wizard/Magic_Wand_Earth_3",
+    "desc": "一个普通的衣服",
+    "canDestroy": true
+  },
+  {
+    "ID": 3,
+    "name": "靴子",
+    "color": 2,
+    "overlap": 1,
+    "prefab": "",
+    "icon": "weapon/fighter/Axe_1",
+    "desc": "一个普通的靴子",
+    "canDestroy": true
+  }
+]

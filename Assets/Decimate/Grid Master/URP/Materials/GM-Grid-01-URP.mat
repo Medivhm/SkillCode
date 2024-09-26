@@ -74,7 +74,7 @@ Material:
     - _COORDINATES: 0
     - _Dirt: 0
     - _Dirt_Blend: 0.875
-    - _Dirt_Height: 2
+    - _Dirt_Height: 1.61
     - _Edge_Sharpness: 50
     - _Emission: 0
     - _Emission_Tiling: 1

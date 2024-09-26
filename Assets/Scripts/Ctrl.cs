@@ -46,6 +46,12 @@ public class Ctrl : Singleton<Ctrl>
     {
         QuickKeyManager.SetIgnore(state);
     }
+
+    public static Weapon CreateWeapon(int weaponID)
+    {
+        return WeaponManager.CreateWeapon(weaponID);
+    }
+
     public static Item CreateItem(int itemID)
     {
         return ItemManager.CreateItem(itemID);

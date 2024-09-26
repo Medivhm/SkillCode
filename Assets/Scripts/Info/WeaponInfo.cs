@@ -2,15 +2,16 @@
 
 namespace Info
 {
-    public class EquipInfo
+    public class WeaponInfo
     {
         public int    ID;
-        public string name;
         public int    type;
-        public float  attackArea;
-        public int    startAngle;
-        public int    attackRange;
+        public string name;
+        public int    color;
+        public int    overlap;
+        public string prefab;
         public string icon;
-        public int    bullet;
+        public string desc;
+        public bool   canDestroy;
     }
 }

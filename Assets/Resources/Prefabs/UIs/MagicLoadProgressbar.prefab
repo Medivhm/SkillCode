@@ -50,10 +50,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 739e4631b64d95a4b899198f712b323f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rectTrans: {fileID: 0}
   IsShow: 0
-  text: {fileID: 0}
-  progressbar: {fileID: 0}
+  text: {fileID: 4930903418645723517}
+  progressbar: {fileID: 8900082896923279442}
 --- !u!1 &8793314176250926433
 GameObject:
   m_ObjectHideFlags: 0
@@ -277,3 +276,15 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 6078170767205611455}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &8900082896923279442 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3447912499441072109, guid: 62c52738d05e78e40afc27849e55f4b8,
+    type: 3}
+  m_PrefabInstance: {fileID: 6078170767205611455}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef9f18a236372994e96b96404de4efa0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

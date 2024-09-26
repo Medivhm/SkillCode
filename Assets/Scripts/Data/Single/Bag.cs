@@ -33,7 +33,7 @@ public class Bag : Singleton<Bag>
 
     private void AddItemEx(Item item, bool doChange)
     {
-        item.From = ItemFrom.Bag;
+        item.From = From.Bag;
 
         List<Item> list;
         if (!items.TryGetValue(item.ItemID, out list))

@@ -62,7 +62,7 @@ namespace Creature
         private void Start()
         {
             gameObject.name = "兽人";
-            camp = Camp.Camp1;
+            camp = new Camp { CampID = 1 };
 
             basicAttr = new BasicAttr(CreatureConstant.DefaultEntityAttr);
             closeAttackAttr = new AttackAttr(CreatureConstant.DefaultAttackAttr);

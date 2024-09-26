@@ -17,7 +17,7 @@ namespace Manager
         {
             if (GetItemInfo(itemID).IsNotNull())
             {
-                return new Item(itemInfo, ItemFrom.Other, 1);
+                return new Item(itemInfo, From.Other, 1);
             }
             return null;
         }

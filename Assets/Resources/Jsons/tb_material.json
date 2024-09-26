@@ -1,0 +1,68 @@
+[
+  {
+    "ID": 1,
+    "type": 1,
+    "name": "材料1",
+    "color": 2,
+    "overlap": 99,
+    "prefab": "Blue_Bottle_1",
+    "icon": "item/Blue_Bottle_1",
+    "desc": "材料1",
+    "canDestroy": true
+  },
+  {
+    "ID": 2,
+    "type": 1,
+    "name": "材料2",
+    "color": 2,
+    "overlap": 99,
+    "prefab": "Blue_Bottle_2",
+    "icon": "item/Blue_Bottle_2",
+    "desc": "材料2",
+    "canDestroy": true
+  },
+  {
+    "ID": 3,
+    "type": 1,
+    "name": "材料3",
+    "color": 2,
+    "overlap": 99,
+    "prefab": "Blue_Bottle_3",
+    "icon": "item/Blue_Bottle_3",
+    "desc": "材料3",
+    "canDestroy": true
+  },
+  {
+    "ID": 4,
+    "type": 1,
+    "name": "材料4",
+    "color": 2,
+    "overlap": 99,
+    "prefab": "Blue_Bottle_3",
+    "icon": "item/Blue_Bottle_3",
+    "desc": "材料4",
+    "canDestroy": true
+  },
+  {
+    "ID": 5,
+    "type": 1,
+    "name": "材料5",
+    "color": 2,
+    "overlap": 99,
+    "prefab": "Blue_Bottle_1",
+    "icon": "item/Blue_Bottle_1",
+    "desc": "材料5",
+    "canDestroy": true
+  },
+  {
+    "ID": 6,
+    "type": 1,
+    "name": "材料6",
+    "color": 5,
+    "overlap": 99,
+    "prefab": "Blue_Bottle_2",
+    "icon": "item/Blue_Bottle_2",
+    "desc": "材料6",
+    "canDestroy": true
+  }
+]

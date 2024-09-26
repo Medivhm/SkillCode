@@ -1,0 +1,35 @@
+[
+  {
+    "ID": 1,
+    "type": 1,
+    "name": "新手弓箭",
+    "color": 2,
+    "overlap": 1,
+    "prefab": "",
+    "icon": "weapon/shooter/Bow_1",
+    "desc": "一把普通的弓箭",
+    "canDestroy": true
+  },
+  {
+    "ID": 2,
+    "type": 2,
+    "name": "新手法杖",
+    "color": 2,
+    "overlap": 1,
+    "prefab": "",
+    "icon": "weapon/wizard/Magic_Wand_Earth_3",
+    "desc": "一把普通的法杖",
+    "canDestroy": true
+  },
+  {
+    "ID": 3,
+    "type": 3,
+    "name": "新手斧头",
+    "color": 2,
+    "overlap": 1,
+    "prefab": "",
+    "icon": "weapon/fighter/Axe_1",
+    "desc": "一把普通的斧头",
+    "canDestroy": true
+  }
+]

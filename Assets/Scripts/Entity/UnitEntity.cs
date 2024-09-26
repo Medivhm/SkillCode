@@ -4,11 +4,9 @@ using UnityEngine;
 
 namespace QEntity
 {
-    public enum Camp
+    public struct Camp
     {
-        Camp0,
-        Camp1,
-        Camp2,
+        public int CampID;
     }
 
     public enum Profession

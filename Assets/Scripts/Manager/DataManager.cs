@@ -13,6 +13,7 @@ namespace Manager
         //public Dictionary<int, MapInfo>          MapInfos;
         //public Dictionary<int, BulletInfo>       BulletInfos;
         public Dictionary<int, ItemInfo>         ItemInfos;
+        public Dictionary<int, WeaponInfo>       WeaponInfos;
         //public Dictionary<int, ActivitiesUIInfo> ActivitiesUIInfos;
         //public Dictionary<int, NPCInfo>          NPCInfos;
         public BagInfo                           BagInfos;
@@ -69,13 +70,23 @@ namespace Manager
             //}
             //yield return null;
 
-            // 物品表导入
+            // Item表导入
             json = LoadTool.LoadJson("tb_item");
             List<ItemInfo> itemInfo = JsonConvert.DeserializeObject<List<ItemInfo>>(json);
             ItemInfos = new Dictionary<int, ItemInfo>();
             for (int i = 0; i < itemInfo.Count; i++)
             {
                 ItemInfos.Add(itemInfo[i].ID, itemInfo[i]);
+            }
+            yield return null;
+
+            // Weapon表导入
+            json = LoadTool.LoadJson("tb_weapon");
+            List<WeaponInfo> weaponInfo = JsonConvert.DeserializeObject<List<WeaponInfo>>(json);
+            WeaponInfos = new Dictionary<int, WeaponInfo>();
+            for (int i = 0; i < weaponInfo.Count; i++)
+            {
+                WeaponInfos.Add(weaponInfo[i].ID, weaponInfo[i]);
             }
             yield return null;
 

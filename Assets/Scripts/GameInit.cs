@@ -90,7 +90,12 @@ public class GameInit : MonoBehaviour
         //CreatureManager.Instance.Init();
         FunctionManager.Instance.Init();
         GameSaveManager.Instance.Init();
+
+        ///// Bag thing
         ItemManager.Instance.Init();
+        WeaponManager.Instance.Init();
+        /////
+
         TextureManager.Instance.Init();
         UIManager.Instance.Init();
         ChunkManager.Instance.Init();
@@ -98,7 +103,6 @@ public class GameInit : MonoBehaviour
         //UserManager.Instance.Init();
         HUDManager.Instance.Init();
         //BRGManager.Instance.Init();
-
 
         MagicSkillManager.Instance.Init();
     }

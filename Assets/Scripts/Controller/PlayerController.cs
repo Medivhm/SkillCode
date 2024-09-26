@@ -112,7 +112,7 @@ public class PlayerController : PlayerEntity
     void Start()
     {
         Main.MainPlayerCtrl = this;
-        camp = Camp.Camp0;
+        camp = new Camp { CampID = 0 };
         gameObject.name = string.Format("[{0}]", 0);
         //hud = Ctrl.AddHUD(this.transform, string.Format("[{0}] {1}", 1, "测试玩家"), 100f, 50f);
         InitPropers();
@@ -162,18 +162,18 @@ public class PlayerController : PlayerEntity
     void KeyboardPressInit()             // 快捷键初始化
     #region
     {
-        Ctrl.SetQuickKey(KeyCode.Alpha1, () =>
-        {
-            PlayAnim("Dance1", 0.1f);
-        });
-        Ctrl.SetQuickKey(KeyCode.Alpha2, () =>
-        {
-            PlayAnim("Dance2", 0.1f);
-        });
-        Ctrl.SetQuickKey(KeyCode.Alpha3, () =>
-        {
-            PlayAnim("Dance3", 0.1f);
-        });
+        //    Ctrl.SetQuickKey(KeyCode.Alpha1, () =>
+        //    {
+        //        PlayAnim("Dance1", 0.1f);
+        //    });
+        //    Ctrl.SetQuickKey(KeyCode.Alpha2, () =>
+        //    {
+        //        PlayAnim("Dance2", 0.1f);
+        //    });
+        //    Ctrl.SetQuickKey(KeyCode.Alpha3, () =>
+        //    {
+        //        PlayAnim("Dance3", 0.1f);
+        //    });
         Ctrl.SetQuickKey(KeyCode.Space, () =>
         {
             if (IsGrounded)

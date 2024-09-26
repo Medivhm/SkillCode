@@ -19,6 +19,7 @@ public class QProgressbar : UIEntity
 
     protected override void Awake()
     {
+        base.Awake();
         bgImage = GetComponent<Image>();
         barImage = transform.GetChild(0).GetComponent<Image>();
         ResetData();
@@ -32,7 +33,6 @@ public class QProgressbar : UIEntity
     public override void ResetTransform()
     {
         base.ResetTransform();
-        ResetScale();
     }
 
     public void ResetData()

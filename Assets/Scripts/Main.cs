@@ -28,6 +28,7 @@ public class Main : Singleton<Main>
     public static LocateUI LocateUI;
     public static MagicProgressbar MagicProgressbar;
     public static HotBar HotBar;
+    public static SkyController SkyController;
 
     public static Canvas MainCanvas;
     public static Camera MainCamera;

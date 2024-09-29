@@ -1,6 +1,7 @@
 ﻿using Constant;
 using Info;
 using Manager;
+using QEntity;
 using UnityEngine;
 
 public enum From
@@ -16,53 +17,38 @@ public class Item : Useable
     // 背包，快捷栏，地面
     public From From;
     public ItemInfo Info;
+    public UnitEntity Owner;
 
     private Item()
     {
 
     }
 
-    public Item(int itemID, From from, int num) : this(DataManager.Instance.ItemInfos[itemID], from, num)
+    public Item(int itemID, From from, int num, UnitEntity owner = null) : this(DataManager.Instance.ItemInfos[itemID], from, num, owner)
     {
     }
 
-    public Item(ItemInfo info, From from, int num)
+    public Item(ItemInfo info, From from, int num, UnitEntity owner = null)
     {
         Info = info;
         From = from;
         Num = num;
     }
 
-    public int ItemID
-    {
-        get => Info.ID;
-    }
+    public int ItemID => Info.ID;
 
-    public int Type
-    {
-        get => Info.type;
-    }
+    public int Type => Info.type;
 
-    public string Name
-    {
-        get => Info.name;
-    }
+    public string Name => Info.name;
+
+    public string PrefabPath => Info.prefab;
 
     // "#FFFFFF"
-    public Color Color
-    {
-        get => ColorConstant.ColorDefine[Info.color];
-    }
+    public Color Color => ColorConstant.ColorDefine[Info.color];
 
-    public int Overlap
-    {
-        get => Info.overlap;
-    }
+    public int Overlap => Info.overlap;
 
-    public override string Icon
-    {
-        get => Info.icon;
-    }
+    public override string Icon => Info.icon;
 
     public string Desc
     {

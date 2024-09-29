@@ -29,23 +29,23 @@ namespace Manager
             //StartCoroutine(PreCreatePool());
         }
 
-        IEnumerator PreCreatePool()
-        {
-            BrickPool chunkPool = (BrickPool)GetBrickPool();
-            int count = 0;
-            for(int i = 1; i <= 10000; i++)
-            {
-                BrickEntity entity = GameObject.Instantiate(LoadTool.LoadBrickPrefab("NormalBrick")).GetComponent<BrickEntity>();
-                entity.gameObject.name = "NormalBrick";
-                entity.Destroy();
-                count++;
-                if(count > 200)
-                {
-                    count = 0;
-                    yield return null;
-                }
-            }
-        }
+        //IEnumerator PreCreatePool()
+        //{
+        //    BrickPool chunkPool = (BrickPool)GetBrickPool();
+        //    int count = 0;
+        //    for(int i = 1; i <= 10000; i++)
+        //    {
+        //        BrickEntity entity = GameObject.Instantiate(LoadTool.LoadBrickPrefab("NormalBrick")).GetComponent<BrickEntity>();
+        //        entity.gameObject.name = "NormalBrick";
+        //        entity.Destroy();
+        //        count++;
+        //        if(count > 200)
+        //        {
+        //            count = 0;
+        //            yield return null;
+        //        }
+        //    }
+        //}
 
         public int Count
         {
@@ -66,6 +66,19 @@ namespace Manager
             {
                 pool.Update(Time.deltaTime);
             }
+        }
+
+        public static AutoPool GetAutoPool()
+        {
+            PoolBase pool;
+            m_Pools.TryGetValue(Constant.PoolConstant.AutoPoolName, out pool);
+            if (pool == null)
+            {
+                pool = new AutoPool();
+                pool.Init(Constant.PoolConstant.AutoPoolName);
+                m_Pools.Add(Constant.PoolConstant.AutoPoolName, pool);
+            }
+            return pool as AutoPool;
         }
 
         public static BrickPool GetBrickPool()

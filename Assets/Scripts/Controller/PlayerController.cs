@@ -129,8 +129,9 @@ public class PlayerController : PlayerEntity
         Profession = Profession.Fighter;
     }
 
-    void Update()
+    protected override void Update()
     {
+        base.Update();
         if(!banControl)
         {
             MoveTick();
@@ -184,7 +185,7 @@ public class PlayerController : PlayerEntity
         });
         Ctrl.SetQuickKey(KeyCode.R, () =>
         {
-            StartCoroutine(ResetPosition());
+            Position = new Vector3(0, 10, 0);
         });
     }
     #endregion
@@ -420,17 +421,6 @@ public class PlayerController : PlayerEntity
                 1,
                 false,
                 true);
-    }
-    #endregion
-
-    IEnumerator ResetPosition()          // ³õÊ¼»¯×ø±ê
-    #region
-    {
-        SetControl(false);
-        yield return null;
-        transform.position = new Vector3(0, 10, 0);
-        yield return null;
-        SetControl(true);
     }
     #endregion
 

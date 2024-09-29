@@ -14,6 +14,12 @@ public static class UtilExtensions
 
     //    }
 
+    public static void MoveToUnit(this GameObject go, Transform Target, Action OverEvent = null)
+    {
+        MoveToUnit script = go.GetOrAddComponent<MoveToUnit>();
+        script.Init(Target, OverEvent);
+    }
+
     public static T GetOrAddComponent<T>(this GameObject go) where T : Component
     {
         T t = go.GetComponent<T>();

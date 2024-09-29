@@ -1,5 +1,6 @@
 ﻿using Constant;
 using System;
+using System.Collections;
 using UnityEngine;
 
 namespace QEntity
@@ -18,11 +19,16 @@ namespace QEntity
 
     public class UnitEntity : MonoBehaviour
     {
+        public float attackRadius = 1f;
         public Camp camp;
         public virtual Profession Profession
         {
             get;
             set;
+        }
+        public virtual float OutColliderRadius
+        {
+            get => characterController.radius;
         }
 
         Vector3 center;
@@ -52,7 +58,7 @@ namespace QEntity
         // 这个detect主要是对攻击对象的检测，如果有其他检测，在那个类里另加，不要用这个
         protected DetectHelper detect;
         private QuickTimer quickTimer;
-
+        public Action DeadEvent;
 
         public float gravity = 78f;
 
@@ -133,13 +139,23 @@ namespace QEntity
 
         public Vector3 Position
         {
-            set { transform.position = value; }
+            set 
+            {
+                characterController.enabled = false;
+                transform.position = value;
+                characterController.enabled = true;
+            }
             get { return transform.position; }
-        }
+        }  
 
         public Vector3 LocalPosition
         {
-            set { transform.localPosition = value; }
+            set
+            {
+                characterController.enabled = false;
+                transform.localPosition = value;
+                characterController.enabled = true;
+            }
             get { return transform.localPosition; }
         }
 
@@ -189,6 +205,37 @@ namespace QEntity
             }
         }
         #endregion
+
+
+        bool attackMove = false;
+        float attackMoveTime = 0.3f;
+        Vector3 attackMoveDir;
+        protected void AttackMove()         // 受击水平推动
+        #region
+        {
+            characterController.Move(Time.deltaTime * MoveSpeed * attackMoveDir * 3);
+            attackMoveTime -= Time.deltaTime;
+            if(attackMoveTime < 0)
+            {
+                attackMove = false;
+            }
+        }
+
+        public void BeAttack(Vector3 attackDir)
+        {
+            attackMove = true;
+            attackMoveTime = 0.3f;
+            attackMoveDir = attackDir.normalized;
+        }
+        #endregion
+
+        protected virtual void Update()
+        {
+            if (attackMove)
+            {
+                AttackMove();
+            }
+        }
 
         public void SetControl(bool state)   // 设置是否由自主控制移动，区分技能移动
         #region
@@ -245,6 +292,10 @@ namespace QEntity
         public virtual void Dead()
         {
             isDead = true;
+            if (DeadEvent.IsNotNull())
+            {
+                DeadEvent.Invoke();
+            }
         }
 
         public virtual void Revive()

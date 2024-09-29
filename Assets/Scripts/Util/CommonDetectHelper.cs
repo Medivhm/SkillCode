@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CommomDetectHelper
+public class CommonDetectHelper
 {
     GameObject self;
     Camp selfCamp;

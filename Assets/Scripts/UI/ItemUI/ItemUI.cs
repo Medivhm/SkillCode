@@ -53,6 +53,13 @@ public class ItemUI : UIEntity, IPointerEnterHandler, IPointerExitHandler, IPoin
     public void Start()
     {
         item = null;
+        ResetTransform();
+    }
+
+    public override void ResetTransform()
+    {
+        base.ResetTransform();
+        ResetScale();
     }
 
     public void JustItem()

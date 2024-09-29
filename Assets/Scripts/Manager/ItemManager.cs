@@ -13,11 +13,11 @@ namespace Manager
         }
 
         static ItemInfo itemInfo;
-        public static Item CreateItem(int itemID)
+        public static Item CreateItem(int itemID, UnitEntity owner = null)
         {
             if (GetItemInfo(itemID).IsNotNull())
             {
-                return new Item(itemInfo, From.Other, 1);
+                return new Item(itemInfo, From.Other, 1, owner);
             }
             return null;
         }

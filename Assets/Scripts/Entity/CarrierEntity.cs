@@ -116,14 +116,14 @@ namespace QEntity
         }
 
 
-        CommomDetectHelper commonDetectHelper;
+        CommonDetectHelper commonDetectHelper;
         void GiveItMagic()
         {
             if (this.autoSearch)
             {
                 if(commonDetectHelper.IsNull())
                 {
-                    commonDetectHelper = new CommomDetectHelper();
+                    commonDetectHelper = new CommonDetectHelper();
                     commonDetectHelper.Init(gameObject, 40, TagConstant.Unit, Owner.camp);
                 }
             }

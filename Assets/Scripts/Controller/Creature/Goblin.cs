@@ -8,6 +8,7 @@ namespace Creature
     {
         public CheckGround checkGround;
 
+        
         bool isJump = false;
         public override bool IsJump
         {
@@ -71,8 +72,7 @@ namespace Creature
             BloodMax = 120f;
             Blood = 100f;
             Name = name;
-            hud = Ctrl.AddHUD(this.transform, string.Format("[{0}] {1}", 1, "兽人"), 100f, 50f);
-
+            hud = Ctrl.AddHUD(this.transform, string.Format("[{0}] {1}", 1, "兽人"), BloodMax, Blood);
 
             MoveSpeed = 9;
         }
@@ -85,8 +85,9 @@ namespace Creature
         bool noMove = false;
 
 
-        private void Update()
+        protected override void Update()
         {
+            base.Update();
             if (noMove) return;
 
             VerticalMove();

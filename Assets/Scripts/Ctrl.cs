@@ -3,9 +3,32 @@ using QEntity;
 using Manager;
 using System;
 using UnityEngine;
+using Tools;
 
 public class Ctrl : Singleton<Ctrl>
 {
+    public static bool DropItem(int itemID, Vector3 pos)
+    {
+        return DropItem(Ctrl.CreateItem(itemID), pos);
+    }
+
+    public static bool DropItem(Item item, Vector3 pos)
+    {
+        if (item.IsNull() || item.Num < 1) return false;
+
+        GameObject go = LoadTool.LoadItem(item.PrefabPath);
+        go.transform.position = pos;
+        TimerManager.Add(2f, () =>
+        {
+            go.MoveToUnit(item.Owner.transform, () =>
+            {
+                Ctrl.MakeItemToBag(item);
+            });
+        });
+
+        return true;
+    }
+
     public static void UseMouse()
     {
         SetMouseRotate(false);
@@ -60,7 +83,14 @@ public class Ctrl : Singleton<Ctrl>
     public static Item MakeItemToBag(int itemID)
     {
         Item item = CreateItem(itemID);
+        MakeItemToBag(item);
+        return item;
+    }
+
+    public static Item MakeItemToBag(Item item)
+    {
         Bag.Instance.AddItem(item);
+        GUI.ActionInfoLog(string.Format("获得 [{0}] {1}个", item.Name, item.Num));
         return item;
     }
 

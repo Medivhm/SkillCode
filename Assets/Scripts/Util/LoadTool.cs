@@ -82,6 +82,11 @@ namespace Tools
             return fxGo;
         }
 
+        public static GameObject LoadItem(string name)
+        {
+            return PoolManager.GetAutoPool().Spawn("Items", name);
+        }
+
         public static byte[] LoadLua(string name)
         {
             return Resources.Load<TextAsset>(string.Format("lua/{0}", name)).bytes;

@@ -1340,8 +1340,8 @@ CharacterController:
   serializedVersion: 3
   m_Height: 3.51
   m_Radius: 0.81
-  m_SlopeLimit: 45
-  m_StepOffset: 1.2
+  m_SlopeLimit: 70
+  m_StepOffset: 0.5
   m_SkinWidth: 0.0001
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 1.69, z: 0}
@@ -1357,7 +1357,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dd4eac5cf8014b548982d3d482fcba8e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  camp: 0
   isDead: 0
   hitPosition: {fileID: 7326054596486786521}
   banControl: 0

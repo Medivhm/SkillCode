@@ -3,6 +3,7 @@ using Manager;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using System.Collections;
 
 public class BagUI : UIEntity
 {
@@ -25,7 +26,7 @@ public class BagUI : UIEntity
         ResetTransform();
         InitUI();
         InitEvent();
-        if(Main.LocateUI)
+        if (Main.LocateUI)
         {
             this.transform.position = (Main.LocateUI.CenterNode.position + Main.LocateUI.RightUpNode.position) / 2;
         }
@@ -35,7 +36,10 @@ public class BagUI : UIEntity
     {
         Bag.Instance.ItemChange += (item, ch) =>
         {
-            RecieveMessage(item, ch);
+            if (this.gameObject.activeSelf)
+            {
+                RecieveMessage(item, ch);
+            }
         };
     }
 
@@ -61,6 +65,8 @@ public class BagUI : UIEntity
 
     public override void RefreshUI()
     {
+        if (itemUIs.IsNull() || itemUIs.Count == 0) return;
+
         base.RefreshUI();
         int itemSetNum = SetItems();
         for (int i = itemSetNum; i < itemUIs.Count; i++)
@@ -71,12 +77,12 @@ public class BagUI : UIEntity
 
     private void InitUI()
     {
-        InitTabs();
+        StartCoroutine(InitTabs());
         InitGrids();
         SetItems();
     }
 
-    private void InitTabs()
+    IEnumerator InitTabs()
     {
         ClearTabs();
 
@@ -86,6 +92,9 @@ public class BagUI : UIEntity
             TabUI tab = GUI.CreateTab(tabTitle, null, TabTrans);
             tabUIs.Add(i, tab);
         }
+
+        yield return null;
+        TabTrans.ForceRebuildLayout();
     }
 
     private void ClearTabs()
@@ -177,5 +186,6 @@ public class BagUI : UIEntity
     {
         base.ResetTransform();
         ResetScale();
+        this.transform.localPosition = Vector3.zero;
     }
 }

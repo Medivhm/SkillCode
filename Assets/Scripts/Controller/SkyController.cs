@@ -14,7 +14,7 @@ public class SkyController : MonoBehaviour
     public float maxIntensity = 2f;
     public float minIntensity = 0f;
 
-    private float minuPerRound = 1f;  // 分钟每圈
+    private float minuPerRound = 24f;  // 分钟每圈
     public float MinuPerRound
     {
         get => minuPerRound;

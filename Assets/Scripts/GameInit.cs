@@ -81,7 +81,7 @@ public class GameInit : MonoBehaviour
     IEnumerator InitCommonManager()
     {
         StartCoroutine(DataManager.Instance.Init());
-
+        TimerManager.Instance.Init();
         PoolManager.Instance.Init();
         yield return null;
         AudioManager.Instance.Init();

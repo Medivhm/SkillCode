@@ -194,6 +194,7 @@ namespace Constant
     public static class PoolConstant
     {
         // ∂‘œÛ≥ÿ√˚≥∆
+        public static string AutoPoolName    = "AutoPool";
         public static string CarrierPoolName = "CarrierPool";
         public static string UIPoolName      = "UIPool";
         public static string BrickPoolName   = "BrickPool";

@@ -8,6 +8,17 @@ public class TabUI : UIEntity
     public Button button;
     public Text text;
 
+    private void Start()
+    {
+        ResetTransform();
+    }
+
+    public override void ResetTransform()
+    {
+        base.ResetTransform();
+        ResetScale();
+    }
+
     public void SetTitle(string title)
     {
         text.text = title;

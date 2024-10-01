@@ -39,7 +39,7 @@ public class Main : Singleton<Main>
     public static Transform SceneRoot;
     public static Transform DontDestroyTemp;
 
-    static bool playBackgroundMusic = true;
+    static bool playBackgroundMusic = false;
     public static bool PlayBackgroundMusic
     {
         get => playBackgroundMusic;

@@ -13,7 +13,10 @@ namespace Manager
                 AudioClip clip = LoadTool.LoadAudio("NoOut/flowersea");
                 Main.BackgroundAudio.clip = clip;
                 Main.BackgroundAudio.loop = true;
-                Main.BackgroundAudio.Play();
+                if (Main.PlayBackgroundMusic)
+                {
+                    Main.BackgroundAudio.Play();
+                }
             }
         }
 

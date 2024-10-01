@@ -402,7 +402,7 @@ public class PlayerController : PlayerEntity
         Vector3? hitPoint = GetClosestRayHitPoint();
         if (hitPoint.IsNotNull())
         {
-            shootDir = (Vector3)hitPoint - Main.MainCamera.transform.position;
+            shootDir = (Vector3)hitPoint - magicShootPoint.transform.position;
         }
 
         GameObject go = LoadTool.LoadCarrier(CarrierManager.GetCarrierInfoByID(1).carrierPath);
@@ -410,7 +410,7 @@ public class PlayerController : PlayerEntity
 
         AudioManager.PlayOneShot("arrow_shoot");
         carrier.Init(CarrierManager.GetCarrierInfoByID(1),
-                Main.MainCamera.transform.position,
+                magicShootPoint.transform.position,
                 shootDir,
                 null,
                 go,

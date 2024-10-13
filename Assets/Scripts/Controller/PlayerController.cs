@@ -4,7 +4,6 @@ using UnityEngine;
 using System;
 using System.Collections.Generic;
 using Fsm;
-using System.Collections;
 using Constant;
 using Tools;
 
@@ -26,6 +25,11 @@ public class PlayerController : PlayerEntity
     public SkillFsm skillFsm;
 
     public Action<float, Vector3> MoveTickAction;    // arg1:move distance, arg2:position
+
+    string RunForwardAnim = "Run_Forward";
+    string IdleAnim = "Idle_1";
+    string AttackAnim = "Attack_1";
+    string GetHurtAnim = "GetHit_1";
 
     private Profession profession;
     public override Profession Profession 
@@ -68,11 +72,11 @@ public class PlayerController : PlayerEntity
             isMoving = value;
             if(isMoving == true)
             {
-                PlayAnim("Run", 0.01f);
+                PlayAnim(RunForwardAnim, 0.01f);
             }
             else
             {
-                PlayAnim("Idle", 0.01f);
+                PlayAnim(IdleAnim, 0.01f);
             }
         }
     }
@@ -180,12 +184,16 @@ public class PlayerController : PlayerEntity
             if (IsGrounded)
             {
                 IsJump = true;
-                SetJumpSpeed();           // 设置跳跃速度
+                Jump();
             }
         });
         Ctrl.SetQuickKey(KeyCode.R, () =>
         {
             Position = new Vector3(0, 10, 0);
+        });
+        Ctrl.SetQuickKey(KeyCode.Q, () =>
+        {
+            AddVelocity(new Vector3(0, 50, 0));
         });
     }
     #endregion
@@ -469,15 +477,6 @@ public class PlayerController : PlayerEntity
     {
         if (Main.MainCameraCtrl.IsNull()) { return; }
 
-        HorizontalMove();    // 平面上的移动
-        VerticalMove();      // 模拟重力移动
-    }
-    #endregion
-
-    
-    void HorizontalMove()                // VerticalMove 在父类UnitEntity里
-    #region
-    {
         move = false;
         horizontal = Input.GetAxis("Horizontal");
         vertical = Input.GetAxis("Vertical");
@@ -491,18 +490,18 @@ public class PlayerController : PlayerEntity
         }
 
         IsMoving = move;
+        Vector3 dirtyMoveDir = vertical * Main.MainCameraCtrl.Forward + horizontal * Main.MainCameraCtrl.Right;
+        dir = dirtyMoveDir.normalized;
+        Move(Vector3.ClampMagnitude(dirtyMoveDir, 1f));
         if (move)
         {
-            dir = (vertical * Main.MainCameraCtrl.Forward + horizontal * Main.MainCameraCtrl.Right).normalized;
-            characterController.Move(dir * speed * Time.deltaTime);
             targetYEuler = QUtil.GetDegY(dir);
-            MoveDistanceCheck((dir * speed * Time.deltaTime).magnitude);
         }
+        MoveDistanceCheck((dir * speed * Time.deltaTime).magnitude);
     }
 
     void MoveDistanceCheck(float distance)
     {
-        // Move Tick
         moveCount += distance;
         if (moveCount > moveDistanceTick)
         {

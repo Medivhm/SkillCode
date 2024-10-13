@@ -1,6 +1,5 @@
-﻿using Constant;
+﻿using KinematicCharacterController.Walkthrough.AddingImpulses;
 using System;
-using System.Collections;
 using UnityEngine;
 
 namespace QEntity
@@ -17,9 +16,10 @@ namespace QEntity
         Shooter,          // 射手
     }
 
+    [RequireComponent(typeof(QCharacterController))]
     public class UnitEntity : MonoBehaviour
     {
-        public float attackRadius = 1f;
+        public float attackRadius = 2f;
         public Camp camp;
         public virtual Profession Profession
         {
@@ -28,7 +28,7 @@ namespace QEntity
         }
         public virtual float OutColliderRadius
         {
-            get => characterController.radius;
+            get => QCC.Capsule.radius;
         }
 
         Vector3 center;
@@ -36,6 +36,7 @@ namespace QEntity
         [NonSerialized]
         public bool noHurt = false;
         public bool isDead = false;
+        public QCharacterController QCC;
 
         // 实际魔法弹自瞄位置
         public Transform hitPosition;
@@ -52,7 +53,6 @@ namespace QEntity
 
         [SerializeField]
         protected Animator animator;
-        public CharacterController characterController;
 
         protected HUDEntity hud;
         // 这个detect主要是对攻击对象的检测，如果有其他检测，在那个类里另加，不要用这个
@@ -139,23 +139,13 @@ namespace QEntity
 
         public Vector3 Position
         {
-            set 
-            {
-                characterController.enabled = false;
-                transform.position = value;
-                characterController.enabled = true;
-            }
-            get { return transform.position; }
+            set { transform.position = value; }
+            get => transform.position;
         }  
 
         public Vector3 LocalPosition
         {
-            set
-            {
-                characterController.enabled = false;
-                transform.localPosition = value;
-                characterController.enabled = true;
-            }
+            set { transform.localPosition = value; }
             get { return transform.localPosition; }
         }
 
@@ -190,51 +180,29 @@ namespace QEntity
             down.y = -20;
         }
 
-        protected void VerticalMove()
-        #region
+        public void AddVelocity(Vector3 velocity)
         {
-            // 模拟重力
-            if (IsJump || !IsGrounded)
-            {
-                down.y -= gravity * Time.deltaTime;
-                characterController.Move(down * Time.deltaTime);
-            }
-            else
-            {
-                characterController.Move(down * Time.deltaTime);
-            }
-        }
-        #endregion
-
-
-        bool attackMove = false;
-        float attackMoveTime = 0.3f;
-        Vector3 attackMoveDir;
-        protected void AttackMove()         // 受击水平推动
-        #region
-        {
-            characterController.Move(Time.deltaTime * MoveSpeed * attackMoveDir * 3);
-            attackMoveTime -= Time.deltaTime;
-            if(attackMoveTime < 0)
-            {
-                attackMove = false;
-            }
+            QCC.AddVelocity(velocity);
         }
 
-        public void BeAttack(Vector3 attackDir)
+        //public void AddForce(Vector3 force)
+        //{
+        //    QCC.AddForce(force);
+        //}
+
+        public void Move(Vector3 moveDir)
         {
-            attackMove = true;
-            attackMoveTime = 0.3f;
-            attackMoveDir = attackDir.normalized;
+            QCC.Move(moveDir);
         }
-        #endregion
+
+        public void Jump()
+        {
+            QCC.Jump();
+        }
 
         protected virtual void Update()
         {
-            if (attackMove)
-            {
-                AttackMove();
-            }
+
         }
 
         public void SetControl(bool state)   // 设置是否由自主控制移动，区分技能移动

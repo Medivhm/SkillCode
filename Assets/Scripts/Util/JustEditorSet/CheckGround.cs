@@ -75,26 +75,20 @@ public class CheckGround : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if(other.tag == TagConstant.Ground)
-        {
             if(grounds.Count == 0)
             {
                 IsGrounded = true;
             }
             grounds.Add(other.gameObject);
-        }
     }
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.tag == TagConstant.Ground)
-        {
             grounds.Remove(other.gameObject);
             if (grounds.Count == 0)
             {
                 IsGrounded = false;
             }
-        }
     }
 
     //bool stayOK = false;

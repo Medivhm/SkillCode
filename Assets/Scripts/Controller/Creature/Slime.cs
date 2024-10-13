@@ -7,8 +7,6 @@ namespace Creature
     public class Slime : CreatureEntity
     {
         public CheckGround checkGround;
-        public Collider OutCollider;          // 如果是character controller的胶囊体碰撞，会走到头顶上，但是同高度的非弧形碰撞体不会
-        public override float OutColliderRadius => OutCollider.bounds.size.x / 2;
 
         bool isJump = false;
         public override bool IsJump
@@ -113,7 +111,6 @@ namespace Creature
             AttackColdTick();
 
             if (noMove) return;
-            VerticalMove();
             SimpleAIMove();
         }
 
@@ -130,7 +127,7 @@ namespace Creature
 
                 moveDir = Target.transform.position - this.transform.position;
                 this.transform.eulerAngles = new Vector3(0, QUtil.GetDegY(moveDir), 0);
-                characterController.Move(moveDir.normalized * Time.deltaTime * MoveSpeed);
+                Move(moveDir.normalized);
             }
         }
 
@@ -166,7 +163,7 @@ namespace Creature
                     isAttacking = false;
                     timeCount = attackCold;
                 });
-                Target.BeAttack((Target.Position - Position).normalized);
+                Target.AddVelocity((Target.Position - Position).normalized * 10f);
                 Target.GetHurt(5f);
             }
             return false;

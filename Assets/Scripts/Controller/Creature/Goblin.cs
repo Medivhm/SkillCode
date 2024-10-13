@@ -8,7 +8,11 @@ namespace Creature
     {
         public CheckGround checkGround;
 
-        
+        string RunForwardAnim = "Run_Forward";
+        string IdleAnim = "Idle_1";
+        string AttackAnim = "Attack_1";
+        string GetHurtAnim = "GetHit_1";
+
         bool isJump = false;
         public override bool IsJump
         {
@@ -51,11 +55,11 @@ namespace Creature
                 isMoving = value;
                 if (isMoving == true)
                 {
-                    PlayAnim("Run", 0.01f);
+                    PlayAnim(RunForwardAnim, 0.01f);
                 }
                 else
                 {
-                    PlayAnim("Idle", 0.01f);
+                    PlayAnim(IdleAnim, 0.01f);
                 }
             }
         }
@@ -90,8 +94,6 @@ namespace Creature
             base.Update();
             if (noMove) return;
 
-            VerticalMove();
-
             SimpleAIMove();
         }
 
@@ -121,7 +123,7 @@ namespace Creature
             if (moveDir)
             {
                 this.transform.eulerAngles = new Vector3(0, QUtil.GetDegY(dir1), 0);
-                characterController.Move(dir1.normalized * Time.deltaTime * MoveSpeed);
+                Move(dir1.normalized);
                 moveRoad += Time.deltaTime * MoveSpeed;
                 if(Mathf.Abs(moveRoad) > moveMaxRoad)
                 {
@@ -133,7 +135,7 @@ namespace Creature
             else
             {
                 this.transform.eulerAngles = new Vector3(0, QUtil.GetDegY(dir2), 0);
-                characterController.Move(dir2.normalized * Time.deltaTime * MoveSpeed);
+                Move(dir2.normalized);
                 moveRoad += Time.deltaTime * MoveSpeed;
                 if (Mathf.Abs(moveRoad) > moveMaxRoad)
                 {

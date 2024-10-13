@@ -247,6 +247,7 @@ namespace QEntity
 
             // 一个敌人上会有三个碰撞体，加上地面，也就是说一个子弹命中，这个方法会进4次
             // 如果同时命中多个，就会有3n + 1 次，这里以后看看需不需要优化
+            DebugTool.Log(collision.gameObject.name.ToString());
             if (Owner.gameObject.IsNotMe(collision.gameObject) && collision.gameObject.CompareTag(TagConstant.Unit))
             {
                 if (hurtTimeCount.ContainsKey(collision.gameObject))

@@ -1,5 +1,6 @@
 ﻿using KinematicCharacterController.Walkthrough.AddingImpulses;
 using System;
+using UnityEditor;
 using UnityEngine;
 
 namespace QEntity
@@ -139,7 +140,7 @@ namespace QEntity
 
         public Vector3 Position
         {
-            set { transform.position = value; }
+            set { QCC.SetPosition(value); }
             get => transform.position;
         }  
 
@@ -244,10 +245,21 @@ namespace QEntity
 
         public void PlayAnim(string animName, Action callback = null)
         {
-            animator.CrossFade(animName, 0f);
+            float time = QUtil.GetAnimationClip(animator, animName).length;
+            float fadeTime = time / 10;
+            fadeTime = fadeTime > 0.1f ? 0.1f : fadeTime;
+
+            DebugTool.Log(fadeTime + "AAAA");
+            var stateInfo = animator.GetCurrentAnimatorStateInfo(0);
+            float remainingTime = stateInfo.length * (1f - (stateInfo.normalizedTime - Mathf.Floor(stateInfo.normalizedTime)));
+            if(remainingTime < 0.1f)
+            {
+                fadeTime = remainingTime;
+            }
+
+            animator.CrossFade(animName, fadeTime);
             if (callback != null)
             {
-                float time = QUtil.GetAnimationClip(animator, animName).length;
                 TimerManager.Add(time, callback);
             }
         }

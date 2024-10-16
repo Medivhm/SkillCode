@@ -122,7 +122,7 @@ namespace Creature
             IsMoving = true;
             if (moveDir)
             {
-                this.transform.eulerAngles = new Vector3(0, QUtil.GetDegY(dir1), 0);
+                QCC.SetRotation(Quaternion.Euler(new Vector3(0, QUtil.GetDegY(dir1), 0)));
                 Move(dir1.normalized);
                 moveRoad += Time.deltaTime * MoveSpeed;
                 if(Mathf.Abs(moveRoad) > moveMaxRoad)
@@ -134,7 +134,7 @@ namespace Creature
             }
             else
             {
-                this.transform.eulerAngles = new Vector3(0, QUtil.GetDegY(dir2), 0);
+                QCC.SetRotation(Quaternion.Euler(new Vector3(0, QUtil.GetDegY(dir2), 0)));
                 Move(dir2.normalized);
                 moveRoad += Time.deltaTime * MoveSpeed;
                 if (Mathf.Abs(moveRoad) > moveMaxRoad)

@@ -95,6 +95,7 @@ public class HotBar : UIEntity
             items[i] = GetItem();
             items[i].Selected = false;
             items[i].bgIcon.sprite = normalSprite;
+            items[i].selectedIcon.sprite = selectedSprite;
             items[i].transform.SetParent(Grids);
         }
     }

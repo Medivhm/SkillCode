@@ -6,7 +6,9 @@ using UnityEngine.UI;
 public class HotBarItem : UIEntity
 {
     public Image bgIcon;
+    public Image selectedIcon;
     public Image itemIcon;
+
     private Useable thing;
     private bool selected;
 
@@ -20,7 +22,7 @@ public class HotBarItem : UIEntity
             selected = value;
             if (selected)
             {
-                bgIcon.sprite = Main.HotBar.selectedSprite;
+                selectedIcon.gameObject.SetActive(true);
                 if (thing.IsNotNull())
                 {
                     thing.Use();
@@ -28,7 +30,7 @@ public class HotBarItem : UIEntity
             }
             else
             {
-                bgIcon.sprite = Main.HotBar.normalSprite;
+                selectedIcon.gameObject.SetActive(false);
             }
         }
     }

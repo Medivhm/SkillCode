@@ -202,5 +202,10 @@ class MainMouseController : Singleton<MainMouseController>, ITickable
     {
         mouseScrollChange -= action;
     }
+
+    public void LateUpdate()
+    {
+        
+    }
 }
 

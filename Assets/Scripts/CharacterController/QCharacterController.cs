@@ -18,7 +18,7 @@ namespace KinematicCharacterController.Walkthrough.AddingImpulses
 
         [Header("Air Movement")]
         public float MaxAirMoveSpeed = 10f;
-        public float AirAccelerationSpeed = 5f;
+        public float AirAccelerationSpeed = 1f;      // 空中水平阻力
         public float Drag = 0.1f;
 
         [Header("Jumping")]
@@ -49,7 +49,7 @@ namespace KinematicCharacterController.Walkthrough.AddingImpulses
         {
             // Assign to motor
             Motor.CharacterController = this;
-            Capsule.isTrigger = true;
+            //Capsule.isTrigger = true;
         }
 
         bool inputMove = false;
@@ -58,6 +58,16 @@ namespace KinematicCharacterController.Walkthrough.AddingImpulses
             inputMove = true;
             _moveInputVector = moveDir;
             _lookInputVector = moveDir;
+        }
+
+        public void SetPosition(Vector3 position)
+        {
+            Motor.SetPosition(position);
+        }
+
+        public void SetRotation(Quaternion rotation)
+        {
+            Motor.SetRotation(rotation);
         }
 
         public void Jump()
@@ -139,12 +149,11 @@ namespace KinematicCharacterController.Walkthrough.AddingImpulses
                     currentVelocity += velocityDiff * AirAccelerationSpeed * deltaTime;
                 }
 
-                // Gravity
-                currentVelocity += Gravity * deltaTime;
-
-
                 // Drag
                 currentVelocity *= (1f / (1f + (Drag * deltaTime)));
+
+                // Gravity
+                currentVelocity += Gravity * deltaTime;
             }
             inputMove = false;
 
@@ -200,7 +209,7 @@ namespace KinematicCharacterController.Walkthrough.AddingImpulses
                 _canWallJump = false;
             }
 
-            DebugTool.LogFormat("Is {0}   {1}", _internalVelocityAdd.ToString(),currentVelocity);
+            //DebugTool.LogFormat("Is {0}   {1}", Gravity * deltaTime, currentVelocity);
             // Take into account additive velocity
             if (_internalVelocityAdd.sqrMagnitude > 0f)
             {

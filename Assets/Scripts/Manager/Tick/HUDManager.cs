@@ -80,6 +80,11 @@ public class HUDManager : Singleton<HUDManager>, ITickable
 
     public void Update()
     {
+
+    }
+
+    public void LateUpdate()
+    {
         if (IsClearing) return;
 
         DoRefreshHUDs();

@@ -238,4 +238,9 @@ class BuffManager : Singleton<BuffManager>, ITickable
             buff.Stop();
         }
     }
+
+    public void LateUpdate()
+    {
+        
+    }
 }

@@ -1,5 +1,6 @@
 using Creature;
 using Manager;
+using QEntity;
 using System.Collections;
 using Tools;
 using UnityEngine;
@@ -43,25 +44,24 @@ public class GameInit : MonoBehaviour
 
 
         GameObject creature = GameObject.Instantiate(LoadTool.LoadPrefab("Creature/Goblin"));
-        yield return null;
-        creature.transform.position = new Vector3(10f, 10f, 4.6f);
+        creature.GetComponent<UnitEntity>().Position = new Vector3(10f, 10f, 4.6f);
+        creature.GetComponent<Goblin>().SetNoMove(false);
 
         GameObject creature2 = GameObject.Instantiate(LoadTool.LoadPrefab("Creature/Goblin"));
-        creature2.transform.position = new Vector3(10f, 13, 10f);
+        creature2.GetComponent<UnitEntity>().Position = new Vector3(10f, 13, 10f);
         creature2.GetComponent<Goblin>().SetNoMove(true);
 
         GameObject creature3 = GameObject.Instantiate(LoadTool.LoadPrefab("Creature/Goblin"));
-        creature3.transform.position = new Vector3(-4.8f, 13f, 89.2f);
+        creature3.GetComponent<UnitEntity>().Position = new Vector3(-4.8f, 13f, 89.2f);
         creature3.GetComponent<Goblin>().SetNoMove(true);
 
         GameObject creature4 = GameObject.Instantiate(LoadTool.LoadPrefab("Creature/Goblin"));
-        creature4.transform.position = new Vector3(4.74f, 0f, 52f);
+        creature4.GetComponent<UnitEntity>().Position = new Vector3(4.74f, 0f, 52f);
         creature4.GetComponent<Goblin>().SetNoMove(true);
 
 
         GameObject player = GameObject.Instantiate(LoadTool.LoadPrefab("Player/Player"));
-        yield return null;
-        player.transform.position = new Vector3(4.7f, 11f, -7f);
+        player.GetComponent<UnitEntity>().Position = new Vector3(4.7f, 11f, -7f);
 
     }
 

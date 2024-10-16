@@ -13,6 +13,8 @@ public class BagUI : UIEntity
     public Transform TabTrans;
     public Transform GridTrans;
 
+    private bool isInit = false;
+
     protected override void Awake()
     {
         base.Awake();
@@ -30,6 +32,7 @@ public class BagUI : UIEntity
         {
             this.transform.position = (Main.LocateUI.CenterNode.position + Main.LocateUI.RightUpNode.position) / 2;
         }
+        isInit = true;
     }
 
     private void InitEvent()
@@ -55,6 +58,10 @@ public class BagUI : UIEntity
         }
         else if (ch == '+')
         {
+            if (itemWithGrids[item].item.IsNull())
+            {
+                itemWithGrids[item].SetItem(item);
+            }
             itemWithGrids[item].RefreshValue();
         }
         else if (ch == '-')
@@ -65,10 +72,11 @@ public class BagUI : UIEntity
 
     public override void RefreshUI()
     {
-        if (itemUIs.IsNull() || itemUIs.Count == 0) return;
+        if(!isInit) return;
 
         base.RefreshUI();
         int itemSetNum = SetItems();
+        // 重刷UI
         for (int i = itemSetNum; i < itemUIs.Count; i++)
         {
             itemUIs[i].JustGrid();

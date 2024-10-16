@@ -14,6 +14,11 @@ public static class UtilExtensions
 
     //    }
 
+    public static bool TargetInRight(this UnitEntity me, UnitEntity other)
+    {
+        return Vector3.Dot(me.transform.right, other.Position - me.Position) > 0;
+    } 
+
     public static void MoveToUnit(this GameObject go, Transform Target, Action OverEvent = null)
     {
         MoveToUnit script = go.GetOrAddComponent<MoveToUnit>();
@@ -130,7 +135,7 @@ public static class UtilExtensions
         trans.position = vec9999;
     }
 
-    // 在对script脚本使用时效果不对，慎用！！！下同
+    // 在对script脚本使用时效果不对，慎用！！！下同  IsUnityNull() ? 
     public static bool IsNotNull(this object obj)
     {
         return obj != null;

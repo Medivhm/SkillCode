@@ -18,6 +18,8 @@ public class PlayerController : PlayerEntity
 {
     public CheckGround checkGround;
     public Transform magicShootPoint;
+    public Transform closestHit;    // 遮挡拉近的参考遮挡位置
+    public Transform cameraFollowPoint;
 
     public float speed = 10f;
     public float jumpSpeed = 26f;
@@ -72,11 +74,11 @@ public class PlayerController : PlayerEntity
             isMoving = value;
             if(isMoving == true)
             {
-                PlayAnim(RunForwardAnim, 0.01f);
+                PlayAnim(RunForwardAnim);
             }
             else
             {
-                PlayAnim(IdleAnim, 0.01f);
+                PlayAnim(IdleAnim);
             }
         }
     }
@@ -113,7 +115,13 @@ public class PlayerController : PlayerEntity
         Main.MainPlayerCtrl = null;
     }
 
+    //private void OnControllerColliderHit(ControllerColliderHit hit)
+    //{
+
+    //}
+
     void Start()
+    #region
     {
         Main.MainPlayerCtrl = this;
         camp = new Camp { CampID = 0 };
@@ -131,9 +139,19 @@ public class PlayerController : PlayerEntity
         Test();
 
         Profession = Profession.Fighter;
+
+
+
+        Main.MainCameraCtrl.SetFollowTransform(cameraFollowPoint, closestHit);
+
+        // Ignore the character's collider(s) for camera obstruction checks
+        Main.MainCameraCtrl.IgnoredColliders.Clear();
+        Main.MainCameraCtrl.IgnoredColliders.AddRange(this.QCC.GetComponentsInChildren<Collider>());
     }
+    #endregion
 
     protected override void Update()
+    #region
     {
         base.Update();
         if(!banControl)
@@ -146,8 +164,8 @@ public class PlayerController : PlayerEntity
             skillFsm.Update(Time.deltaTime);
         }
     }
+    #endregion
 
-    
     void DetectInit()                    // 初始化距离内人物检测
     #region
     {
@@ -528,16 +546,32 @@ public class PlayerController : PlayerEntity
                 return;
             }
             nowYEuler = Mathf.LerpAngle(this.transform.eulerAngles.y, targetYEuler, rotateCoeff * Time.deltaTime);
-            this.transform.eulerAngles = new Vector3(0, nowYEuler, 0);
+            //this.transform.eulerAngles = new Vector3(0, nowYEuler, 0);
+            QCC.SetRotation(Quaternion.Euler(0, nowYEuler, 0));
         }
         else if(CameraView.OverShoulder == Main.MainCameraCtrl.CameraView)
         {
             targetYEuler = Main.MainCameraCtrl.transform.eulerAngles.y;
-            this.transform.eulerAngles = new Vector3(0, targetYEuler, 0);
+            QCC.SetRotation(Quaternion.Euler(0, targetYEuler, 0));
+            //this.transform.eulerAngles = new Vector3(0, targetYEuler, 0);
         }
     }
     #endregion
 
+    void OnAnimatorIK(int layerIndex)
+    {
+        if (animator)
+        {
+            //// 设置头部的跟随权重
+            //animator.SetLookAtWeight(lookWeight);
+
+            //// 设置头部看向的目标位置
+            //if (lookTarget != null)
+            //{
+            //    animator.SetLookAtPosition(lookTarget.position);
+            //}
+        }
+    }
     public override void Destroy()
     #region
     {

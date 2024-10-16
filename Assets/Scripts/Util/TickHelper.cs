@@ -12,6 +12,14 @@ public class TickHelper : MonoSingleton<TickHelper>
         }     
     }
 
+    private void LateUpdate()
+    {
+        foreach (var tick in ticks)
+        {
+            tick.LateUpdate();
+        }
+    }
+
     public void AddRange(List<ITickable> ticks)
     {
         ticks.AddRange(ticks);

@@ -16,7 +16,7 @@ public class PushUp : MonoBehaviour
             UnitEntity unit = other.GetComponent<UnitEntity>();
             if (unit.IsNotNull())
             {
-                unit.AddVelocity(new Vector3(0, bounceForce, 0));
+                unit.AddVelocity(transform.forward * bounceForce);
             }
         }
     }

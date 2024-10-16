@@ -188,4 +188,9 @@ class TimerManager : Singleton<TimerManager>, ITickable
             timer.Stop();
         }
     }
+
+    public void LateUpdate()
+    {
+        
+    }
 }

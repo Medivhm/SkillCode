@@ -1,3 +1,4 @@
+using Manager;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -50,8 +51,6 @@ public class CameraController : MonoBehaviour
         style.normal.background = Texture2D.whiteTexture;
         Ctrl.UnUseMouse();
         cameraView = CameraView.ThirdPerson;
-
-
     }
 
     private void OnDestroy()
@@ -66,9 +65,16 @@ public class CameraController : MonoBehaviour
         //MoveTick();
     }
 
+    bool mouseRotate = true;
+    public void SetMouseRotate(bool state)
+    {
+        mouseRotate = state;
+    }
 
     private void LateUpdate()
     {
+        if (!mouseRotate) return;
+
         float mouseLookAxisUp = Input.GetAxisRaw("Mouse Y"); 
         float mouseLookAxisRight = Input.GetAxisRaw("Mouse X");
         float scrollInput = -Input.GetAxis("Mouse ScrollWheel");
@@ -151,15 +157,19 @@ public class CameraController : MonoBehaviour
     }
 
     // Set the transform that the camera will orbit around
-    public void SetFollowTransform(Transform t, Transform closeHit)
+    public void SetFollowTransform(Transform t)
     {
         FollowTransform = t;
         PlanarDirection = FollowTransform.forward;
         _currentFollowPosition = FollowTransform.position;
-        closeHitTrans = closeHit;
     }
 
-    Transform closeHitTrans;
+    float sphereYOffsetOrigin;
+    public void UpdateSphereYOffsetOrigin()
+    {
+        sphereYOffsetOrigin = (_currentDistance - MinDistance) / (MaxDistance - MinDistance) * myYOffset;
+    }
+
     public void UpdateWithInput(float deltaTime, float zoomInput, Vector3 rotationInput)
     {
         if (FollowTransform)
@@ -195,6 +205,11 @@ public class CameraController : MonoBehaviour
             TargetDistance += zoomInput * DistanceMovementSpeed;
             TargetDistance = Mathf.Clamp(TargetDistance, MinDistance, MaxDistance);
 
+            if (!_distanceIsObstructed)
+            {
+                UpdateSphereYOffsetOrigin();
+            }
+
             // Find the smoothed follow position
             _currentFollowPosition = Vector3.Lerp(_currentFollowPosition, FollowTransform.position.CopyAndChangeY(_currentFollowPosition.y), 1f - Mathf.Exp(-FollowingSharpness * deltaTime));
             _currentFollowPosition = _currentFollowPosition.CopyAndChangeY(Mathf.Lerp(_currentFollowPosition.y, FollowTransform.position.y, 1f - Mathf.Exp(-YOffsetSharpness * deltaTime)));
@@ -205,7 +220,7 @@ public class CameraController : MonoBehaviour
                 RaycastHit closestHit = new RaycastHit();
                 closestHit.distance = Mathf.Infinity;
                 _obstructionCount = Physics.SphereCastNonAlloc(
-                                                            _currentFollowPosition + (_currentDistance - MinDistance) / (MaxDistance - MinDistance) * Transform.up * myYOffset,            // 球形射线的起始位置（跟随的目标位置）
+                                                            _currentFollowPosition + transform.up * sphereYOffsetOrigin,            // 球形射线的起始位置（跟随的目标位置）
                                                             ObstructionCheckRadius,            // 检测半径
                                                             -Transform.forward,                // 射线的方向（从相机指向目标）
                                                             _obstructions,                     // 存储遮挡物的数组
@@ -300,7 +315,6 @@ public class CameraController : MonoBehaviour
     /// </summary>
 
 
-    bool mouseRotate = true;
     float changeEulerYaw;
     float changeEulerPitch;
     float mouseX;
@@ -380,10 +394,6 @@ public class CameraController : MonoBehaviour
         return cameraToPlayer.normalized;
     }
 
-    public void SetMouseRotate(bool state)
-    {
-        mouseRotate = state;
-    }
 
     // 在编辑器里修改这个
     public float lineHeight = 10f;

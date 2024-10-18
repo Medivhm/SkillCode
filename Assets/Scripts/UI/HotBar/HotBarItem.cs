@@ -7,9 +7,11 @@ public class HotBarItem : UIEntity
 {
     public Image bgIcon;
     public Image selectedIcon;
+    public ItemUI itemUI;
     public Image itemIcon;
+    public Text numText;
 
-    private Useable thing;
+    private Item item;
     private bool selected;
 
     public bool Selected
@@ -23,15 +25,28 @@ public class HotBarItem : UIEntity
             if (selected)
             {
                 selectedIcon.gameObject.SetActive(true);
-                if (thing.IsNotNull())
+                if (item.IsNotNull())
                 {
-                    thing.Use();
+                    item.Use();
                 }
             }
             else
             {
                 selectedIcon.gameObject.SetActive(false);
             }
+        }
+    }
+
+    public override void RefreshUI()
+    {
+        base.RefreshUI();
+        if (item.IsNotNull())
+        {
+            itemUI.RefreshUI();
+        }
+        else
+        {
+            RemoveItem();
         }
     }
 
@@ -46,24 +61,30 @@ public class HotBarItem : UIEntity
         ResetScale();
     }
 
-    public void RemoveUseable()
+    public void RemoveItem()
     {
-        thing = null;
-        itemIcon.sprite = null;
-        itemIcon.gameObject.SetActive(false);
+        item = null;
+        itemUI.JustGrid();
+        itemUI.gameObject.SetActive(false);
     }
 
-    public void SetUseable(Useable thing)
+    public void SetItem(Item item)
     {
-        if (this.thing.IsNotNull()) return;
+        if (this.item.IsNotNull()) return;
 
-        this.thing = thing;
-        itemIcon.sprite = LoadTool.LoadSprite(thing.Icon);
-        itemIcon.gameObject.SetActive(true);
+        if (item.IsNull())
+        {
+            RemoveItem();
+            return;
+        }
+
+        this.item = item;
+        itemUI.gameObject.SetActive(true);
+        itemUI.SetItem(item);
     }
 
-    public Useable GetUseable()
+    public Item GetItem()
     {
-        return thing;
+        return item;
     }
 }

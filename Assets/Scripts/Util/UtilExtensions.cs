@@ -14,6 +14,20 @@ public static class UtilExtensions
 
     //    }
 
+    public static bool PointInRect(this Vector2 point, RectTransform rect)
+    {
+
+        //return rect.rect.xMin < point.x && point.x < rect.rect.xMax
+        //    && rect.rect.yMin < point.y && point.y < rect.rect.yMax;
+
+        return RectTransformUtility.RectangleContainsScreenPoint(rect, point);
+    }
+
+    public static void SetLocalScale(this Transform trans, float scale)
+    {
+        trans.localScale = new Vector3(scale, scale, scale);
+    }
+
     public static bool TargetInRight(this UnitEntity me, UnitEntity other)
     {
         return Vector3.Dot(me.transform.right, other.Position - me.Position) > 0;

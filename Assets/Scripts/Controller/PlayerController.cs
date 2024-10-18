@@ -18,7 +18,6 @@ public class PlayerController : PlayerEntity
 {
     public CheckGround checkGround;
     public Transform magicShootPoint;
-    public Transform closestHit;    // 遮挡拉近的参考遮挡位置
     public Transform cameraFollowPoint;
 
     public float speed = 10f;
@@ -142,7 +141,7 @@ public class PlayerController : PlayerEntity
 
 
 
-        Main.MainCameraCtrl.SetFollowTransform(cameraFollowPoint, closestHit);
+        Main.MainCameraCtrl.SetFollowTransform(cameraFollowPoint);
 
         // Ignore the character's collider(s) for camera obstruction checks
         Main.MainCameraCtrl.IgnoredColliders.Clear();
@@ -493,7 +492,8 @@ public class PlayerController : PlayerEntity
     void MoveTick()
     #region
     {
-        if (Main.MainCameraCtrl.IsNull()) { return; }
+        if (Main.MainCameraCtrl.IsNull()) return;
+        if (UIManager.HasUI()) return;
 
         move = false;
         horizontal = Input.GetAxis("Horizontal");

@@ -82,7 +82,7 @@ public class GUI : MonoBehaviour
         return tab;
     }
 
-    public static ItemUI CreateGrid(Transform parent = null)
+    public static ItemUI CreateItemUI(Transform parent = null)
     {
         ItemUI ui = LoadTool.LoadUI(UIConstant.Item).GetComponent<ItemUI>();
         ui.JustGrid();

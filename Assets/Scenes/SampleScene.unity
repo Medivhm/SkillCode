@@ -1407,6 +1407,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mainCamera: {fileID: 330585545}
   myYOffset: 2.8
+  YOffsetSharpness: 10
   Camera: {fileID: 330585545}
   FollowPointFraming: {x: 0, y: 0, z: 0}
   FollowingSharpness: 10000
@@ -1414,7 +1415,7 @@ MonoBehaviour:
   MinDistance: 0
   MaxDistance: 12
   DistanceMovementSpeed: 5
-  DistanceMovementSharpness: 10
+  DistanceMovementSharpness: 2
   InvertX: 0
   InvertY: 0
   DefaultVerticalAngle: 20
@@ -1427,7 +1428,7 @@ MonoBehaviour:
   ObstructionLayers:
     serializedVersion: 2
     m_Bits: 23
-  ObstructionSharpness: 10000
+  ObstructionSharpness: 8
   IgnoredColliders: []
   lineHeight: 10
   lineWidth: 3

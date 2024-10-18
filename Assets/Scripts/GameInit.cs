@@ -63,6 +63,10 @@ public class GameInit : MonoBehaviour
         GameObject player = GameObject.Instantiate(LoadTool.LoadPrefab("Player/Player"));
         player.GetComponent<UnitEntity>().Position = new Vector3(4.7f, 11f, -7f);
 
+        yield return new WaitForSeconds(0.6f);
+
+        //Bag.Instance.AddItem(WeaponManager.CreateWeapon(1));
+        Bag.Instance.AddItem(ItemManager.CreateItem(6));
     }
 
     void InitMonoManager(GameObject GameInit)

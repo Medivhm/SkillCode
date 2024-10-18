@@ -4,8 +4,9 @@ using Tools;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using System;
 
-public class ItemUI : UIEntity, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
+public class ItemUI : UIEntity, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
     public GameObject Grid;
     public Image ItemIcon;
@@ -14,6 +15,7 @@ public class ItemUI : UIEntity, IPointerEnterHandler, IPointerExitHandler, IPoin
 
     private ItemTipsUI tips;
     private ButtonList btnList;
+    private bool showTips = true;
 
     public ItemInfo ItemInfo
     {
@@ -50,16 +52,23 @@ public class ItemUI : UIEntity, IPointerEnterHandler, IPointerExitHandler, IPoin
         get { return ItemInfo.desc; }
     }
 
-    public void Start()
+    protected override void Awake()
     {
         item = null;
         ResetTransform();
     }
 
+    public override void Init()
+    {
+        base.Init();
+        BeginDragEvent = null;
+        DragEvent = null;
+        EndDragEvent = null;
+    }
+
     public override void ResetTransform()
     {
         base.ResetTransform();
-        ResetScale();
     }
 
     public void JustItem()
@@ -82,23 +91,43 @@ public class ItemUI : UIEntity, IPointerEnterHandler, IPointerExitHandler, IPoin
         return item.IsNull();
     }
 
-    public void SetItem(Item item)
+    public void SetShowTips(bool state)
     {
-        this.item = item;
-        ItemIcon.gameObject.SetActive(true);
-        NumText.gameObject.SetActive(true);
-
-        ItemIcon.sprite = LoadTool.LoadSprite(item.Icon);
-        NumText.text = item.Num.ToString();
+        showTips = state;
     }
 
-    public void RefreshValue()
+    public void SetItem(Item item)
+    {
+        if (item.IsNull())
+        {
+            JustGrid();
+            return;
+        }
+
+        this.item = item;
+        ItemIcon.gameObject.SetActive(true);
+
+        ItemIcon.sprite = LoadTool.LoadSprite(item.Icon);
+        if(item.Overlap == 1)
+        {
+            NumText.gameObject.SetActive(false);
+        }
+        else
+        {
+            NumText.gameObject.SetActive(true);
+            NumText.text = item.Num.ToString();
+        }
+    }
+
+    public override void RefreshUI()
     {
         NumText.text = item.Num.ToString();
     }
 
     public void CreateTips(Vector3 pos)
     {
+        if (!showTips) return;
+
         if (tips.IsNotNull())
         {
             return;
@@ -184,6 +213,18 @@ public class ItemUI : UIEntity, IPointerEnterHandler, IPointerExitHandler, IPoin
         }
     }
 
+    public ItemUI SetLocalScale(float scale)
+    {
+        transform.SetLocalScale(scale);
+        return this;
+    }
+
+    public ItemUI SetLocalPosition(Vector3 pos)
+    {
+        transform.localPosition = pos;
+        return this;
+    }
+
     public void UseItem(int num)
     {
         if (num < 1)
@@ -198,5 +239,34 @@ public class ItemUI : UIEntity, IPointerEnterHandler, IPointerExitHandler, IPoin
     {
         DestroyBtnList();
         base.Destroy();
+    }
+
+
+    public Action<ItemUI, PointerEventData> BeginDragEvent;
+    public Action<ItemUI, PointerEventData> DragEvent;
+    public Action<ItemUI, PointerEventData> EndDragEvent;
+
+    public void OnBeginDrag(PointerEventData eventData)
+    {
+        if (BeginDragEvent.IsNotNull())
+        {
+            BeginDragEvent.Invoke(this, eventData);
+        }
+    }
+
+    public void OnDrag(PointerEventData eventData)
+    {
+        if (DragEvent.IsNotNull())
+        {
+            DragEvent.Invoke(this, eventData);
+        }
+    }
+
+    public void OnEndDrag(PointerEventData eventData)
+    {
+        if (EndDragEvent.IsNotNull())
+        {
+            EndDragEvent.Invoke(this, eventData);
+        }
     }
 }

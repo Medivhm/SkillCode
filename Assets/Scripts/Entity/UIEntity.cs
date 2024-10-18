@@ -58,25 +58,9 @@ namespace QEntity
         {
             this.gameObject.SetActive(true);
             IsShow = true;
-            //UIManager.UIPush(this);
-            //Ctrl.UseMouse();
         }
 
         public virtual void Hide()
-        {
-            this.gameObject.SetActive(false);
-            IsShow = false;
-            //UIManager.UIPop();
-            //Ctrl.UnUseMouse();
-        }
-
-        public void PureShow()
-        {
-            this.gameObject.SetActive(true);
-            IsShow = true;
-        }
-
-        public void PureHide()
         {
             this.gameObject.SetActive(false);
             IsShow = false;

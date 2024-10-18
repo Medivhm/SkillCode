@@ -7,7 +7,8 @@ using UnityEngine;
 public enum From
 {
     Bag,
-    QuickCell,
+    HotBar,
+    Body,
     Other,
 }
 
@@ -16,6 +17,7 @@ public class Item : Useable
     public int Num;
     // 背包，快捷栏，地面
     public From From;
+    public int indexMarker;
     public ItemInfo Info;
     public UnitEntity Owner;
 

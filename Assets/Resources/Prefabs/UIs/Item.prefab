@@ -65,7 +65,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: fe4a9034d56bb5945af42260b7e9f49f, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 8f38ff59f14d0a94f9fb8c5e917cad84, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -136,6 +136,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3f2bb412803a2cc409fe448a67e7513e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  IsShow: 0
   Grid: {fileID: 2362886511636862569}
   ItemIcon: {fileID: 1198771138786248018}
   NumText: {fileID: 6399090611812313313}
@@ -186,8 +187,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 28.5, y: -33.7}
-  m_SizeDelta: {x: 60.62, y: 60}
+  m_AnchoredPosition: {x: 23.8, y: -31.3}
+  m_SizeDelta: {x: 60, y: 60}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &742907171112367783
 CanvasRenderer:
@@ -243,7 +244,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_EffectColor: {r: 0.7735849, g: 0.59101534, b: 0.3466536, a: 0.5}
+  m_EffectColor: {r: 0.12941177, g: 0.15686275, b: 0.24313727, a: 1}
   m_EffectDistance: {x: 3, y: 3}
   m_UseGraphicAlpha: 1
 --- !u!1 &5166965534471194428

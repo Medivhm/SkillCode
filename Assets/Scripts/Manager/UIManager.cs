@@ -104,7 +104,7 @@ namespace Manager
                 UIs.Add(uiName, ui);
             }
             ui.RefreshUI();
-            ui.PureShow();
+            ui.Show();
             UIPush(ui);
             return ui;
         }
@@ -117,14 +117,14 @@ namespace Manager
             }
 
             UIEntity ui = UIPop();
-            ui.PureHide();
+            ui.Hide();
         }
 
         public static void Hide(string uiName)
         {
             if (!HasUI(uiName)) return;
 
-            UIs[uiName].PureHide();
+            UIs[uiName].Hide();
             UIPop();
         }
 

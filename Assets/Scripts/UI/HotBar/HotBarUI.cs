@@ -5,29 +5,78 @@ using System.Collections;
 using Tools;
 using UnityEngine;
 
-public class HotBar : UIEntity
+public class HotBarUI : UIEntity
 {
-    public int gridsNum = 5;
     public Sprite normalSprite;
     public Sprite selectedSprite;
     public Transform Grids;
 
+    private int gridsNum => HotBar.Instance.gridsNum;
     private HotBarItem[] items;
     private int lastSelIdx = -1;
+    private bool isInit = false;
 
     protected override void Awake()
     {
         base.Awake();
-        Main.HotBar = this;
+        Main.HotBarUI = this;
+    }
+    private void OnDestroy()
+    {
+        Main.HotBarUI = null;
+        MainMouseController.Instance.RemoveMouseScrollChange(MouseScrollChange);
     }
 
     public void Start()
     {
         InitQuickKey();
+        InitEvent();
         ResetTransform();
         //InitItems();
         //MainMouseController.Instance.AddMouseScrollChange(MouseScrollChange);
         StartCoroutine(DeleteWhenMoveToCurrentProject());
+    }
+
+    private void InitEvent()
+    {
+        HotBar.Instance.ItemChange += (item, ch, index) =>
+        {
+            if (this.gameObject.activeSelf)
+            {
+                RecieveMessage(item, ch, index);
+            }
+        };
+    }
+
+    private void RecieveMessage(Item item, char ch, int index)
+    {
+        if (ch == 'a')
+        {
+            items[index].SetItem(item);
+        }
+        else if (ch == 'd')
+        {
+            items[index].RemoveItem();
+        }
+        else if (ch == '+')
+        {
+            items[index].RefreshUI();
+        }
+        else if (ch == '-')
+        {
+            items[index].RefreshUI();
+        }
+    }
+
+    public override void RefreshUI()
+    {
+        if (!isInit) return;
+
+        base.RefreshUI();
+        for(int i = 0; i < HotBar.Instance.Items.Length; i++)
+        {
+            items[i].SetItem(HotBar.Instance.Items[i]);
+        }
     }
 
     public void InitQuickKey()
@@ -75,16 +124,8 @@ public class HotBar : UIEntity
         InitItems();
         MainMouseController.Instance.AddMouseScrollChange(MouseScrollChange);
         yield return new WaitForSeconds(0.3f);
-        items[0].SetUseable(Ctrl.CreateWeapon(1));
-        items[1].SetUseable(Ctrl.CreateWeapon(2));
-        items[2].SetUseable(Ctrl.CreateWeapon(3));
         SelectIndex(0);
-    }
-
-    private void OnDestroy()
-    {
-        Main.HotBar = null;
-        MainMouseController.Instance.RemoveMouseScrollChange(MouseScrollChange);
+        isInit = true;
     }
 
     void InitItems()

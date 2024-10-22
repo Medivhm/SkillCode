@@ -31,12 +31,12 @@ namespace Fsm
             return currState;
         }
 
-        public void SetCurrState<Type>()
+        private void SetCurrState<Type>()
         {
             SetCurrState(typeof(Type));
         }
 
-        public void SetCurrState(Type type)
+        private void SetCurrState(Type type)
         {
             currState = states[type];
         }
@@ -76,7 +76,7 @@ namespace Fsm
 
                 currState.Leave();
             }
-            currState = states[stateType];
+            SetCurrState(stateType);
             currState.Enter();
         }
 

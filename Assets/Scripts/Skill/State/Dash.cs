@@ -21,20 +21,17 @@ public class Dash : SkillStateBase
         speed = distance / time;
     }
 
-    float deltaTime;
     protected internal override void Update(float dt)
     {
         base.Update(dt);
         time -= dt;
         if(time > 0f)
         {
-            deltaTime = dt;
-            unit.transform.Translate(dir.normalized * deltaTime * speed, Space.World);
+            unit.Move(dir.normalized * speed / unit.groundMoveSpeed);
         }
         else
         {
-            deltaTime = dt + time;
-            unit.transform.Translate(dir.normalized * deltaTime * speed, Space.World);
+            unit.Move(dir.normalized * speed / unit.groundMoveSpeed);
             Over();
         }
     }

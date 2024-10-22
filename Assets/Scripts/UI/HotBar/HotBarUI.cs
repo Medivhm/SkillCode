@@ -83,40 +83,41 @@ public class HotBarUI : UIEntity
     {
         if(gridsNum > 0)
         {
-            Ctrl.SetQuickKey(KeyCode.Alpha1, () =>
+            Ctrl.AddKeyPress(KeyCode.Alpha1, () =>
             {
                 SelectIndex(0);
             });
         }
         if (gridsNum > 1)
         {
-            Ctrl.SetQuickKey(KeyCode.Alpha2, () =>
+            Ctrl.AddKeyPress(KeyCode.Alpha2, () =>
             {
                 SelectIndex(1);
             });
         }
         if (gridsNum > 2)
         {
-            Ctrl.SetQuickKey(KeyCode.Alpha3, () =>
+            Ctrl.AddKeyPress(KeyCode.Alpha3, () =>
             {
                 SelectIndex(2);
             });
         }
         if (gridsNum > 3)
         {
-            Ctrl.SetQuickKey(KeyCode.Alpha4, () =>
+            Ctrl.AddKeyPress(KeyCode.Alpha4, () =>
             {
                 SelectIndex(3);
             });
         }
         if (gridsNum > 4)
         {
-            Ctrl.SetQuickKey(KeyCode.Alpha5, () =>
+            Ctrl.AddKeyPress(KeyCode.Alpha5, () =>
             {
                 SelectIndex(4);
             });
         }
     }
+
 
     IEnumerator DeleteWhenMoveToCurrentProject()
     {
@@ -162,6 +163,14 @@ public class HotBarUI : UIEntity
     public void SelectMoveLeft()
     {
         SelectIndex((lastSelIdx + gridsNum - 1) % gridsNum);
+    }
+
+    public Item GetNowSelectedItem()
+    {
+        if (items.IsNull()) return null;
+        if (items[lastSelIdx].IsNull()) return null;
+
+        return items[lastSelIdx].GetItem();
     }
 
     void MouseScrollChange(float delta)

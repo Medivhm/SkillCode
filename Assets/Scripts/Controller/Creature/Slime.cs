@@ -21,9 +21,6 @@ namespace Creature
             }
         }
 
-        public float jumpSpeed = 26f;
-        public override float JumpSpeed => jumpSpeed;
-
         public override bool IsGrounded
         {
             get
@@ -126,7 +123,7 @@ namespace Creature
                 }
 
                 moveDir = Target.transform.position - this.transform.position;
-                this.transform.eulerAngles = new Vector3(0, QUtil.GetDegY(moveDir), 0);
+                QCC.SetRotation(Quaternion.Euler(new Vector3(0, QUtil.GetDegY(moveDir), 0)));
                 Move(moveDir.normalized);
             }
         }
@@ -172,7 +169,7 @@ namespace Creature
         public override void Dead()
         {
             base.Dead();
-            Item item = Ctrl.CreateItem(1);
+            Item item = Ctrl.CreateItem(ItemType.Prop, 1);
             item.Owner = Main.MainPlayerCtrl;
             Ctrl.DropItem(item, this.transform.position);
             Destroy();

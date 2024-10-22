@@ -124,12 +124,20 @@ public class GM : UIEntity
         Main.MapLength = int.Parse(input.text);
     }
 
-    public void CreateItem()
+    public void CreateProp()
     {
         NoFocusOnInput();
         if (InputEmpty()) return;
 
-        Ctrl.MakeItemToBag(int.Parse(input.text));
+        Ctrl.MakeItemToBag(ItemType.Prop, int.Parse(input.text));
+    }
+
+    public void CreateWeapon()
+    {
+        NoFocusOnInput();
+        if (InputEmpty()) return;
+
+        Ctrl.MakeItemToBag(ItemType.Weapon, int.Parse(input.text));
     }
 
     public void HideOrShowHUD()

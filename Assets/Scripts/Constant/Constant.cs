@@ -7,6 +7,18 @@ using UnityEngine;
 
 namespace Constant
 {
+    public static class Anim
+    {
+        public static string IdleAnim      = "Idle";
+        public static string SquatIdleAnim = "Squat";
+        public static string RunAnim       = "Run_Forward";
+        public static string SquatMoveAnim = "Squat_Walk";
+        public static string AttackAnim    = "Attack";
+        public static string GetHurtAnim   = "GetHit";
+        public static string SlidingAnim   = "Sliding";
+        public static string RollAnim      = "Roll";
+    }
+
     // Vector3
     public static class Vector3Constant
     {

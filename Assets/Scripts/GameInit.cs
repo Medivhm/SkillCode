@@ -29,12 +29,12 @@ public class GameInit : MonoBehaviour
 
     IEnumerator Test()
     {
-        Ctrl.SetQuickKey(KeyCode.G, () =>
+        Ctrl.AddKeyPress(KeyCode.G, () =>
         {
             Ctrl.GMActive();
         });
 
-        Ctrl.SetQuickKey(KeyCode.B, () =>
+        Ctrl.AddKeyPress(KeyCode.B, () =>
         {
             Ctrl.OpenBag();
         });
@@ -66,7 +66,10 @@ public class GameInit : MonoBehaviour
         yield return new WaitForSeconds(0.6f);
 
         //Bag.Instance.AddItem(WeaponManager.CreateWeapon(1));
-        Bag.Instance.AddItem(ItemManager.CreateItem(6));
+        Bag.Instance.AddItem(Ctrl.CreateItem(ItemType.Prop, 6));
+        Bag.Instance.AddItem(Ctrl.CreateItem(ItemType.Weapon, 1));
+        Bag.Instance.AddItem(Ctrl.CreateItem(ItemType.Weapon, 2));
+        Bag.Instance.AddItem(Ctrl.CreateItem(ItemType.Weapon, 3));
     }
 
     void InitMonoManager(GameObject GameInit)
@@ -97,7 +100,6 @@ public class GameInit : MonoBehaviour
 
         ///// Bag thing
         ItemManager.Instance.Init();
-        WeaponManager.Instance.Init();
         /////
 
         TextureManager.Instance.Init();

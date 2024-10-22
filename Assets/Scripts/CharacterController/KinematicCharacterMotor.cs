@@ -1,4 +1,5 @@
-﻿using System;
+﻿using QEntity;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -153,6 +154,7 @@ namespace KinematicCharacterController
     /// Component that manages character collisions and movement solving
     /// </summary>
     [RequireComponent(typeof(CapsuleCollider))]
+    [RequireComponent(typeof(UnitEntity))]
     public class KinematicCharacterMotor : MonoBehaviour
     {
 #pragma warning disable 0414
@@ -163,25 +165,28 @@ namespace KinematicCharacterController
         [ReadOnly]
         public CapsuleCollider Capsule;
 
-        [Header("Capsule Settings")]
+        [ReadOnly]
+        public UnitEntity unit;
+
+        //[Header("Capsule Settings")]
         /// <summary>
         /// Radius of the character's capsule
         /// </summary>
         [SerializeField]
         [Tooltip("Radius of the Character Capsule")]
-        private float CapsuleRadius = 0.5f;
+        private float CapsuleRadius => unit.CapsuleRadius;
         /// <summary>
         /// Height of the character's capsule
         /// </summary>
         [SerializeField]
         [Tooltip("Height of the Character Capsule")]
-        private float CapsuleHeight = 2f;
+        private float CapsuleHeight => unit.CapsuleHeight;
         /// <summary>
         /// Local y position of the character's capsule center
         /// </summary>
         [SerializeField]
         [Tooltip("Height of the Character Capsule")]
-        private float CapsuleYOffset = 1f;
+        private float CapsuleYOffset => unit.CapsuleYOffset;
         /// <summary>
         /// Physics material of the character's capsule
         /// </summary>
@@ -201,9 +206,9 @@ namespace KinematicCharacterController
         /// <summary>
         /// Maximum slope angle on which the character can be stable
         /// </summary>    
-        [Range(0f, 89f)]
-        [Tooltip("Maximum slope angle on which the character can be stable")]
-        public float MaxStableSlopeAngle = 60f;
+        //[Range(0f, 89f)]
+        //[Tooltip("Maximum slope angle on which the character can be stable")]
+        public float MaxStableSlopeAngle => unit.maxStableSlopeAngle;
         /// <summary>
         /// Which layers can the character be considered stable on
         /// </summary>    
@@ -225,8 +230,8 @@ namespace KinematicCharacterController
         /// <summary>
         /// Maximum height of a step which the character can climb
         /// </summary>    
-        [Tooltip("Maximum height of a step which the character can climb")]
-        public float MaxStepHeight = 0.5f;
+        //[Tooltip("Maximum height of a step which the character can climb")]
+        public float MaxStepHeight => unit.MaxStepHeight;
         /// <summary>
         /// Can the character step up obstacles even if it is not currently stable?
         /// </summary>    
@@ -545,10 +550,10 @@ namespace KinematicCharacterController
             ValidateData();
         }
 
-        private void OnValidate()
-        {
-            ValidateData();
-        }
+        //private void OnValidate()
+        //{
+        //    ValidateData();
+        //}
 
         [ContextMenu("Remove Component")]
         private void HandleRemoveComponent()
@@ -563,13 +568,12 @@ namespace KinematicCharacterController
         /// </summary>
         public void ValidateData()
         {
+            unit = GetComponent<UnitEntity>();
             Capsule = GetComponent<CapsuleCollider>();
-            CapsuleRadius = Mathf.Clamp(CapsuleRadius, 0f, CapsuleHeight * 0.5f);
             Capsule.direction = 1;
             Capsule.sharedMaterial = CapsulePhysicsMaterial;
             SetCapsuleDimensions(CapsuleRadius, CapsuleHeight, CapsuleYOffset);
-
-            MaxStepHeight = Mathf.Clamp(MaxStepHeight, 0f, Mathf.Infinity);
+            //MaxStepHeight = Mathf.Clamp(MaxStepHeight, 0f, Mathf.Infinity);
             MinRequiredStepDepth = Mathf.Clamp(MinRequiredStepDepth, 0f, CapsuleRadius);
             MaxStableDistanceFromLedge = Mathf.Clamp(MaxStableDistanceFromLedge, 0f, CapsuleRadius);
 
@@ -720,9 +724,9 @@ namespace KinematicCharacterController
         {
             height = Mathf.Max(height, (radius * 2f) + 0.01f); // Safety to prevent invalid capsule geometries
 
-            CapsuleRadius = radius;
-            CapsuleHeight = height;
-            CapsuleYOffset = yOffset;
+            unit.CapsuleRadius = radius;
+            unit.CapsuleHeight = height;
+            unit.CapsuleYOffset = yOffset;
 
             Capsule.radius = CapsuleRadius;
             Capsule.height = Mathf.Clamp(CapsuleHeight, CapsuleRadius * 2f, CapsuleHeight);

@@ -37,6 +37,7 @@ public class BagUI : UIEntity
         quickUIs = new Dictionary<int, ItemUI>();
         bodyUIs = new Dictionary<BodyPos, ItemUI>();
         tempItem.SetShowTips(false);
+        tempItem.SetLocalScale(0.75f);
     }
 
     public void Start()
@@ -424,7 +425,7 @@ public class BagUI : UIEntity
                 if (data.position.PointInRect(BagViewContent.GetComponent<RectTransform>()))
                 {
                     ReputItem();
-                    Body.Instance.RemoveItemToBag((BodyPos)sender.item.indexMarker);
+                    Body.Instance.RemoveItemToBag((BodyPos)sender.item.IndexMarker);
                 }
             }
             // 移动快捷栏里的东西
@@ -434,7 +435,7 @@ public class BagUI : UIEntity
                 if (data.position.PointInRect(BagViewContent.GetComponent<RectTransform>()))
                 {
                     ReputItem();
-                    HotBar.Instance.RemoveItemToBag(sender.item.indexMarker);
+                    HotBar.Instance.RemoveItemToBag(sender.item.IndexMarker);
                 }
                 // 往Quick其他格子里丢
                 if (onDrag)
@@ -442,12 +443,12 @@ public class BagUI : UIEntity
                     for (int i = 0; i < quickUIs.Count; i++)
                     {
                         // 跳过自移动
-                        if (i == tempItem.item.indexMarker) continue;
+                        if (i == tempItem.item.IndexMarker) continue;
 
                         if (data.position.PointInRect(quickUIs[i].GetComponent<RectTransform>()))
                         {
                             ReputItem();
-                            HotBar.Instance.ChangeWithOtherGrid(sender.item.indexMarker, i);
+                            HotBar.Instance.ChangeWithOtherGrid(sender.item.IndexMarker, i);
                             break;
                         }
                     }

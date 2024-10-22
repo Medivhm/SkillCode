@@ -7,9 +7,9 @@ using Tools;
 
 public class Ctrl : Singleton<Ctrl>
 {
-    public static bool DropItem(int itemID, Vector3 pos)
+    public static bool DropItem(ItemType itemType, int id, Vector3 pos)
     {
-        return DropItem(Ctrl.CreateItem(itemID), pos);
+        return DropItem(CreateItem(itemType, id), pos);
     }
 
     public static bool DropItem(Item item, Vector3 pos)
@@ -22,7 +22,7 @@ public class Ctrl : Singleton<Ctrl>
         {
             go.MoveToUnit(item.Owner.transform, () =>
             {
-                Ctrl.MakeItemToBag(item);
+                MakeItemToBag(item);
             });
         });
 
@@ -67,23 +67,47 @@ public class Ctrl : Singleton<Ctrl>
 
     public static void SetQuickkeyIgnore(bool state)
     {
-        QuickKeyManager.SetIgnore(state);
+        QuickKeyManager.SetUIInputIgnore(state);
+    }
+
+    public static Item CreateItem(ItemType itemType, int id)
+    {
+        if (ItemType.Prop.Equals(itemType))
+        {
+            return CreateProp(id);
+        }
+        else if (ItemType.Weapon.Equals(itemType))
+        {
+            return CreateWeapon(id);
+        }
+        return null;
     }
 
     public static Weapon CreateWeapon(int weaponID)
     {
-        return WeaponManager.CreateWeapon(weaponID);
+        return ItemManager.CreateWeapon(weaponID);
     }
 
-    public static Item CreateItem(int itemID)
+    public static Prop CreateProp(int propID)
     {
-        return ItemManager.CreateItem(itemID);
+        return ItemManager.CreateProp(propID);
     }
 
-    public static Item MakeItemToBag(int itemID)
+    public static Item MakeItemToBag(ItemType itemType,int id)
     {
-        Item item = CreateItem(itemID);
-        MakeItemToBag(item);
+        Item item = null;
+        if (ItemType.Prop.Equals(itemType))
+        {
+            item = CreateProp(id);
+        }
+        else if (ItemType.Weapon.Equals(itemType))
+        {
+            item = CreateWeapon(id);
+        }
+        if (item.IsNotNull())
+        {
+            MakeItemToBag(item);
+        }
         return item;
     }
 
@@ -130,13 +154,23 @@ public class Ctrl : Singleton<Ctrl>
         }
     }
 
-    public static void SetQuickKey(KeyCode key, Action action, bool influenceByIgnore = true)
+    public static void AddKeyPress(KeyCode key, Action action)
     {
-        QuickKeyManager.Add(key, () => { action.Invoke(); }, influenceByIgnore);
+        QuickKeyManager.AddPress(key, action);
     }
 
-    public static void ClearQuickKey(KeyCode key)
+    public static void AddKeyUp(KeyCode key, Action action)
     {
-        QuickKeyManager.Remove(key);
+        QuickKeyManager.AddUp(key, action);
+    }
+
+    public static void RemoveKeyPress(KeyCode key, Action action)
+    {
+        QuickKeyManager.RemovePress(key, action);
+    }
+
+    public static void RemoveKeyUp(KeyCode key, Action action)
+    {
+        QuickKeyManager.RemoveUp(key, action);
     }
 }

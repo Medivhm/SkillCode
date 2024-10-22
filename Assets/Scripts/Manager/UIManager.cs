@@ -1,6 +1,7 @@
 ﻿using Constant;
 using QEntity;
 using System.Collections.Generic;
+using System.Linq;
 using Tools;
 using UnityEngine;
 
@@ -12,22 +13,48 @@ namespace Manager
     {
         static Stack<UIEntity> UIStack;
         static Dictionary<string, UIEntity> UIs;
+        static List<ItemUI> tipItems;
+
+        #region Tips相关
+        public static void AddTip(ItemUI tipItem)
+        {
+            tipItems.Add(tipItem);
+        }
+
+        public static void RemoveTip(ItemUI tipItem)
+        {
+            tipItems.Remove(tipItem);
+        }
+
+        public static void DestroyAllTips()
+        {
+            foreach(var item in tipItems.ToList())
+            {
+                if (item.IsNotNull())
+                {
+                    item.DestroyTips();
+                }
+            }
+            tipItems.Clear();
+        }
+        #endregion
+
         public static bool HasUI()
         {
             return UIStack.Count > 0;
         }
 
-
         public void Init()
         {
             UIStack = new Stack<UIEntity>();
             UIs = new Dictionary<string, UIEntity>();
+            tipItems = new List<ItemUI>();
             InitEscPress();
         }
 
         void InitEscPress()
         {
-            Ctrl.SetQuickKey(KeyCode.Escape, () =>
+            Ctrl.AddKeyPress(KeyCode.Escape, () =>
             {
                 if(UIStack.Count == 0)
                 {
@@ -106,6 +133,7 @@ namespace Manager
             ui.RefreshUI();
             ui.Show();
             UIPush(ui);
+            DestroyAllTips();
             return ui;
         }
 
@@ -118,6 +146,7 @@ namespace Manager
 
             UIEntity ui = UIPop();
             ui.Hide();
+            DestroyAllTips();
         }
 
         public static void Hide(string uiName)
@@ -126,6 +155,7 @@ namespace Manager
 
             UIs[uiName].Hide();
             UIPop();
+            DestroyAllTips();
         }
 
         static void IfStackEmptyUnUseMouse()

@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using System;
+using Manager;
 
 public class ItemUI : UIEntity, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
@@ -13,7 +14,7 @@ public class ItemUI : UIEntity, IPointerEnterHandler, IPointerExitHandler, IPoin
     public Text NumText;
     public Item item;
 
-    private ItemTipsUI tips;
+    private ItemTipsUI tip;
     private ButtonList btnList;
     private bool showTips = true;
 
@@ -106,15 +107,15 @@ public class ItemUI : UIEntity, IPointerEnterHandler, IPointerExitHandler, IPoin
 
         this.item = item;
         ItemIcon.gameObject.SetActive(true);
+        NumText.gameObject.SetActive(true);
 
         ItemIcon.sprite = LoadTool.LoadSprite(item.Icon);
-        if(item.Overlap == 1)
+        if(item.Overlap == 1 || item.Num == 1)
         {
-            NumText.gameObject.SetActive(false);
+            NumText.text = "";
         }
         else
         {
-            NumText.gameObject.SetActive(true);
             NumText.text = item.Num.ToString();
         }
     }
@@ -128,7 +129,7 @@ public class ItemUI : UIEntity, IPointerEnterHandler, IPointerExitHandler, IPoin
     {
         if (!showTips) return;
 
-        if (tips.IsNotNull())
+        if (tip.IsNotNull())
         {
             return;
         }
@@ -143,18 +144,20 @@ public class ItemUI : UIEntity, IPointerEnterHandler, IPointerExitHandler, IPoin
             return;
         }
 
-        tips = GUI.CreateItemTips(Main.MainCanvas.transform, pos, item);
+        tip = GUI.CreateItemTips(Main.MainCanvas.transform, pos, item);
+        UIManager.AddTip(this);
     }
 
     public void DestroyTips()
     {
-        if (tips.IsNull())
+        if (tip.IsNull())
         {
             return;
         }
 
-        tips.Destroy();
-        tips = null;
+        tip.Destroy();
+        UIManager.RemoveTip(this);
+        tip = null;
     }
 
     public void CreateBtnList(Vector3 pos)
@@ -238,6 +241,7 @@ public class ItemUI : UIEntity, IPointerEnterHandler, IPointerExitHandler, IPoin
     public override void Destroy()
     {
         DestroyBtnList();
+        DestroyTips();
         base.Destroy();
     }
 

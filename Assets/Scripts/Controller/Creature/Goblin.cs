@@ -26,9 +26,6 @@ namespace Creature
             }
         }
 
-        public float jumpSpeed = 26f;
-        public override float JumpSpeed => jumpSpeed;
-
         public override bool IsGrounded
         {
             get

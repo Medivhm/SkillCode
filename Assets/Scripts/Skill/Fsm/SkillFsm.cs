@@ -14,9 +14,6 @@ public class SkillFsm : FsmBase<SkillFsm>
 
     public void InitKeyboard()
     {
-        Ctrl.SetQuickKey(KeyCode.LeftShift, () =>
-        {
-            ChangeState<Dash>();
-        });
+
     }
 }

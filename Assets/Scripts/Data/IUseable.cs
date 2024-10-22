@@ -4,12 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-public abstract class Useable
+public interface IUseable
 {
-    public abstract string Icon
-    {
-        get;
-    }
-
     public abstract bool Use();
 }

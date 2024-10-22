@@ -1,6 +1,6 @@
 ﻿namespace Info
 {
-    public class ItemInfo
+    public class PropInfo
     {
         public int    ID;
         public int    type;
@@ -11,6 +11,7 @@
         public string icon;
         public string desc;
         public bool   canDestroy;
+        public string condition;
         public string useFunc;
     }
 }

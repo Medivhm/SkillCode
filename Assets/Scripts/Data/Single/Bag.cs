@@ -24,20 +24,20 @@ public class Bag : Singleton<Bag>
     public void RemoveItemToHotBar(Item item, int index)
     {
         HotBar.Instance.SetItem(item, index);
-        item.indexMarker = index;
+        item.IndexMarker = index;
         RemoveItem(item);
     }
 
     public void RemoveItemToBody(Item item, BodyPos pos)
     {
         Body.Instance.SetItem(item, pos);
-        item.indexMarker = (int)pos;
+        item.IndexMarker = (int)pos;
         RemoveItem(item);
     }
 
-    public void AddItem(int itemId, bool doChange = true, bool putAsSingle = false)
+    public void AddItem(ItemType itemType, int itemId, bool doChange = true, bool putAsSingle = false)
     {
-        Item item = Ctrl.CreateItem(itemId);
+        Item item = Ctrl.CreateItem(itemType, itemId);
         AddItemEx(item, doChange, putAsSingle);
     }
 
@@ -163,7 +163,7 @@ public class HotBar : Singleton<HotBar>
 
         Bag.Instance.AddItem(Items[index], true, true);
         Items[index].From = From.Bag;
-        Items[index].indexMarker = 0;
+        Items[index].IndexMarker = 0;
         Items[index] = null;
         SendChangeMessage(null, 'd', index);
     }
@@ -175,7 +175,7 @@ public class HotBar : Singleton<HotBar>
 
         if (temp1.IsNotNull())
         {
-            temp1.indexMarker = index2;
+            temp1.IndexMarker = index2;
             Items[index2] = temp1;
             SendChangeMessage(temp1, 'a', index2);
         }
@@ -186,7 +186,7 @@ public class HotBar : Singleton<HotBar>
         }
         if (temp2.IsNotNull())
         {
-            temp2.indexMarker = index1;
+            temp2.IndexMarker = index1;
             Items[index1] = temp2;
             SendChangeMessage(temp2, 'a', index1);
         }
@@ -197,13 +197,32 @@ public class HotBar : Singleton<HotBar>
         }
     }
 
+    public bool UseItem(Item item)
+    {
+        if (!From.HotBar.Equals(item.From)) return false;
+
+        return UseItem(item.IndexMarker);
+    }
+
     public bool UseItem(int index)
     {
         if (Items[index].IsNull()) return false;
         if (Items[index].Num < 1) return false;
 
-        Items[index].Use();
-        //Items[index].Num--;
+        if (Items[index] is IUseable)
+        {
+            if(!(Items[index] as IUseable).Use())
+            {
+                // 不满足使用条件
+                return false;
+            }
+        }
+        else
+        {
+            // 是不可用Item
+            return false;
+        }
+
         if (Items[index].Num == 0)
         {
             Items[index] = null;
@@ -273,7 +292,7 @@ public class Body : Singleton<Body>
 
         Bag.Instance.AddItem(Items[GetIndex(pos)], true, true);
         Items[GetIndex(pos)].From = From.Bag;
-        Items[GetIndex(pos)].indexMarker = 0;
+        Items[GetIndex(pos)].IndexMarker = 0;
         Items[GetIndex(pos)] = null;
 
         SendChangeMessage(null, 'd', pos);

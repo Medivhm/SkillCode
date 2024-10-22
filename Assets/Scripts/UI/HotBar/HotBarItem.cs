@@ -27,7 +27,11 @@ public class HotBarItem : UIEntity
                 selectedIcon.gameObject.SetActive(true);
                 if (item.IsNotNull())
                 {
-                    item.Use();
+                    // 如果是武器类道具，选中后穿上
+                    if(item is Weapon)
+                    {
+                        (item as Weapon).Dress();
+                    }
                 }
             }
             else
@@ -70,8 +74,6 @@ public class HotBarItem : UIEntity
 
     public void SetItem(Item item)
     {
-        if (this.item.IsNotNull()) return;
-
         if (item.IsNull())
         {
             RemoveItem();
@@ -79,8 +81,14 @@ public class HotBarItem : UIEntity
         }
 
         this.item = item;
+        itemUI.JustItem();
+        itemUI.SetLocalScale(0.75f);
         itemUI.gameObject.SetActive(true);
         itemUI.SetItem(item);
+        if (selected && item is Weapon)
+        {
+            (item as Weapon).Dress();
+        }
     }
 
     public Item GetItem()

@@ -3,34 +3,33 @@ using System.Collections.Generic;
 using UnityEngine;
 using KinematicCharacterController;
 using System;
+using QEntity;
 
 namespace KinematicCharacterController.Walkthrough.AddingImpulses
 {
+    [RequireComponent(typeof(UnitEntity))]
     public class QCharacterController : MonoBehaviour, ICharacterController
     {
+        [ReadOnly]
+        public UnitEntity unit;
         public KinematicCharacterMotor Motor;
         public CapsuleCollider Capsule => Motor.Capsule;
 
-        [Header("Stable Movement")]
-        public float MaxStableMoveSpeed = 10f;
-        public float StableMovementSharpness = 15;
-        public float OrientationSharpness = 10;
+        public float MaxStableMoveSpeed => unit.groundMoveSpeed;
+        public float StableMovementSharpness => unit.movementSharpness;
 
-        [Header("Air Movement")]
-        public float MaxAirMoveSpeed = 10f;
-        public float AirAccelerationSpeed = 1f;      // 空中水平阻力
-        public float Drag = 0.1f;
+        public float MaxAirMoveSpeed => unit.airMoveSpeed;
+        public float AirAccelerationSpeed => unit.airAccelerationSpeed;      // 空中水平阻力
+        public float Drag => unit.drag;
 
-        [Header("Jumping")]
         public bool AllowJumpingWhenSliding = false;
-        public bool AllowDoubleJump = false;
+        public bool AllowDoubleJump = true;
         public bool AllowWallJump = false;
-        public float JumpSpeed = 10f;
-        public float JumpPreGroundingGraceTime = 0f;
-        public float JumpPostGroundingGraceTime = 0f;
+        public float JumpSpeed => unit.jumpSpeed;
+        [HideInInspector] public float JumpPreGroundingGraceTime = 0f;
+        [HideInInspector] public float JumpPostGroundingGraceTime = 0f;
 
-        [Header("Misc")]
-        public Vector3 Gravity = new Vector3(0, -30f, 0);
+        public Vector3 Gravity => unit.gravity;
         public Transform MeshRoot;
 
         private Vector3 _moveInputVector;
@@ -44,6 +43,7 @@ namespace KinematicCharacterController.Walkthrough.AddingImpulses
         private bool _canWallJump = false;
         private Vector3 _wallJumpNormal;
         private Vector3 _internalVelocityAdd = Vector3.zero;
+        private float currentSpeed;
 
         private void Start()
         {
@@ -52,12 +52,22 @@ namespace KinematicCharacterController.Walkthrough.AddingImpulses
             //Capsule.isTrigger = true;
         }
 
+        private void OnValidate()
+        {
+            unit = GetComponent<UnitEntity>();
+        }
+
         bool inputMove = false;
         public void Move(Vector3 moveDir)
         {
             inputMove = true;
             _moveInputVector = moveDir;
             _lookInputVector = moveDir;
+        }
+
+        public void MoveToPosition(Vector3 position)
+        {
+            Motor.MoveCharacter(position);
         }
 
         public void SetPosition(Vector3 position)
@@ -81,6 +91,11 @@ namespace KinematicCharacterController.Walkthrough.AddingImpulses
             Motor.ForceUnground();
         }
 
+        public void SetCapsuleDimensions(float radius, float height, float yOffset)
+        {
+            Motor.SetCapsuleDimensions(radius, height, yOffset);
+        }
+
         /// <summary>
         /// (Called by KinematicCharacterMotor during its update cycle)
         /// This is called before the character begins its movement update
@@ -89,6 +104,7 @@ namespace KinematicCharacterController.Walkthrough.AddingImpulses
         {
         }
 
+        //public float OrientationSharpness = 10;
         /// <summary>
         /// (Called by KinematicCharacterMotor during its update cycle)
         /// This is where you tell your character what its rotation should be right now. 
@@ -216,6 +232,12 @@ namespace KinematicCharacterController.Walkthrough.AddingImpulses
                 currentVelocity += _internalVelocityAdd;
                 _internalVelocityAdd = Vector3.zero;
             }
+            currentSpeed = currentVelocity.magnitude;
+        }
+
+        public float GetCurrentSpeed()
+        {
+            return currentSpeed;
         }
 
         /// <summary>

@@ -12,29 +12,60 @@ public enum From
     Other,
 }
 
-public class Item : Useable
+public enum ItemType
 {
-    public int Num;
-    // 背包，快捷栏，地面
+    Prop,
+    Weapon,
+}
+
+public class ItemInfo
+{
+    public int ID;
+    public int type;
+    public string name;
+    public int color;
+    public int overlap;
+    public string prefab;
+    public string icon;
+    public string desc;
+}
+
+public class Item
+{
+    // 背包，快捷栏，身上，地面
+    public ItemType ItemType;
     public From From;
-    public int indexMarker;
     public ItemInfo Info;
     public UnitEntity Owner;
 
-    private Item()
-    {
+    public int IndexMarker;
+    public int Num;
 
-    }
+    private Item() { }
 
-    public Item(int itemID, From from, int num, UnitEntity owner = null) : this(DataManager.Instance.ItemInfos[itemID], from, num, owner)
+    public Item(ItemType itemType, From from, int num, int id, int type, string name, int color, int overlap, string prefab, string icon, string desc, UnitEntity owner = null)
     {
-    }
-
-    public Item(ItemInfo info, From from, int num, UnitEntity owner = null)
-    {
-        Info = info;
+        ItemType = itemType;
         From = from;
         Num = num;
+        IndexMarker = -1;
+        Owner = owner;
+
+        Info = new ItemInfo
+        {
+            ID = id,
+            type = type,
+            name = name,
+            color = color,
+            overlap = overlap,
+            prefab = prefab,
+            icon = icon,
+            desc = desc,
+        };
+    }
+
+    public Item(ItemType itemType, From from, int num, ItemInfo info, UnitEntity owner = null) : this(itemType, from, num, info.ID, info.type, info.name, info.color, info.overlap, info.prefab, info.icon, info.desc, owner)
+    {
     }
 
     public int ItemID => Info.ID;
@@ -45,29 +76,23 @@ public class Item : Useable
 
     public string PrefabPath => Info.prefab;
 
-    // "#FFFFFF"
     public Color Color => ColorConstant.ColorDefine[Info.color];
 
     public int Overlap => Info.overlap;
 
-    public override string Icon => Info.icon;
+    public string Icon => Info.icon;
 
-    public string Desc
-    {
-        get => Info.desc;
-    }
+    public string Desc => Info.desc;
 
-    public Item CopyItem()
+    public Item DeepCopyItem()
     {
         Item i = new Item();
-        i.Num = this.Num;
-        i.Info = this.Info;
+        i.ItemType = this.ItemType;
         i.From = this.From;
+        i.IndexMarker = this.IndexMarker;
+        i.Num = this.Num;
+        i.Owner = this.Owner;
+        i.Info = this.Info;
         return i;
-    }
-
-    public override bool Use()
-    {
-        return true;
     }
 }

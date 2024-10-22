@@ -12,24 +12,44 @@ namespace Manager
 
         }
 
-        static ItemInfo itemInfo;
-        public static Item CreateItem(int itemID, UnitEntity owner = null)
+        public static Prop CreateProp(int propId, int num = 1, From from = From.Other, UnitEntity owner = null)
         {
-            if (GetItemInfo(itemID).IsNotNull())
+            if (GetPropInfo(propId).IsNotNull())
             {
-                return new Item(itemInfo, From.Other, 1, owner);
+                return new Prop(propId, ItemType.Prop, from, num, owner);
             }
             return null;
         }
 
-        public static ItemInfo GetItemInfo(int itemID)
+        public static PropInfo GetPropInfo(int itemID)
         {
-            if (!DataManager.Instance.ItemInfos.TryGetValue(itemID, out itemInfo))
+            PropInfo propInfo;
+            if (!DataManager.Instance.PropInfos.TryGetValue(itemID, out propInfo))
             {
                 DebugTool.Error("ItemID 错误");
                 return null;
             }
-            return itemInfo;
+            return propInfo;
+        }
+
+        public static Weapon CreateWeapon(int weaponID, int num = 1, From from = From.Other, UnitEntity owner = null)
+        {
+            if (GetWeaponInfo(weaponID).IsNotNull())
+            {
+                return new Weapon(weaponID, ItemType.Prop, from, num, owner);
+            }
+            return null;
+        }
+
+        public static WeaponInfo GetWeaponInfo(int weaponID)
+        {
+            WeaponInfo weaponInfo;
+            if (!DataManager.Instance.WeaponInfos.TryGetValue(weaponID, out weaponInfo))
+            {
+                DebugTool.Error("WeaponID 错误");
+                return null;
+            }
+            return weaponInfo;
         }
     }
 }

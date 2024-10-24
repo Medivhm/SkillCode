@@ -266,13 +266,13 @@ namespace QEntity
             return detect.GetClosestOtherCamp();
         }
 
-        public void PlayAnim(string animName, float fadeTime, Action callback = null)
+        public void PlayAnim(string animName, float fadeTime, Action callback = null, float normalizedTimeOffset = 0, float normalizedTransitionTime = 1)
         {
             if (animName == nowAnimPlay) return;
             if (unitAct == UnitAct.Skill) return;
 
             nowAnimPlay = animName;
-            animator.CrossFade(animName, fadeTime);
+            animator.CrossFade(animName, fadeTime, -1, normalizedTimeOffset, normalizedTransitionTime);
             if (callback != null)
             {
                 float time = QUtil.GetAnimationClip(animator, animName).length;
@@ -281,7 +281,7 @@ namespace QEntity
         }
 
         string nowAnimPlay;
-        public void PlayAnim(string animName, Action callback = null)
+        public void PlayAnim(string animName, Action callback = null, float normalizedTimeOffset = 0, float normalizedTransitionTime = 1)
         {
             if (animName == nowAnimPlay) return;
             if (unitAct == UnitAct.Skill) return;
@@ -299,7 +299,8 @@ namespace QEntity
                 fadeTime = remainingTime;
             }
 
-            animator.CrossFade(animName, fadeTime);
+            animator.CrossFade(animName, fadeTime, -1, normalizedTimeOffset, normalizedTransitionTime);
+            //animator.CrossFadeInFixedTime(animName, fadeTime);
 
             if (callback != null)
             {

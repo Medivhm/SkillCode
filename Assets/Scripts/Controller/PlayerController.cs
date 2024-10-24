@@ -29,20 +29,32 @@ public partial class PlayerController : PlayerEntity
             if (unitAct == UnitAct.Squat)
             {
                 SetColliderSquat();
-                maxStableSlopeAngle = 60f;
-                MaxStepHeight = 1.8f;
+                SetWalkStairsState(true);
             }
             else if(unitAct == UnitAct.Stand)
             {
                 SetColliderStand();
-                maxStableSlopeAngle = 60f;
-                MaxStepHeight = 1.8f;
+                SetWalkStairsState(true);
             }
             else if(unitAct == UnitAct.Skill)
             {
-                maxStableSlopeAngle = 0f;
-                MaxStepHeight = 0f;
+                // skill 自己处理Collider
+                SetWalkStairsState(false);
             }
+        }
+    }
+
+    public void SetWalkStairsState(bool state)
+    {
+        if (state)
+        {
+            maxStableSlopeAngle = 60f;
+            MaxStepHeight = 1.8f;
+        }
+        else
+        {
+            maxStableSlopeAngle = 0f;
+            MaxStepHeight = 0f;
         }
     }
 
@@ -265,8 +277,6 @@ public partial class PlayerController : PlayerEntity
             skillFsm.Update(Time.deltaTime);
         }
         ShiftTick();
-
-        Debug.Log(leftCtrlPress.ToString());
     }
 
     void DetectInit()                    // 初始化距离内人物检测

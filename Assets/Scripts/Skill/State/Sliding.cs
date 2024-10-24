@@ -24,9 +24,9 @@ public class Sliding : SkillStateBase
         unit.PlayAnim(Anim.SlidingAnim);
         dir = unit.transform.forward;
         Main.MainPlayerCtrl.UnitAct = UnitAct.Skill;
+        Main.MainPlayerCtrl.SetColliderSquat();
     }
 
-    float deltaTime;
     protected internal override void Update(float dt)
     {
         base.Update(dt);

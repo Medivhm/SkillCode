@@ -7,6 +7,9 @@ public class Roll : SkillStateBase
     Vector3 dir;
     float speed;
     float time;
+    float timePass;
+    float preAct = 0.01f;
+    float afterAct = 0.01f;
 
     public Roll(SkillFsm fsm) : base(fsm)
     {
@@ -19,17 +22,20 @@ public class Roll : SkillStateBase
         Debug.Log("Enter Roll");
 
         unit.SetControl(false);
-        speed = 100f;
+        speed = 80f;
         dir = unit.Dir;
-        time = QUtil.GetAnimationClip(unit.animator, Anim.RollAnim).length + 0.1f;
-        unit.PlayAnim(Anim.RollAnim);
+        time = QUtil.GetAnimationClip(unit.animator, Anim.RollAnim).length;
+        timePass = 0f;
+        unit.PlayAnim(Anim.RollAnim, null, 0f, (time - 0.1f) / time);
+        time = time - 0.1f;
         Main.MainPlayerCtrl.UnitAct = UnitAct.Skill;
+        Main.MainPlayerCtrl.SetColliderSquat();
     }
 
     protected internal override void Update(float dt)
     {
         base.Update(dt);
-        if(time < 1f)
+        if(timePass > time)
         {
             Over();
             unit.SetControl(true);
@@ -44,8 +50,11 @@ public class Roll : SkillStateBase
         }
         else
         {
-            time -= dt;
-            unit.MoveTo(dir * speed * dt);
+            if(timePass > preAct && timePass + afterAct < time)
+            {
+                unit.MoveTo(dir * speed * dt);
+            }
+            timePass += dt;
         }
     }
 }
